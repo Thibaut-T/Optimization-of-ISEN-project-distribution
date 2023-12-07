@@ -15,13 +15,13 @@ class Menu(tk.Frame):
         
         
         button1 = ttk.Button(self, text="manage projects",
-                            command=lambda: controller.show_frame("projectManagement"))
+                            command=lambda: controller.show_frame("projectManagment"))
         button1.grid(row = 2, column = 1, padx = 10, pady = 10)
         
         button1 = ttk.Button(self, text="manage projects",
-                            command=lambda: controller.show_frame("projectManagement"))
+                            command=lambda: controller.show_frame("projectManagment"))
         button1.grid(row = 3, column = 1, padx = 10)
         
         button1 = ttk.Button(self, text="manage projects",
-                            command=lambda: controller.show_frame("projectManagement"))
+                            command=lambda: controller.show_frame("projectManagment"))
         button1.grid(row = 4, column = 1, padx = 10, pady = 10)

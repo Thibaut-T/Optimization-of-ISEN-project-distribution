@@ -1,5 +1,12 @@
 import tkinter as tk
+from exportStudentDistribution import exportStudentDistribution
+from exportToForms import exportToForms
+from listAllProjects import listAllProjects
 from menu import menu
+from projectCreation import projectCreation
+from projectManagment import projectManagment
+from solverInputFile import solverInputFile
+from solverOutputManagment import solverOutputManagment
 from topBar import topBar
 
 class mainApp(tk.Tk):
@@ -20,9 +27,13 @@ class mainApp(tk.Tk):
         menu_frame = menu.Menu(window, self)
 
         self.mainFrames = {
-            "projectManagement": tk.Frame(window, bg="red"),
-            "projectDistribution": tk.Frame(window, bg="blue"),
-            "projectEvaluation": tk.Frame(window, bg="green")            
+            "projectCreation": projectCreation.ProjectCreation(window, self),
+            "projectManagment": projectManagment.ProjectManagment(window, self),
+            "solverInputFile": solverInputFile.SolverInputFile(window, self),
+            "solverOutputManagment": solverOutputManagment.SolverOutputManagment(window, self),
+            "exportStudentDistribution": exportStudentDistribution.ExportStudentDistribution(window, self),
+            "exportToForms": exportToForms.ExportToForms(window, self),
+            "listAllProjects": listAllProjects.ListAllProjects(window, self)
         }
 
         # Create a frame for the main content
