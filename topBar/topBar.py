@@ -10,4 +10,5 @@ class TopBar(tk.Frame):
         
         # label of frame TopBar
         label = ttk.Label(self, text ="TopBar")
+        label.grid(row = 0, column = 0, padx = 10, pady = 10)
          

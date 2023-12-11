@@ -35,18 +35,17 @@ class mainApp(tk.Tk):
             "exportToForms": exportToForms.ExportToForms(window, self),
             "listAllProjects": listAllProjects.ListAllProjects(window, self)
         }
-
-        # Create a frame for the main content
-        main_frame = tk.Frame(window, bg="white")
-        main_frame.pack(side="right", fill="both", expand=True)
-        
-        
+                
+        self.main_frame = self.mainFrames["projectCreation"]
+        self.main_frame.pack(fill="both", expand=True)
 
         # Start the main loop
         window.mainloop()
 
     def show_frame(self, page_name):
-        frame = self.mainFrames[page_name]
-        frame.tkraise()
+        self.main_frame.pack_forget()
+        self.main_frame = self.mainFrames[page_name]
+        self.main_frame.pack(fill="both", expand=True)
+        self.main_frame.tkraise()
 
 mainApp().mainloop()
