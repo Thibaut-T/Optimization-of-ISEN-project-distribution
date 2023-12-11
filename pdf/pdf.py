@@ -9,20 +9,52 @@ def generate_pdf_with_values(input_values):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", "B", 16)
-    middle_point = pdf.h / 2
-    text_height = 3 * pdf.font_size 
-    pdf.set_y(middle_point - text_height / 2)
-    pdf.cell(200, 10, txt="Cover Page", ln=True, align="C")
-    pdf.ln(pdf.font_size)
-    pdf.cell(200, 10, txt="JUNIA PROJECTS", ln=True, align="C")
-    pdf.ln(pdf.font_size)
-    pdf.cell(200, 10, txt="2024/2025", ln=True, align="C")
-
+    
+    # Title
+    pdf.set_y(10)
+    pdf.cell(0, 10, txt="Cover Page", ln=True, align="C")
+    pdf.ln(10)
+    pdf.cell(0, 10, txt="JUNIA PROJECTS", ln=True, align="C")
+    pdf.ln(10)
+    pdf.cell(0, 10, txt="2024/2025", ln=True, align="C")
+    
+    # Iterate through input values
     for input_set in input_values:
         pdf.add_page()
         pdf.set_font("Arial", size=12)
+        
+        # Display Numéro du projet
+        pdf.set_text_color(0, 100, 0)  # Dark green color for Numéro du projet
+        pdf.set_font("Arial", "B", 18)  # Bigger font size for "Numéro du projet"
+        pdf.cell(0, 10, txt=input_set["Numéro du projet"], ln=True, align="C")
+        
+        # Horizontal line after Numéro du projet
+        pdf.set_fill_color(0, 100, 0)  # Dark green color for lines
+        pdf.set_y(pdf.get_y() + 5)  # Adjust spacing
+        pdf.cell(0, 2, ln=True, fill=True)
+        
+        # Display the remaining inputs in dark blue
+        pdf.set_text_color(0, 0, 139)  # Dark blue color for remaining text
         for key, value in input_set.items():
-            pdf.cell(200, 10, txt=f"{key}: {value}", ln=True)
+            if key != "Numéro du projet" and key != "Description":
+                pdf.ln(2)  # Reduce space between inputs
+                if key == "Intitulé":
+                    pdf.set_font("Arial", "B", 14)  # Change font size and style for "Intitulé"
+                else:
+                    pdf.set_font("Arial", size=12)  # Reset font for other keys
+                pdf.cell(50, 8, txt=f"{key}:", ln=False)
+                pdf.cell(0, 8, txt=value, ln=True)
+        
+        # Description Title
+        if "Description" in input_set:
+            pdf.set_text_color(0, 0, 139)  # Dark blue color for Description title
+            pdf.set_font("Arial", "BU", 12)  # Underlined and regular font size for Description title
+            pdf.cell(50, 10, txt="Description:", ln=False)
+            pdf.ln(8)  # Space between Description title and value
+            pdf.set_draw_color(0, 100, 0)  # Dark green color for outline of rectangle
+            pdf.rect(10, pdf.get_y() - 5, 190, 40)  # Rectangle around the Description
+            pdf.set_font("Arial", size=12)  # Reset font size for Description value
+            pdf.multi_cell(0, 8, txt=input_set["Description"])
 
     pdf.output("output.pdf")
 
@@ -70,7 +102,7 @@ label1.pack()
 entry1 = tk.Entry(root)
 entry1.pack()
 
-label2 = tk.Label(root, text="Intitulé:")
+label2 = tk.Label(root, text="Intitulé du sujet:")
 label2.pack()
 entry2 = tk.Entry(root)
 entry2.pack()
