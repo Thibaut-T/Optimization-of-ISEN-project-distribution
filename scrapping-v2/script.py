@@ -56,6 +56,8 @@ for i in range(len(students_projects_array)):
     for j in range(len(students_projects_array[i])):
         text_content += f"var s{i+1}p{j+1} binary;\n"
 
+####à enlever : variables non utilisées
+
 ##################################################################
 
 text_content += '\n'
@@ -104,3 +106,21 @@ for j in range(len(projects_students_array)):
     
 with open(lp_file, 'w') as file:
     file.write(text_content)
+
+
+
+
+
+########################################
+# plusieurs modèles liés à l'application
+
+
+
+
+# conditions de base pour le minimum : >= 3b 
+# avec b un composite de binaires du type "si le nombre minimal d'étudiant est assigné au projet = 1"
+# cplex
+
+
+
+# sommes des vars -(s1p1*s2p1*s3p1 + s2p1*s3p1*s4p1 + ... + s7p1*s8p1*s9p1)*(1-BIGM)
