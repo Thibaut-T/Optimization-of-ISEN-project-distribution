@@ -1,5 +1,6 @@
 import pandas as pd
 import random
+import itertools
 from numpy import transpose
 
 file_path = 'TEST3.xlsx'
@@ -49,12 +50,16 @@ text_content = ''
 projects_students_array = transpose(students_projects_array)
 max_students_per_project = 7
 min_students_per_project = 3
+bigM = 99999
 
 ##################################################################
 
 for i in range(len(students_projects_array)):
     for j in range(len(students_projects_array[i])):
         text_content += f"var s{i+1}p{j+1} binary;\n"
+        
+for j in range(len(projects_students_array)):
+    text_content += f"var b{j} binary;\n"
 
 ####à enlever : variables non utilisées
 
@@ -93,23 +98,42 @@ for j in range(len(projects_students_array)):
     
 ##################################################################
     
-# for j in range(len(projects_students_array)):
-#     tmp = f"subject to constraint_min_student_for_project_{j}: "
-#     for i in range(len(projects_students_array[j])):
-#         tmp += f"s{i+1}p{j+1} + "
-#     tmp = tmp[:-3]
-#     text_content += tmp
-#     text_content += f" >= {min_students_per_project};\n"
+for j in range(len(projects_students_array)):
+    tmp = f"subject to constraint_min_1_student_for_project_{j}: "
+    
+    tmp2 = ""
+    for i in range(len(projects_students_array[j])):
+        if projects_students_array[j][i] != 0:
+            tmp2 += f"s{i+1}p{j+1} + "
+            
+    if tmp2 != "":
+        tmp += tmp2
+        tmp = tmp[:-3]
+        tmp += f" <= {bigM} * b{j};\n"
+    
+        text_content += tmp
     
 ##################################################################
 
+for j in range(len(projects_students_array)):
+    tmp = f"subject to constraint_min_2_student_for_project_{j}: "
     
+    tmp2 = ""
+    for i in range(len(projects_students_array[j])):
+        if projects_students_array[j][i] != 0:
+            tmp2 += f"s{i+1}p{j+1} + "
+            
+    if tmp2 != "":
+        tmp += tmp2
+        tmp = tmp[:-3]
+        tmp += f" <= {bigM} * b{j};\n"
+    
+        text_content += tmp
+
+##################################################################
+
 with open(lp_file, 'w') as file:
     file.write(text_content)
-
-
-
-
 
 ########################################
 # plusieurs modèles liés à l'application

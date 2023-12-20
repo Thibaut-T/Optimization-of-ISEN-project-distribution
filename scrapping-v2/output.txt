@@ -1,7 +1,7 @@
 Problem:    output
-Rows:       138
-Columns:    4620 (4620 integer, 4620 binary)
-Non-zeros:  9625
+Rows:       250
+Columns:    4676 (4676 integer, 4676 binary)
+Non-zeros:  10507
 Status:     INTEGER OPTIMAL
 Objective:  obj = 529 (MAXimum)
 
@@ -169,47 +169,47 @@ Objective:  obj = 529 (MAXimum)
     81 cst_max_stud_2
                                    1                           7 
     82 cst_max_stud_3
-                                   3                           7 
+                                   0                           7 
     83 cst_max_stud_4
                                    0                           7 
     84 cst_max_stud_5
                                    0                           7 
     85 cst_max_stud_6
-                                   0                           7 
-    86 cst_max_stud_7
                                    1                           7 
+    86 cst_max_stud_7
+                                   0                           7 
     87 cst_max_stud_8
                                    7                           7 
     88 cst_max_stud_9
-                                   1                           7 
+                                   0                           7 
     89 cst_max_stud_10
                                    0                           7 
     90 cst_max_stud_11
                                    7                           7 
     91 cst_max_stud_12
-                                   1                           7 
-    92 cst_max_stud_13
                                    0                           7 
+    92 cst_max_stud_13
+                                   1                           7 
     93 cst_max_stud_14
                                    0                           7 
     94 cst_max_stud_15
-                                   1                           7 
+                                   3                           7 
     95 cst_max_stud_16
-                                   1                           7 
+                                   0                           7 
     96 cst_max_stud_17
-                                   1                           7 
+                                   0                           7 
     97 cst_max_stud_18
                                    7                           7 
     98 cst_max_stud_19
                                    0                           7 
     99 cst_max_stud_20
-                                   0                           7 
+                                   1                           7 
    100 cst_max_stud_21
                                    7                           7 
    101 cst_max_stud_22
                                    0                           7 
    102 cst_max_stud_23
-                                   0                           7 
+                                   1                           7 
    103 cst_max_stud_24
                                    0                           7 
    104 cst_max_stud_25
@@ -217,7 +217,7 @@ Objective:  obj = 529 (MAXimum)
    105 cst_max_stud_26
                                    0                           7 
    106 cst_max_stud_27
-                                   1                           7 
+                                   0                           7 
    107 cst_max_stud_28
                                    0                           7 
    108 cst_max_stud_29
@@ -237,7 +237,7 @@ Objective:  obj = 529 (MAXimum)
    115 cst_max_stud_36
                                    7                           7 
    116 cst_max_stud_37
-                                   0                           7 
+                                   3                           7 
    117 cst_max_stud_38
                                    0                           7 
    118 cst_max_stud_39
@@ -282,6 +282,230 @@ Objective:  obj = 529 (MAXimum)
                                    0                           7 
    138 cst_max_stud_59
                                    7                           7 
+   139 constraint_min_1_student_for_project_0
+                              -99992                          -0 
+   140 constraint_min_1_student_for_project_1
+                                   0                          -0 
+   141 constraint_min_1_student_for_project_2
+                              -99998                          -0 
+   142 constraint_min_1_student_for_project_3
+                                   0                          -0 
+   143 constraint_min_1_student_for_project_4
+                                   0                          -0 
+   144 constraint_min_1_student_for_project_5
+                                   0                          -0 
+   145 constraint_min_1_student_for_project_6
+                              -99998                          -0 
+   146 constraint_min_1_student_for_project_7
+                                   0                          -0 
+   147 constraint_min_1_student_for_project_8
+                              -99992                          -0 
+   148 constraint_min_1_student_for_project_9
+                              -99999                          -0 
+   149 constraint_min_1_student_for_project_10
+                                   0                          -0 
+   150 constraint_min_1_student_for_project_11
+                              -99992                          -0 
+   151 constraint_min_1_student_for_project_12
+                                   0                          -0 
+   152 constraint_min_1_student_for_project_13
+                              -99998                          -0 
+   153 constraint_min_1_student_for_project_14
+                                   0                          -0 
+   154 constraint_min_1_student_for_project_15
+                              -99996                          -0 
+   155 constraint_min_1_student_for_project_18
+                              -99992                          -0 
+   156 constraint_min_1_student_for_project_19
+                                   0                          -0 
+   157 constraint_min_1_student_for_project_20
+                              -99998                          -0 
+   158 constraint_min_1_student_for_project_21
+                              -99992                          -0 
+   159 constraint_min_1_student_for_project_22
+                                   0                          -0 
+   160 constraint_min_1_student_for_project_23
+                              -99998                          -0 
+   161 constraint_min_1_student_for_project_24
+                                   0                          -0 
+   162 constraint_min_1_student_for_project_25
+                                   0                          -0 
+   163 constraint_min_1_student_for_project_26
+                                   0                          -0 
+   164 constraint_min_1_student_for_project_27
+                                   0                          -0 
+   165 constraint_min_1_student_for_project_28
+                                   0                          -0 
+   166 constraint_min_1_student_for_project_29
+                                   0                          -0 
+   167 constraint_min_1_student_for_project_30
+                                   0                          -0 
+   168 constraint_min_1_student_for_project_31
+                                   0                          -0 
+   169 constraint_min_1_student_for_project_32
+                                   0                          -0 
+   170 constraint_min_1_student_for_project_33
+                                   0                          -0 
+   171 constraint_min_1_student_for_project_34
+                                   0                          -0 
+   172 constraint_min_1_student_for_project_35
+                              -99992                          -0 
+   173 constraint_min_1_student_for_project_36
+                              -99992                          -0 
+   174 constraint_min_1_student_for_project_37
+                              -99996                          -0 
+   175 constraint_min_1_student_for_project_38
+                                   0                          -0 
+   176 constraint_min_1_student_for_project_39
+                                   0                          -0 
+   177 constraint_min_1_student_for_project_40
+                                   0                          -0 
+   178 constraint_min_1_student_for_project_41
+                                   0                          -0 
+   179 constraint_min_1_student_for_project_42
+                              -99992                          -0 
+   180 constraint_min_1_student_for_project_43
+                                   0                          -0 
+   181 constraint_min_1_student_for_project_44
+                                   0                          -0 
+   182 constraint_min_1_student_for_project_45
+                                   0                          -0 
+   183 constraint_min_1_student_for_project_46
+                                   0                          -0 
+   184 constraint_min_1_student_for_project_47
+                                   0                          -0 
+   185 constraint_min_1_student_for_project_49
+                                   0                          -0 
+   186 constraint_min_1_student_for_project_50
+                                   0                          -0 
+   187 constraint_min_1_student_for_project_51
+                                   0                          -0 
+   188 constraint_min_1_student_for_project_52
+                                   0                          -0 
+   189 constraint_min_1_student_for_project_53
+                                   0                          -0 
+   190 constraint_min_1_student_for_project_55
+                                   0                          -0 
+   191 constraint_min_1_student_for_project_56
+                                   0                          -0 
+   192 constraint_min_1_student_for_project_57
+                                   0                          -0 
+   193 constraint_min_1_student_for_project_58
+                                   0                          -0 
+   194 constraint_min_1_student_for_project_59
+                              -99992                          -0 
+   195 constraint_min_2_student_for_project_0
+                              -99992                          -0 
+   196 constraint_min_2_student_for_project_1
+                                   0                          -0 
+   197 constraint_min_2_student_for_project_2
+                              -99998                          -0 
+   198 constraint_min_2_student_for_project_3
+                                   0                          -0 
+   199 constraint_min_2_student_for_project_4
+                                   0                          -0 
+   200 constraint_min_2_student_for_project_5
+                                   0                          -0 
+   201 constraint_min_2_student_for_project_6
+                              -99998                          -0 
+   202 constraint_min_2_student_for_project_7
+                                   0                          -0 
+   203 constraint_min_2_student_for_project_8
+                              -99992                          -0 
+   204 constraint_min_2_student_for_project_9
+                              -99999                          -0 
+   205 constraint_min_2_student_for_project_10
+                                   0                          -0 
+   206 constraint_min_2_student_for_project_11
+                              -99992                          -0 
+   207 constraint_min_2_student_for_project_12
+                                   0                          -0 
+   208 constraint_min_2_student_for_project_13
+                              -99998                          -0 
+   209 constraint_min_2_student_for_project_14
+                                   0                          -0 
+   210 constraint_min_2_student_for_project_15
+                              -99996                          -0 
+   211 constraint_min_2_student_for_project_18
+                              -99992                          -0 
+   212 constraint_min_2_student_for_project_19
+                                   0                          -0 
+   213 constraint_min_2_student_for_project_20
+                              -99998                          -0 
+   214 constraint_min_2_student_for_project_21
+                              -99992                          -0 
+   215 constraint_min_2_student_for_project_22
+                                   0                          -0 
+   216 constraint_min_2_student_for_project_23
+                              -99998                          -0 
+   217 constraint_min_2_student_for_project_24
+                                   0                          -0 
+   218 constraint_min_2_student_for_project_25
+                                   0                          -0 
+   219 constraint_min_2_student_for_project_26
+                                   0                          -0 
+   220 constraint_min_2_student_for_project_27
+                                   0                          -0 
+   221 constraint_min_2_student_for_project_28
+                                   0                          -0 
+   222 constraint_min_2_student_for_project_29
+                                   0                          -0 
+   223 constraint_min_2_student_for_project_30
+                                   0                          -0 
+   224 constraint_min_2_student_for_project_31
+                                   0                          -0 
+   225 constraint_min_2_student_for_project_32
+                                   0                          -0 
+   226 constraint_min_2_student_for_project_33
+                                   0                          -0 
+   227 constraint_min_2_student_for_project_34
+                                   0                          -0 
+   228 constraint_min_2_student_for_project_35
+                              -99992                          -0 
+   229 constraint_min_2_student_for_project_36
+                              -99992                          -0 
+   230 constraint_min_2_student_for_project_37
+                              -99996                          -0 
+   231 constraint_min_2_student_for_project_38
+                                   0                          -0 
+   232 constraint_min_2_student_for_project_39
+                                   0                          -0 
+   233 constraint_min_2_student_for_project_40
+                                   0                          -0 
+   234 constraint_min_2_student_for_project_41
+                                   0                          -0 
+   235 constraint_min_2_student_for_project_42
+                              -99992                          -0 
+   236 constraint_min_2_student_for_project_43
+                                   0                          -0 
+   237 constraint_min_2_student_for_project_44
+                                   0                          -0 
+   238 constraint_min_2_student_for_project_45
+                                   0                          -0 
+   239 constraint_min_2_student_for_project_46
+                                   0                          -0 
+   240 constraint_min_2_student_for_project_47
+                                   0                          -0 
+   241 constraint_min_2_student_for_project_49
+                                   0                          -0 
+   242 constraint_min_2_student_for_project_50
+                                   0                          -0 
+   243 constraint_min_2_student_for_project_51
+                                   0                          -0 
+   244 constraint_min_2_student_for_project_52
+                                   0                          -0 
+   245 constraint_min_2_student_for_project_53
+                                   0                          -0 
+   246 constraint_min_2_student_for_project_55
+                                   0                          -0 
+   247 constraint_min_2_student_for_project_56
+                                   0                          -0 
+   248 constraint_min_2_student_for_project_57
+                                   0                          -0 
+   249 constraint_min_2_student_for_project_58
+                                   0                          -0 
+   250 constraint_min_2_student_for_project_59
+                              -99992                          -0 
 
    No. Column name       Activity     Lower bound   Upper bound
 ------ ------------    ------------- ------------- -------------
@@ -356,7 +580,7 @@ Objective:  obj = 529 (MAXimum)
     69 s2p9         *              0             0             1 
     70 s2p10        *              0             0             1 
     71 s2p11        *              0             0             1 
-    72 s2p12        *              0             0             1 
+    72 s2p12        *              1             0             1 
     73 s2p13        *              0             0             1 
     74 s2p14        *              0             0             1 
     75 s2p15        *              0             0             1 
@@ -387,7 +611,7 @@ Objective:  obj = 529 (MAXimum)
    100 s2p40        *              0             0             1 
    101 s2p41        *              0             0             1 
    102 s2p42        *              0             0             1 
-   103 s2p43        *              1             0             1 
+   103 s2p43        *              0             0             1 
    104 s2p44        *              0             0             1 
    105 s2p45        *              0             0             1 
    106 s2p46        *              0             0             1 
@@ -465,7 +689,7 @@ Objective:  obj = 529 (MAXimum)
    178 s3p58        *              0             0             1 
    179 s3p59        *              0             0             1 
    180 s3p60        *              0             0             1 
-   181 s4p1         *              1             0             1 
+   181 s4p1         *              0             0             1 
    182 s4p2         *              0             0             1 
    183 s4p3         *              0             0             1 
    184 s4p4         *              0             0             1 
@@ -476,7 +700,7 @@ Objective:  obj = 529 (MAXimum)
    189 s4p9         *              0             0             1 
    190 s4p10        *              0             0             1 
    191 s4p11        *              0             0             1 
-   192 s4p12        *              0             0             1 
+   192 s4p12        *              1             0             1 
    193 s4p13        *              0             0             1 
    194 s4p14        *              0             0             1 
    195 s4p15        *              0             0             1 
@@ -834,13 +1058,13 @@ Objective:  obj = 529 (MAXimum)
    547 s10p7        *              0             0             1 
    548 s10p8        *              0             0             1 
    549 s10p9        *              0             0             1 
-   550 s10p10       *              1             0             1 
+   550 s10p10       *              0             0             1 
    551 s10p11       *              0             0             1 
    552 s10p12       *              0             0             1 
    553 s10p13       *              0             0             1 
    554 s10p14       *              0             0             1 
    555 s10p15       *              0             0             1 
-   556 s10p16       *              0             0             1 
+   556 s10p16       *              1             0             1 
    557 s10p17       *              0             0             1 
    558 s10p18       *              0             0             1 
    559 s10p19       *              0             0             1 
@@ -948,7 +1172,7 @@ Objective:  obj = 529 (MAXimum)
    661 s12p1        *              0             0             1 
    662 s12p2        *              0             0             1 
    663 s12p3        *              0             0             1 
-   664 s12p4        *              1             0             1 
+   664 s12p4        *              0             0             1 
    665 s12p5        *              0             0             1 
    666 s12p6        *              0             0             1 
    667 s12p7        *              0             0             1 
@@ -968,7 +1192,7 @@ Objective:  obj = 529 (MAXimum)
    681 s12p21       *              0             0             1 
    682 s12p22       *              0             0             1 
    683 s12p23       *              0             0             1 
-   684 s12p24       *              0             0             1 
+   684 s12p24       *              1             0             1 
    685 s12p25       *              0             0             1 
    686 s12p26       *              0             0             1 
    687 s12p27       *              0             0             1 
@@ -1065,7 +1289,7 @@ Objective:  obj = 529 (MAXimum)
    778 s13p58       *              0             0             1 
    779 s13p59       *              0             0             1 
    780 s13p60       *              0             0             1 
-   781 s14p1        *              0             0             1 
+   781 s14p1        *              1             0             1 
    782 s14p2        *              0             0             1 
    783 s14p3        *              0             0             1 
    784 s14p4        *              0             0             1 
@@ -1076,7 +1300,7 @@ Objective:  obj = 529 (MAXimum)
    789 s14p9        *              0             0             1 
    790 s14p10       *              0             0             1 
    791 s14p11       *              0             0             1 
-   792 s14p12       *              1             0             1 
+   792 s14p12       *              0             0             1 
    793 s14p13       *              0             0             1 
    794 s14p14       *              0             0             1 
    795 s14p15       *              0             0             1 
@@ -1248,7 +1472,7 @@ Objective:  obj = 529 (MAXimum)
    961 s17p1        *              0             0             1 
    962 s17p2        *              0             0             1 
    963 s17p3        *              0             0             1 
-   964 s17p4        *              1             0             1 
+   964 s17p4        *              0             0             1 
    965 s17p5        *              0             0             1 
    966 s17p6        *              0             0             1 
    967 s17p7        *              0             0             1 
@@ -1260,7 +1484,7 @@ Objective:  obj = 529 (MAXimum)
    973 s17p13       *              0             0             1 
    974 s17p14       *              0             0             1 
    975 s17p15       *              0             0             1 
-   976 s17p16       *              0             0             1 
+   976 s17p16       *              1             0             1 
    977 s17p17       *              0             0             1 
    978 s17p18       *              0             0             1 
    979 s17p19       *              0             0             1 
@@ -1431,7 +1655,7 @@ Objective:  obj = 529 (MAXimum)
   1144 s20p4        *              0             0             1 
   1145 s20p5        *              0             0             1 
   1146 s20p6        *              0             0             1 
-  1147 s20p7        *              0             0             1 
+  1147 s20p7        *              1             0             1 
   1148 s20p8        *              0             0             1 
   1149 s20p9        *              0             0             1 
   1150 s20p10       *              0             0             1 
@@ -1440,7 +1664,7 @@ Objective:  obj = 529 (MAXimum)
   1153 s20p13       *              0             0             1 
   1154 s20p14       *              0             0             1 
   1155 s20p15       *              0             0             1 
-  1156 s20p16       *              1             0             1 
+  1156 s20p16       *              0             0             1 
   1157 s20p17       *              0             0             1 
   1158 s20p18       *              0             0             1 
   1159 s20p19       *              0             0             1 
@@ -1492,7 +1716,7 @@ Objective:  obj = 529 (MAXimum)
   1205 s21p5        *              0             0             1 
   1206 s21p6        *              0             0             1 
   1207 s21p7        *              0             0             1 
-  1208 s21p8        *              1             0             1 
+  1208 s21p8        *              0             0             1 
   1209 s21p9        *              0             0             1 
   1210 s21p10       *              0             0             1 
   1211 s21p11       *              0             0             1 
@@ -1522,7 +1746,7 @@ Objective:  obj = 529 (MAXimum)
   1235 s21p35       *              0             0             1 
   1236 s21p36       *              0             0             1 
   1237 s21p37       *              0             0             1 
-  1238 s21p38       *              0             0             1 
+  1238 s21p38       *              1             0             1 
   1239 s21p39       *              0             0             1 
   1240 s21p40       *              0             0             1 
   1241 s21p41       *              0             0             1 
@@ -1680,7 +1904,7 @@ Objective:  obj = 529 (MAXimum)
   1393 s24p13       *              0             0             1 
   1394 s24p14       *              0             0             1 
   1395 s24p15       *              0             0             1 
-  1396 s24p16       *              0             0             1 
+  1396 s24p16       *              1             0             1 
   1397 s24p17       *              0             0             1 
   1398 s24p18       *              0             0             1 
   1399 s24p19       *              0             0             1 
@@ -1692,7 +1916,7 @@ Objective:  obj = 529 (MAXimum)
   1405 s24p25       *              0             0             1 
   1406 s24p26       *              0             0             1 
   1407 s24p27       *              0             0             1 
-  1408 s24p28       *              1             0             1 
+  1408 s24p28       *              0             0             1 
   1409 s24p29       *              0             0             1 
   1410 s24p30       *              0             0             1 
   1411 s24p31       *              0             0             1 
@@ -2033,7 +2257,7 @@ Objective:  obj = 529 (MAXimum)
   1746 s30p6        *              0             0             1 
   1747 s30p7        *              0             0             1 
   1748 s30p8        *              0             0             1 
-  1749 s30p9        *              1             0             1 
+  1749 s30p9        *              0             0             1 
   1750 s30p10       *              0             0             1 
   1751 s30p11       *              0             0             1 
   1752 s30p12       *              0             0             1 
@@ -2060,7 +2284,7 @@ Objective:  obj = 529 (MAXimum)
   1773 s30p33       *              0             0             1 
   1774 s30p34       *              0             0             1 
   1775 s30p35       *              0             0             1 
-  1776 s30p36       *              0             0             1 
+  1776 s30p36       *              1             0             1 
   1777 s30p37       *              0             0             1 
   1778 s30p38       *              0             0             1 
   1779 s30p39       *              0             0             1 
@@ -2216,7 +2440,7 @@ Objective:  obj = 529 (MAXimum)
   1929 s33p9        *              0             0             1 
   1930 s33p10       *              0             0             1 
   1931 s33p11       *              0             0             1 
-  1932 s33p12       *              0             0             1 
+  1932 s33p12       *              1             0             1 
   1933 s33p13       *              0             0             1 
   1934 s33p14       *              0             0             1 
   1935 s33p15       *              0             0             1 
@@ -2240,7 +2464,7 @@ Objective:  obj = 529 (MAXimum)
   1953 s33p33       *              0             0             1 
   1954 s33p34       *              0             0             1 
   1955 s33p35       *              0             0             1 
-  1956 s33p36       *              1             0             1 
+  1956 s33p36       *              0             0             1 
   1957 s33p37       *              0             0             1 
   1958 s33p38       *              0             0             1 
   1959 s33p39       *              0             0             1 
@@ -2462,7 +2686,7 @@ Objective:  obj = 529 (MAXimum)
   2175 s37p15       *              0             0             1 
   2176 s37p16       *              0             0             1 
   2177 s37p17       *              0             0             1 
-  2178 s37p18       *              1             0             1 
+  2178 s37p18       *              0             0             1 
   2179 s37p19       *              0             0             1 
   2180 s37p20       *              0             0             1 
   2181 s37p21       *              0             0             1 
@@ -2482,7 +2706,7 @@ Objective:  obj = 529 (MAXimum)
   2195 s37p35       *              0             0             1 
   2196 s37p36       *              0             0             1 
   2197 s37p37       *              0             0             1 
-  2198 s37p38       *              0             0             1 
+  2198 s37p38       *              1             0             1 
   2199 s37p39       *              0             0             1 
   2200 s37p40       *              0             0             1 
   2201 s37p41       *              0             0             1 
@@ -2633,10 +2857,10 @@ Objective:  obj = 529 (MAXimum)
   2346 s40p6        *              0             0             1 
   2347 s40p7        *              0             0             1 
   2348 s40p8        *              0             0             1 
-  2349 s40p9        *              0             0             1 
+  2349 s40p9        *              1             0             1 
   2350 s40p10       *              0             0             1 
   2351 s40p11       *              0             0             1 
-  2352 s40p12       *              1             0             1 
+  2352 s40p12       *              0             0             1 
   2353 s40p13       *              0             0             1 
   2354 s40p14       *              0             0             1 
   2355 s40p15       *              0             0             1 
@@ -2996,7 +3220,7 @@ Objective:  obj = 529 (MAXimum)
   2709 s46p9        *              0             0             1 
   2710 s46p10       *              0             0             1 
   2711 s46p11       *              0             0             1 
-  2712 s46p12       *              1             0             1 
+  2712 s46p12       *              0             0             1 
   2713 s46p13       *              0             0             1 
   2714 s46p14       *              0             0             1 
   2715 s46p15       *              0             0             1 
@@ -3027,7 +3251,7 @@ Objective:  obj = 529 (MAXimum)
   2740 s46p40       *              0             0             1 
   2741 s46p41       *              0             0             1 
   2742 s46p42       *              0             0             1 
-  2743 s46p43       *              0             0             1 
+  2743 s46p43       *              1             0             1 
   2744 s46p44       *              0             0             1 
   2745 s46p45       *              0             0             1 
   2746 s46p46       *              0             0             1 
@@ -3058,10 +3282,10 @@ Objective:  obj = 529 (MAXimum)
   2771 s47p11       *              0             0             1 
   2772 s47p12       *              0             0             1 
   2773 s47p13       *              0             0             1 
-  2774 s47p14       *              0             0             1 
+  2774 s47p14       *              1             0             1 
   2775 s47p15       *              0             0             1 
   2776 s47p16       *              0             0             1 
-  2777 s47p17       *              1             0             1 
+  2777 s47p17       *              0             0             1 
   2778 s47p18       *              0             0             1 
   2779 s47p19       *              0             0             1 
   2780 s47p20       *              0             0             1 
@@ -4077,7 +4301,7 @@ Objective:  obj = 529 (MAXimum)
   3790 s64p10       *              0             0             1 
   3791 s64p11       *              0             0             1 
   3792 s64p12       *              0             0             1 
-  3793 s64p13       *              1             0             1 
+  3793 s64p13       *              0             0             1 
   3794 s64p14       *              0             0             1 
   3795 s64p15       *              0             0             1 
   3796 s64p16       *              0             0             1 
@@ -4085,7 +4309,7 @@ Objective:  obj = 529 (MAXimum)
   3798 s64p18       *              0             0             1 
   3799 s64p19       *              0             0             1 
   3800 s64p20       *              0             0             1 
-  3801 s64p21       *              0             0             1 
+  3801 s64p21       *              1             0             1 
   3802 s64p22       *              0             0             1 
   3803 s64p23       *              0             0             1 
   3804 s64p24       *              0             0             1 
@@ -4487,7 +4711,7 @@ Objective:  obj = 529 (MAXimum)
   4200 s70p60       *              0             0             1 
   4201 s71p1        *              0             0             1 
   4202 s71p2        *              0             0             1 
-  4203 s71p3        *              1             0             1 
+  4203 s71p3        *              0             0             1 
   4204 s71p4        *              0             0             1 
   4205 s71p5        *              0             0             1 
   4206 s71p6        *              0             0             1 
@@ -4522,7 +4746,7 @@ Objective:  obj = 529 (MAXimum)
   4235 s71p35       *              0             0             1 
   4236 s71p36       *              0             0             1 
   4237 s71p37       *              0             0             1 
-  4238 s71p38       *              0             0             1 
+  4238 s71p38       *              1             0             1 
   4239 s71p39       *              0             0             1 
   4240 s71p40       *              0             0             1 
   4241 s71p41       *              0             0             1 
@@ -4727,8 +4951,8 @@ Objective:  obj = 529 (MAXimum)
   4440 s74p60       *              0             0             1 
   4441 s75p1        *              0             0             1 
   4442 s75p2        *              0             0             1 
-  4443 s75p3        *              0             0             1 
-  4444 s75p4        *              1             0             1 
+  4443 s75p3        *              1             0             1 
+  4444 s75p4        *              0             0             1 
   4445 s75p5        *              0             0             1 
   4446 s75p6        *              0             0             1 
   4447 s75p7        *              0             0             1 
@@ -4905,6 +5129,62 @@ Objective:  obj = 529 (MAXimum)
   4618 s77p58       *              0             0             1 
   4619 s77p59       *              0             0             1 
   4620 s77p60       *              1             0             1 
+  4621 b0           *              1             0             1 
+  4622 b1           *              0             0             1 
+  4623 b2           *              1             0             1 
+  4624 b3           *              0             0             1 
+  4625 b4           *              0             0             1 
+  4626 b5           *              0             0             1 
+  4627 b6           *              1             0             1 
+  4628 b7           *              0             0             1 
+  4629 b8           *              1             0             1 
+  4630 b9           *              1             0             1 
+  4631 b10          *              0             0             1 
+  4632 b11          *              1             0             1 
+  4633 b12          *              0             0             1 
+  4634 b13          *              1             0             1 
+  4635 b14          *              0             0             1 
+  4636 b15          *              1             0             1 
+  4637 b18          *              1             0             1 
+  4638 b19          *              0             0             1 
+  4639 b20          *              1             0             1 
+  4640 b21          *              1             0             1 
+  4641 b22          *              0             0             1 
+  4642 b23          *              1             0             1 
+  4643 b24          *              0             0             1 
+  4644 b25          *              0             0             1 
+  4645 b26          *              0             0             1 
+  4646 b27          *              0             0             1 
+  4647 b28          *              0             0             1 
+  4648 b29          *              0             0             1 
+  4649 b30          *              0             0             1 
+  4650 b31          *              0             0             1 
+  4651 b32          *              0             0             1 
+  4652 b33          *              0             0             1 
+  4653 b34          *              0             0             1 
+  4654 b35          *              1             0             1 
+  4655 b36          *              1             0             1 
+  4656 b37          *              1             0             1 
+  4657 b38          *              0             0             1 
+  4658 b39          *              0             0             1 
+  4659 b40          *              0             0             1 
+  4660 b41          *              0             0             1 
+  4661 b42          *              1             0             1 
+  4662 b43          *              0             0             1 
+  4663 b44          *              0             0             1 
+  4664 b45          *              0             0             1 
+  4665 b46          *              0             0             1 
+  4666 b47          *              0             0             1 
+  4667 b49          *              0             0             1 
+  4668 b50          *              0             0             1 
+  4669 b51          *              0             0             1 
+  4670 b52          *              0             0             1 
+  4671 b53          *              0             0             1 
+  4672 b55          *              0             0             1 
+  4673 b56          *              0             0             1 
+  4674 b57          *              0             0             1 
+  4675 b58          *              0             0             1 
+  4676 b59          *              1             0             1 
 
 Integer feasibility conditions:
 
