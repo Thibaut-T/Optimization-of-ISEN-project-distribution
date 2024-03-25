@@ -1,7 +1,7 @@
 import tkinter as tk
 from fpdf import FPDF
 import sys
-
+import pandas as pd
 
 input_values = []
 
@@ -38,7 +38,7 @@ def generate_pdf_with_values(input_values):
         for key, value in input_set.items():
             if key != "Numéro du projet" and key != "Description":
                 pdf.ln(2)  # Reduce space between inputs
-                if key == "Intitulé":
+                if key == ["Intitulé", "Minimum d'étudiants","Maximum d'étudiants","Entreprise"]:
                     pdf.set_font("Arial", "B", 14)  # Change font size and style for "Intitulé"
                 else:
                     pdf.set_font("Arial", size=12)  # Reset font for other keys
@@ -58,16 +58,20 @@ def generate_pdf_with_values(input_values):
 
     pdf.output("output.pdf")
 
-def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7):
-     
+def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10):
     input1 = entry1.get()
     input2 = entry2.get()
     input3 = entry3.get()
     input4 = entry4.get()
     input5 = entry5.get()
     input6 = entry6.get()
+    input8 = entry8.get()
+    input9 = entry9.get()
+    input10 = entry10.get()
     input7 = entry7.get("1.0", tk.END)
-
+    if(input10==""):
+        input10="N/A"
+    
     input_dict = {
         "Numéro du projet": input1,
         "Intitulé": input2,
@@ -75,11 +79,17 @@ def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7):
         "Equipe": input4,
         "Tél": input5,
         "Mail": input6,
-        "Description": input7
+        "Description": input7,
+        "Minimum d'étudiants": input8,
+        "Maximum d'étudiants": input9,
+        "Entreprise": input10
     }
     
    
     input_values.append(input_dict)
+    print(input_dict)
+    df=pd.DataFrame(input_dict, index=[0])
+    df.to_excel("output.xlsx", index=False)
     generate_pdf_with_values(input_values)
 
     entry1.delete(0, tk.END)
@@ -88,6 +98,9 @@ def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7):
     entry4.delete(0, tk.END)
     entry5.delete(0, tk.END)
     entry6.delete(0, tk.END)
+    entry8.delete(0, tk.END)
+    entry9.delete(0, tk.END)
+    entry10.delete(0, tk.END)
     entry7.delete("1.0", tk.END)
 
 def finish_pdf():
