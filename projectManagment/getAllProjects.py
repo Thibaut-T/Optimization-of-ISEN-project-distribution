@@ -1,2 +1,5 @@
+import pandas as pd
+
 def getAllProjects():
-    return ["project1", "project2", "project3"]
+    df = pd.read_excel('output.xlsx')
+    return df
