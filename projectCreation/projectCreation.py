@@ -11,7 +11,8 @@ class ProjectCreation(tk.Frame):
         input_values = []
         # label of frame ProjectCreation
         label = ttk.Label(self, text ="ProjectCreation")
-        label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        label.pack()
+
         generate_pdf_with_values(input_values)
        
 
