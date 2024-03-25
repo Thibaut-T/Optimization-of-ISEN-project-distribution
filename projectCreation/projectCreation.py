@@ -51,7 +51,7 @@ class ProjectCreation(tk.Frame):
         entry7 = tk.Text(self, height=5)
         entry7.pack()
 
-        generate_button = tk.Button(self, text="Add Project", command=generate_pdf)
+        generate_button = tk.Button(self, text="Add Project", command=generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7))
         generate_button.pack()
 
         finish_button = tk.Button(self, text="Finish PDF", command=finish_pdf)

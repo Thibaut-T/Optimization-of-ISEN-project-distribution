@@ -58,9 +58,8 @@ def generate_pdf_with_values(input_values):
 
     pdf.output("output.pdf")
 
-def generate_pdf():
-    global entry1, entry2, entry3, entry4, entry5, entry6, entry7
-
+def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7):
+     
     input1 = entry1.get()
     input2 = entry2.get()
     input3 = entry3.get()
