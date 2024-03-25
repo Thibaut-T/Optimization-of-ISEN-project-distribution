@@ -1,5 +1,8 @@
 import pandas as pd
 
 def getAllProjects():
-    df = pd.read_excel('output.xlsx')
+    try:
+        df = pd.read_excel('output.xlsx')
+    except FileNotFoundError:
+        df = pd.DataFrame()
     return df

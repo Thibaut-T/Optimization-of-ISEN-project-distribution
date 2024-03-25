@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-
+import pandas as pd
 from projectManagment.getAllProjects import getAllProjects
 
 class ProjectManagment(tk.Frame):
@@ -22,7 +22,10 @@ class ProjectManagment(tk.Frame):
         project_label_titles_1.grid(row = 4, column = 1, padx = 5, pady = 5)
         project_label_titles_2 = ttk.Label(self, text='Proposé par')
         project_label_titles_2.grid(row = 4, column = 2, padx = 5, pady = 5)
-
+        try:
+            projects = getAllProjects()[['Numéro du projet','Intitulé', 'Proposé par']]
+        except FileNotFoundError:
+            projects = pd.DataFrame()
         for i, project in getAllProjects()[['Numéro du projet','Intitulé', 'Proposé par']].iterrows():
             project_label = ttk.Label(self, text=project['Numéro du projet'])
             project_label.grid(row = i+5, column = 0, padx = 5, pady = 5)

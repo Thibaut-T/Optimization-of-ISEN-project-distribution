@@ -88,20 +88,15 @@ def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7,entry8,e
    
     input_values.append(input_dict)
     print(input_dict)
-    # Try to read the existing Excel file into a DataFrame
+  
     try:
         df = pd.read_excel("output.xlsx")
-    # If the file does not exist (which raises a FileNotFoundError), create an empty DataFrame instead
+  
     except FileNotFoundError:
         df = pd.DataFrame()
-
-    # Create a new DataFrame for the new row
+        
     new_row = pd.DataFrame(input_dict, index=[0])
-
-    # Append the new row to the DataFrame
     df = pd.concat([df, new_row], ignore_index=True)
-
-    # Write the DataFrame back to the Excel file
     df.to_excel("output.xlsx", index=False)
     generate_pdf_with_values(input_values)
 
