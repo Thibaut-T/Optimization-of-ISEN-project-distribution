@@ -9,4 +9,4 @@ class ProjectCreation(tk.Frame):
         
         # label of frame ProjectCreation
         label = ttk.Label(self, text ="ProjectCreation")
-        label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        label.pack()
