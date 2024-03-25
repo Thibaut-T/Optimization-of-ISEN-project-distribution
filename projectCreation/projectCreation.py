@@ -46,13 +46,28 @@ class ProjectCreation(tk.Frame):
         entry6 = tk.Entry(self)
         entry6.pack()
 
+        label8 = tk.Label(self, text="Minimum:")
+        label8.pack()
+        entry8 = tk.Entry(self)
+        entry8.pack()
+
+        label9 = tk.Label(self, text="Maximum:")
+        label9.pack()
+        entry9 = tk.Entry(self)
+        entry9.pack()
+
+        label20 = tk.Label(self, text="Entreprise:")
+        label20.pack()
+        entry10 = tk.Entry(self)
+        entry10.pack()
+
         label7 = tk.Label(self, text="Description:")
         label7.pack()
         entry7 = tk.Text(self, height=5)
         entry7.pack()
 
-        generate_button = tk.Button(self, text="Add Project", command=lambda: generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7))
+        generate_button = tk.Button(self, text="Add Project", command=lambda: generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10))
         generate_button.pack()
-
+        
         finish_button = tk.Button(self, text="Finish PDF", command=finish_pdf)
         finish_button.pack()
