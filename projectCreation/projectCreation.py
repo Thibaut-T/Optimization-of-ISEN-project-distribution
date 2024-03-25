@@ -4,7 +4,7 @@ from projectCreation.pdf import finish_pdf, generate_pdf, generate_pdf_with_valu
 
 
 class ProjectCreation(tk.Frame):
-    def __init__(self, parent, controller): 
+    def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg="purple")
                 
         self.controller = controller
