@@ -38,7 +38,10 @@ def deleteProject(controller, i):
 
     controller.show_frame("projectManagment")
 
-def openFile():
+def savePdf():
     filename = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
     print(filename)
-    
+
+def saveXml():
+    filename = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML files", "*.xml")])
+    print(filename)
