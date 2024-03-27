@@ -1,4 +1,5 @@
 import pandas as pd
+from tkinter import filedialog
 
 def getAllProjects():
     try:
@@ -31,9 +32,13 @@ def createProject(controller):
     controller.show_frame("projectCreation")
 
 def deleteProject(controller, i):
-    print("deleteProject")
     projects = getAllProjects()
     projects = projects[projects['Numéro du projet'] != i]
     projects.to_excel('output.xlsx', index=False)
 
     controller.show_frame("projectManagment")
+
+def openFile():
+    filename = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
+    print(filename)
+    
