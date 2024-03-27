@@ -6,6 +6,10 @@ from projectCreation.pdf import finish_pdf, generate_pdf, generate_pdf_with_valu
 class ProjectCreation(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg="purple")
+
+        self.previous_frame = ""
+        self.next_frame = ""
+
         self.controller = controller
         self.show()
     
@@ -13,6 +17,7 @@ class ProjectCreation(tk.Frame):
         children = self.winfo_children()
         for item in children:
             item.pack_forget()
+            item.grid_forget()
         self.show()
     
     def show(self):

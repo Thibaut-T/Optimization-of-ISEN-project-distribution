@@ -4,7 +4,10 @@ from tkinter import ttk
 class ExportStudentDistribution(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent, bg="white")
-                
+        
+        self.previous_frame = "solverOutputManagment"
+        self.next_frame = ""
+
         self.controller = controller
         self.show()
     
@@ -12,6 +15,7 @@ class ExportStudentDistribution(tk.Frame):
         children = self.winfo_children()
         for item in children:
             item.pack_forget()
+            item.grid_forget()
         self.show()
     
     def show(self):

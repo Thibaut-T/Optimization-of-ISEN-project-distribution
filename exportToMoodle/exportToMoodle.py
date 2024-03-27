@@ -1,10 +1,13 @@
 import tkinter as tk
 from tkinter import ttk
 
-class ExportToForms(tk.Frame):
+class exportToMoodle(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent, bg="white")
                 
+        self.previous_frame = "projectManagment"
+        self.next_frame = "solverInputFile"
+
         self.controller = controller
         self.show()
     
@@ -12,9 +15,10 @@ class ExportToForms(tk.Frame):
         children = self.winfo_children()
         for item in children:
             item.pack_forget()
+            item.grid_forget()
         self.show()
     
     def show(self):
-        # label of frame ExportToForms
-        label = ttk.Label(self, text ="ExportToForms")
-        label.grid(row = 0, column = 0, padx = 10, pady = 10)         
+        # label of frame exportToMoodle
+        label = ttk.Label(self, text ="exportToMoodle")
+        label.grid(row = 0, column = 0, padx = 10, pady = 10)

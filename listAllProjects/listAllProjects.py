@@ -12,6 +12,7 @@ class ListAllProjects(tk.Frame):
         children = self.winfo_children()
         for item in children:
             item.pack_forget()
+            item.grid_forget()
         self.show()
     
     def show(self):

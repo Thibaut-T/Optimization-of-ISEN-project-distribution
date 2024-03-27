@@ -4,6 +4,9 @@ from tkinter import ttk
 class SolverOutputManagment(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent, bg="white")
+
+        self.previous_frame = "solverProcess"
+        self.next_frame = "exportStudentDistribution"
                 
         self.controller = controller
         self.show()
@@ -12,6 +15,7 @@ class SolverOutputManagment(tk.Frame):
         children = self.winfo_children()
         for item in children:
             item.pack_forget()
+            item.grid_forget()
         self.show()
     
     def show(self):

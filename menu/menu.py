@@ -16,11 +16,11 @@ class Menu(tk.Frame):
         
         button1 = ttk.Button(self, text="manage projects",
                             command=lambda: controller.show_frame("projectManagment"))
-        button1.grid(row = 3, column = 1, padx = 10)
+        button1.grid(row = 2, column = 1, padx = 10, pady = 10)
         
-        # button2 = ttk.Button(self, text="create a project",
-        #                     command=lambda: controller.show_frame("projectCreation"))
-        # button2.grid(row = 2, column = 1, padx = 10, pady = 10)
+        button2 = ttk.Button(self, text="upload to moodle",
+                            command=lambda: controller.show_frame("uploadToForms"))
+        button2.grid(row = 3, column = 1, padx = 10)
         
         button3 = ttk.Button(self, text="upload forms output file",
                             command=lambda: controller.show_frame("solverInputFile"))
@@ -35,7 +35,7 @@ class Menu(tk.Frame):
         button5.grid(row = 6, column = 1, padx = 10, pady = 10)
         
         button6 = ttk.Button(self, text="Export project list to forms",
-                            command=lambda: controller.show_frame("exportToForms"))
+                            command=lambda: controller.show_frame("exportToMoodle"))
         button6.grid(row = 7, column = 1, padx = 10)
         
         button7 = ttk.Button(self, text="list of all students projects",

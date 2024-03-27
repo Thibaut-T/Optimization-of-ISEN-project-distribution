@@ -7,6 +7,9 @@ class ProjectManagment(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent, bg="black")
 
+        self.previous_frame = ""
+        self.next_frame = "exportToMoodle"
+
         self.controller = controller
         self.show()
     
@@ -52,4 +55,3 @@ class ProjectManagment(tk.Frame):
             project_label_2.grid(row = i+5, column = 3, padx = 5, pady = 5)
             project_label_3 = ttk.Button(self, text="supprimer", command=lambda index=project['Numéro du projet']: deleteProject(self.controller, index))
             project_label_3.grid(row = i+5, column = 4, padx = 5, pady = 5)
-        
