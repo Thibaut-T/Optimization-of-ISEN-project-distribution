@@ -2,21 +2,29 @@ import tkinter as tk
 from tkinter import ttk
 import pandas as pd
 from projectCreation.pdf import finish_pdf, generate_pdf, generate_pdf_with_values
-
+from common.CustomFrame import CustomFrame
 
 class ProjectCreation(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg="purple")
-                
         self.controller = controller
+        self.widgets = []
+        self.show()
+    
+    def reload(self):
+        children = self.winfo_children()
+        for item in children:
+            item.pack_forget()
+        self.show()
+        
+    
+    def show(self):
         input_values = []
         # label of frame ProjectCreation
         label = ttk.Label(self, text ="ProjectCreation")
         label.pack()
 
         generate_pdf_with_values(input_values)
-       
-       
 
         idCurrent = -1
         try:
@@ -26,7 +34,6 @@ class ProjectCreation(tk.Frame):
                     idCurrent = int(first_line)
         except FileNotFoundError:
             idCurrent = -1
-        print(idCurrent)
         if idCurrent != -1:
             try:
                 df = pd.read_excel('output.xlsx')
@@ -65,6 +72,7 @@ class ProjectCreation(tk.Frame):
             entry8Text = ""
             entry9Text = ""
             entry10Text = ""
+
         print(entry1Text)
         label1 = tk.Label(self, text="Numéro du projet:")
         label1.pack()

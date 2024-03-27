@@ -48,4 +48,7 @@ class mainApp(tk.Tk):
         self.main_frame.pack(fill="both", expand=True)
         self.main_frame.tkraise()
 
+    def reload_creation(self):
+        self.mainFrames["projectCreation"].reload()
+
 mainApp().mainloop()

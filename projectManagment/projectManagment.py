@@ -2,11 +2,13 @@ import tkinter as tk
 from tkinter import ttk
 import pandas as pd
 from projectManagment.getAllProjects import getAllProjects
+from projectManagment.modifyProject import modifyProject
+from common.CustomFrame import CustomFrame
 
-class ProjectManagment(tk.Frame):
+class ProjectManagment(CustomFrame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent, bg="black")
-                
+
         self.controller = controller
         
         # label of frame ProjectManagment
@@ -22,6 +24,7 @@ class ProjectManagment(tk.Frame):
         project_label_titles_1.grid(row = 4, column = 1, padx = 5, pady = 5)
         project_label_titles_2 = ttk.Label(self, text='Proposé par')
         project_label_titles_2.grid(row = 4, column = 2, padx = 5, pady = 5)
+
         try:
             projects = getAllProjects()[['Numéro du projet','Intitulé', 'Proposé par']]
         except FileNotFoundError:
@@ -33,7 +36,7 @@ class ProjectManagment(tk.Frame):
             project_label_1.grid(row = i+5, column = 1, padx = 5, pady = 5)
             project_label_1 = ttk.Label(self, text=project['Proposé par'])
             project_label_1.grid(row = i+5, column = 2, padx = 5, pady = 5)
-            project_label_2 = ttk.Button(self, text="modifier", command=lambda: controller.show_frame("projectCreation"))
+            project_label_2 = ttk.Button(self, text="modifier", command=lambda i=i: modifyProject(controller, i+1))
             project_label_2.grid(row = i+5, column = 3, padx = 5, pady = 5)
             project_label_3 = ttk.Button(self, text="supprimer", command=lambda: controller.show_frame("projectCreation"))
             project_label_3.grid(row = i+5, column = 4, padx = 5, pady = 5)
