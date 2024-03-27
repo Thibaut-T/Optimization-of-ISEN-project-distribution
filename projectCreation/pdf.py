@@ -84,7 +84,6 @@ def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7,entry8,e
         "Maximum d'étudiants": input9,
         "Entreprise": input10
     }
-    
    
     input_values.append(input_dict)
     print(input_dict)

@@ -18,9 +18,9 @@ class Menu(tk.Frame):
                             command=lambda: controller.show_frame("projectManagment"))
         button1.grid(row = 3, column = 1, padx = 10)
         
-        button2 = ttk.Button(self, text="create a project",
-                            command=lambda: controller.show_frame("projectCreation"))
-        button2.grid(row = 2, column = 1, padx = 10, pady = 10)
+        # button2 = ttk.Button(self, text="create a project",
+        #                     command=lambda: controller.show_frame("projectCreation"))
+        # button2.grid(row = 2, column = 1, padx = 10, pady = 10)
         
         button3 = ttk.Button(self, text="upload forms output file",
                             command=lambda: controller.show_frame("solverInputFile"))

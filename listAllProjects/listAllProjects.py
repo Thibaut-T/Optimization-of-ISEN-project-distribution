@@ -6,7 +6,15 @@ class ListAllProjects(tk.Frame):
         tk.Frame.__init__(self, parent, bg="white")
                 
         self.controller = controller
-        
+        self.show()
+    
+    def reload(self):
+        children = self.winfo_children()
+        for item in children:
+            item.pack_forget()
+        self.show()
+    
+    def show(self):
         # label of frame ListAllProjects
         label = ttk.Label(self, text ="ListAllProjects")
         label.grid(row = 0, column = 0, padx = 10, pady = 10)         

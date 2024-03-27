@@ -2,13 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 import pandas as pd
 from projectCreation.pdf import finish_pdf, generate_pdf, generate_pdf_with_values
-from common.CustomFrame import CustomFrame
 
 class ProjectCreation(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg="purple")
         self.controller = controller
-        self.widgets = []
         self.show()
     
     def reload(self):
@@ -16,7 +14,6 @@ class ProjectCreation(tk.Frame):
         for item in children:
             item.pack_forget()
         self.show()
-        
     
     def show(self):
         input_values = []
@@ -31,14 +28,16 @@ class ProjectCreation(tk.Frame):
             with open('./common/data.txt', 'r') as file:
                 first_line = file.readline()
                 if first_line.strip():
-                    idCurrent = int(first_line)
+                    try:
+                        idCurrent = int(first_line)
+                    except ValueError:
+                        idCurrent = first_line
         except FileNotFoundError:
             idCurrent = -1
         if idCurrent != -1:
             try:
                 df = pd.read_excel('output.xlsx')
                 filtered_df = df[df['Numéro du projet'] == idCurrent]
-                print(filtered_df)
 
                 entry1Text = filtered_df['Numéro du projet'].values[0] if not filtered_df.empty else ""
                 entry2Text = filtered_df['Intitulé'].values[0] if not filtered_df.empty else ""

@@ -36,7 +36,7 @@ class mainApp(tk.Tk):
             "listAllProjects": listAllProjects.ListAllProjects(window, self)
         }
                 
-        self.main_frame = self.mainFrames["projectCreation"]
+        self.main_frame = self.mainFrames["projectManagment"]
         self.main_frame.pack(fill="both", expand=True)
 
         # Start the main loop
@@ -46,9 +46,7 @@ class mainApp(tk.Tk):
         self.main_frame.pack_forget()
         self.main_frame = self.mainFrames[page_name]
         self.main_frame.pack(fill="both", expand=True)
+        self.main_frame.reload()
         self.main_frame.tkraise()
-
-    def reload_creation(self):
-        self.mainFrames["projectCreation"].reload()
 
 mainApp().mainloop()
