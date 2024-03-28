@@ -1,5 +1,6 @@
 import pandas as pd
 from tkinter import filedialog
+from projectCreation.pdf import generate_pdf_with_values
 
 def getAllProjects():
     try:
@@ -37,10 +38,11 @@ def deleteProject(controller, i):
     projects.to_excel('output.xlsx', index=False)
 
     controller.show_frame("projectManagment")
-
 def savePdf():
-    filename = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
-    print(filename)
+    projects = getAllProjects()
+    projects = projects.astype(str)  
+    projects_dict = projects.to_dict('records') 
+    generate_pdf_with_values(projects_dict)
 
 def saveXml():
     filename = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML files", "*.xml")])

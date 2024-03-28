@@ -26,7 +26,6 @@ class ProjectCreation(tk.Frame):
         label = ttk.Label(self, text ="ProjectCreation")
         label.pack()
 
-        generate_pdf_with_values(input_values)
 
         idCurrent = -1
         try:

@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import filedialog
 from fpdf import FPDF
 import sys
 import pandas as pd
@@ -55,8 +56,10 @@ def generate_pdf_with_values(input_values):
             pdf.rect(10, pdf.get_y() - 5, 190, 40)  # Rectangle around the Description
             pdf.set_font("Arial", size=12)  # Reset font size for Description value
             pdf.multi_cell(0, 8, txt=input_set["Description"])
-
-    pdf.output("output.pdf")
+    filename = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
+    if filename:
+        pdf.output(filename)
+    
 
 def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10):
     input1 = entry1.get()
