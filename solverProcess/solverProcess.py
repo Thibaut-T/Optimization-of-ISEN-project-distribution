@@ -25,5 +25,5 @@ class SolverProcess(tk.Frame):
         label.grid(row = 0, column = 0, padx = 10, pady = 10)
 
         # button to trigger solverProcess.action.solve
-        button = ttk.Button(self, text ="Solve", command = lambda : solve([],[]))
+        button = ttk.Button(self, text ="Solve", command = lambda : solve())
         button.grid(row = 1, column = 0, padx = 10, pady = 10)
