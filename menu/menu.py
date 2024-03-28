@@ -18,8 +18,8 @@ class Menu(tk.Frame):
                             command=lambda: controller.show_frame("projectManagment"))
         button1.grid(row = 2, column = 1, padx = 10, pady = 10)
         
-        button2 = ttk.Button(self, text="upload to moodle",
-                            command=lambda: controller.show_frame("uploadToForms"))
+        button2 = ttk.Button(self, text="Export optimisation results to pdf",
+                            command=lambda: controller.show_frame("exportToMoodle"))
         button2.grid(row = 3, column = 1, padx = 10)
         
         button3 = ttk.Button(self, text="upload forms output file",
@@ -29,15 +29,11 @@ class Menu(tk.Frame):
         button4 = ttk.Button(self, text="Optimisation results",
                             command=lambda: controller.show_frame("solverOutputManagment"))
         button4.grid(row = 5, column = 1, padx = 10)
-        
-        button5 = ttk.Button(self, text="Export optimisation results to pdf",
-                            command=lambda: controller.show_frame("exportStudentDistribution"))
-        button5.grid(row = 6, column = 1, padx = 10, pady = 10)
-        
-        button6 = ttk.Button(self, text="Export project list to forms",
+                
+        button6 = ttk.Button(self, text="Export project list to moodle forms",
                             command=lambda: controller.show_frame("exportToMoodle"))
-        button6.grid(row = 7, column = 1, padx = 10)
+        button6.grid(row = 6, column = 1, padx = 10, pady = 10)
         
         button7 = ttk.Button(self, text="list of all students projects",
                             command=lambda: controller.show_frame("listAllProjects"))
-        button7.grid(row = 8, column = 1, padx = 10, pady = 10)
+        button7.grid(row = 7, column = 1, padx = 10)

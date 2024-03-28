@@ -18,7 +18,7 @@ class TopBar(tk.Frame):
             item.pack_forget()
             item.grid_forget()
 
-        print("reload topBar")
+        
 
         self.next, self.previous = self.controller.get_np()
 
