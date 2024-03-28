@@ -46,6 +46,8 @@ for index, row in data.iterrows():
 
 ##################################################################
                 
+students_info_finance_projects_array = students_projects_array[:10]
+                
 lp_file = 'output.lp'
 text_content = ''
 projects_students_array = transpose(students_projects_array)
@@ -57,29 +59,34 @@ bigM = 99999
 
 model = LpProblem(name="assign_students_to_projects", sense=LpMaximize)
 
-variables = {(i, j): LpVariable(name=f"s{i+1}p{j+1}", cat=LpBinary) for i in range(len(students_projects_array)) for j in range(len(students_projects_array[i]))}
+variables_normal = {(i, j): LpVariable(name=f"s{i+1}p{j+1}n", cat=LpBinary) for i in range(len(students_projects_array)) for j in range(len(students_projects_array[i]))}
+variables_info_finance = {(i, j): LpVariable(name=f"s{i+1}p{j+1}if", cat=LpBinary) for i in range(len(students_info_finance_projects_array)) for j in range(len(students_info_finance_projects_array[i]))}
+
 binary_variables = {j: LpVariable(name=f"b{j}", cat=LpBinary) for j in range(len(projects_students_array))}
 
-model += LpAffineExpression([(variables[i, j],students_projects_array[i][j]) for i in range(len(students_projects_array)) for j in range(len(students_projects_array[i]))])
+tmp = [(variables_normal[i, j],students_projects_array[i][j]) for i in range(len(students_projects_array)) for j in range(len(students_projects_array[i]))]
+tmp += [(variables_info_finance[i, j],students_info_finance_projects_array[i][j]) for i in range(len(students_info_finance_projects_array)) for j in range(len(students_info_finance_projects_array[i]))]
+
+model += LpAffineExpression(tmp)
 
 for i in range(len(students_projects_array)):
-    model += lpSum(variables[i, j] for j in range(len(students_projects_array[i]))) <= 1
+    model += lpSum(variables_normal[i, j] for j in range(len(students_projects_array[i]))) <= 1
 
 for j in range(len(projects_students_array)):
-    model += lpSum(variables[i, j] for i in range(len(projects_students_array[j]))) <= max_students_per_project
+    model += lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j]))) <= max_students_per_project
 
 for j in range(len(projects_students_array)):
-    model += lpSum(variables[i, j] for i in range(len(projects_students_array[j]))) <= bigM * binary_variables[j]
+    model += lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j]))) <= bigM * binary_variables[j]
 
 for j in range(len(projects_students_array)):
-    model += lpSum(variables[i, j] for i in range(len(projects_students_array[j]))) >= min_students_per_project * binary_variables[j]
+    model += lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j]))) >= min_students_per_project * binary_variables[j]
 
 
 
 model.writeLP(lp_file)
 model.solve()
 
-result_array = [[variables[i, j].varValue for j in range(len(students_projects_array[i]))] for i in range(len(students_projects_array))]
+result_array = [[variables_normal[i, j].varValue for j in range(len(students_projects_array[i]))] for i in range(len(students_projects_array))]
 
 print(result_array)
 
