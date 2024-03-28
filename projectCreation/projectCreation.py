@@ -77,7 +77,7 @@ class ProjectCreation(tk.Frame):
             entry9Text = ""
             entry10Text = ""
 
-        print(entry1Text)
+        
         label1 = tk.Label(self, text="Numéro du projet:")
         label1.pack()
         entry1 = tk.Entry(self)

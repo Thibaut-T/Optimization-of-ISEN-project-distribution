@@ -45,7 +45,8 @@ class MainApp(tk.Tk):
         try:
             self.mainloop()
         except RecursionError:
-            print(traceback.format_exc())
+            traceback.print_exc()
+            
         
     def show_frame(self, page_name):
         self.mainFrame.pack_forget()
@@ -56,21 +57,10 @@ class MainApp(tk.Tk):
         self.mainFrame.tkraise()
 
     def show_next_frame(self):
-        self.mainFrame.pack_forget()
-        self.mainFrame = self.allFrames[self.mainFrame.next_frame]
-        self.mainFrame.pack(fill="both", expand=True)
-        self.mainFrame.reload()
-        self.topBarFrame.reload()
-        self.mainFrame.tkraise()
+        self.show_frame(self.mainFrame.next_frame)
 
     def show_previous_frame(self):
-        self.mainFrame.pack_forget()
-        self.mainFrame = self.allFrames[self.mainFrame.previous_frame]
-        self.mainFrame.pack(fill="both", expand=True)
-        self.mainFrame.reload()
-        print("show previous frame")
-        self.topBarFrame.reload()
-        self.mainFrame.tkraise()
+        self.show_frame(self.mainFrame.previous_frame)
 
     def get_np(self):
         return self.mainFrame.next_frame, self.mainFrame.previous_frame

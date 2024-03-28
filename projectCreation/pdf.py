@@ -86,7 +86,7 @@ def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7,entry8,e
     }
    
     input_values.append(input_dict)
-    print(input_dict)
+    
   
     try:
         df = pd.read_excel("output.xlsx")

@@ -10,7 +10,7 @@ def getAllProjects():
     return df
 
 def modifyProject(controller, i):
-    print("modifyProject")
+    
     try:
         with open('./common/data.txt', 'w') as file:
             file.write(str(i))
@@ -21,7 +21,7 @@ def modifyProject(controller, i):
     controller.show_frame("projectCreation")
 
 def createProject(controller):
-    print("createProject")
+    
     try:
         with open('./common/data.txt', 'w') as file:
             file.write(str(-1))
@@ -40,8 +40,8 @@ def deleteProject(controller, i):
 
 def savePdf():
     filename = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
-    print(filename)
+    
 
 def saveXml():
     filename = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML files", "*.xml")])
-    print(filename)
+    
