@@ -10,6 +10,9 @@ import shutil
 def solve():
     students_projects_array, students_info_finance_projects_array = get_data()
 
+    print(students_projects_array)
+    print(students_info_finance_projects_array)
+
     ##################################################################
 
     lp_file = 'common/output.lp'
@@ -43,17 +46,17 @@ def solve():
 
     for j in range(number_of_projects):
         tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
-        tmp2 = lpSum(variables_info_finance[i, j] for i in range(len(projects_projects_info_finance_array[j]))) if j < len(students_info_finance_projects_array) else 0
+        tmp2 = lpSum(variables_info_finance[i, j] if i < len(students_info_finance_projects_array) else 0 for i in range(len(projects_projects_info_finance_array[j])))
         model += tmp1 + tmp2 <= max_students_per_project
 
     for j in range(number_of_projects):
         tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
-        tmp2 = lpSum(variables_info_finance[i, j] for i in range(len(projects_projects_info_finance_array[j]))) if j < len(students_info_finance_projects_array) else 0
+        tmp2 = lpSum(variables_info_finance[i, j] if i < len(students_info_finance_projects_array) else 0 for i in range(len(projects_projects_info_finance_array[j])))
         model += tmp1 + tmp2 <= bigM * binary_variables[j]
 
     for j in range(number_of_projects):
         tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
-        tmp2 = lpSum(variables_info_finance[i, j] for i in range(len(projects_projects_info_finance_array[j]))) if j < len(students_info_finance_projects_array) else 0
+        tmp2 = lpSum(variables_info_finance[i, j] if i < len(students_info_finance_projects_array) else 0 for i in range(len(projects_projects_info_finance_array[j])))
         model += tmp1 + tmp2 >= min_students_per_project * binary_variables[j]
 
     if len(students_info_finance_projects_array) > 0:
@@ -62,10 +65,15 @@ def solve():
             model += tmp1 <= 2
 
     model.solve()
+    model.writeLP(lp_file)
 
     result_array = [[variables_normal[i, j].varValue for j in range(len(students_projects_array[i]))] for i in range(len(students_projects_array))] + [[variables_info_finance[i, j].varValue for j in range(len(students_info_finance_projects_array[i]))] for i in range(len(students_info_finance_projects_array))]
 
     print(result_array)
+
+    binaries = [binary_variables[j].varValue for j in range(len(projects_students_array))]
+
+    print(binaries)
 
     result_df = pd.DataFrame(result_array)
     result_df.to_csv('common/result.csv', index=False)
@@ -95,15 +103,17 @@ def get_data():
                 except ValueError:
                     grade = 0  
                 grades.append(grade)
-            print(grades)
+
             non_zero_grades = [grade for grade in grades if grade != 0]
-            while len(non_zero_grades) < 5:
-                grades.append(5)
+            zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
+            if zero_indices:
+                random_index = random.choice(zero_indices)
+                grades[random_index] = 5
                 non_zero_grades.append(5)
 
             top_grades = sorted(grades, reverse=True)[:5]
             student_data += [grade if grade in top_grades else 0 for grade in grades]
 
             data_array.append(student_data)
-
-        return formated_table(data_array),[7, 0, 9, 0, 8, 10, 0, 7, 8]
+        print(data_array)
+        return formated_table(data_array),[[7, 0, 9, 0, 8, 10, 0, 7, 8]]
