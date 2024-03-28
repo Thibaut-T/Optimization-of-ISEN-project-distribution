@@ -22,3 +22,6 @@ class SolverProcess(tk.Frame):
         # label of frame SolverOutputManagment
         label = ttk.Label(self, text ="SolverProcess")
         label.grid(row = 0, column = 0, padx = 10, pady = 10)
+
+        # button to trigger solverProcess.action.solve
+        button = ttk.Button(self, text ="Solve", command = self.solve)
