@@ -8,7 +8,7 @@ class TopBar(tk.Frame):
 
         self.controller = controller
 
-        self.next, self.previous = self.controller.get_np()
+        self.next, self.previous, self.objective_fulfilled = self.controller.get_np()
 
         self.show()
          
@@ -20,7 +20,7 @@ class TopBar(tk.Frame):
 
         
 
-        self.next, self.previous = self.controller.get_np()
+        self.next, self.previous, self.objective_fulfilled = self.controller.get_np()
 
         self.show()
     
@@ -37,5 +37,5 @@ class TopBar(tk.Frame):
 
         if not self.previous:
             previous_button.config(state='disabled')
-        if not self.next:
+        if not self.next or not self.objective_fulfilled:
             next_button.config(state='disabled')

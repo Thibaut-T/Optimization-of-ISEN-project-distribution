@@ -10,6 +10,8 @@ class SolverInputFile(tk.Frame):
                 
         self.previous_frame = "exportToMoodle"
         self.next_frame = "solverProcess"
+
+        self.objective_fulfilled = os.path.exists("./common/dataMoodle.xlsx")
                 
         self.controller = controller
         self.show()
@@ -33,5 +35,6 @@ class SolverInputFile(tk.Frame):
         if filename:
             shutil.copy(filename, "./common")
             os.rename(f"./common/{os.path.basename(filename)}", f"./common/dataMoodle.xlsx")
+        self.controller.show_frame("solverInputFile")
 
 

@@ -7,6 +7,7 @@ class ExportStudentDistribution(tk.Frame):
         
         self.previous_frame = "solverOutputManagment"
         self.next_frame = ""
+        self.objective_fulfilled = True
 
         self.controller = controller
         self.show()

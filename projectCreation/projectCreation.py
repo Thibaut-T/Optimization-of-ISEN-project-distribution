@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import pandas as pd
-from projectCreation.pdf import finish_pdf, generate_pdf, generate_pdf_with_values
+from projectCreation.action import add_line, modify_line
 
 class ProjectCreation(tk.Frame):
     def __init__(self, parent, controller):
@@ -9,6 +9,7 @@ class ProjectCreation(tk.Frame):
 
         self.previous_frame = ""
         self.next_frame = ""
+        self.objective_fulfilled = True
 
         self.controller = controller
         self.show()
@@ -38,12 +39,13 @@ class ProjectCreation(tk.Frame):
                         idCurrent = first_line
         except FileNotFoundError:
             idCurrent = -1
+
         if idCurrent != -1:
             try:
                 df = pd.read_excel('output.xlsx')
                 filtered_df = df[df['Numéro du projet'] == idCurrent]
 
-                entry1Text = filtered_df['Numéro du projet'].values[0] if not filtered_df.empty else ""
+                id = filtered_df['Numéro du projet'].values[0] if not filtered_df.empty else ""
                 entry2Text = filtered_df['Intitulé'].values[0] if not filtered_df.empty else ""
                 entry3Text = filtered_df['Proposé par'].values[0] if not filtered_df.empty else ""
                 entry4Text = filtered_df['Equipe'].values[0] if not filtered_df.empty else ""
@@ -54,7 +56,6 @@ class ProjectCreation(tk.Frame):
                 entry9Text = filtered_df['Maximum d\'étudiants'].values[0] if not filtered_df.empty else ""
                 entry10Text = filtered_df['Entreprise'].values[0] if not filtered_df.empty else ""
             except FileNotFoundError:
-                entry1Text = ""
                 entry2Text = ""
                 entry3Text = ""
                 entry4Text = ""
@@ -65,7 +66,10 @@ class ProjectCreation(tk.Frame):
                 entry9Text = ""
                 entry10Text = ""
         else:
-            entry1Text = ""
+            try:
+                id = len(pd.read_excel('output.xlsx'))+1
+            except FileNotFoundError:
+                id = 1
             entry2Text = ""
             entry3Text = ""
             entry4Text = ""
@@ -76,11 +80,11 @@ class ProjectCreation(tk.Frame):
             entry9Text = ""
             entry10Text = ""
 
+        entry1Text = id
         
         label1 = tk.Label(self, text="Numéro du projet:")
         label1.pack()
-        entry1 = tk.Entry(self)
-        entry1.insert(tk.END, entry1Text)
+        entry1 = tk.Label(self, text=entry1Text)
         entry1.pack()
         label2 = tk.Label(self, text="Intitulé:")
         label2.pack()
@@ -138,8 +142,9 @@ class ProjectCreation(tk.Frame):
         entry7.insert(tk.END, entry7Text)
         entry7.pack()
         
-        generate_button = tk.Button(self,text="Add Project", command=lambda: generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10))
-        generate_button.pack()
-        
-        finish_button = tk.Button(self, text="Finish PDF", command=finish_pdf)
-        finish_button.pack()
+        if idCurrent == -1:
+            generate_button = tk.Button(self,text="Add Project", command=lambda id = id: add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10, self.controller))
+            generate_button.pack()
+        else:
+            modify_button = tk.Button(self, text="Modify Project", command=lambda id = id: modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10, self.controller))
+            modify_button.pack()

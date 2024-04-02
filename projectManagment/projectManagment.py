@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, filedialog
+from tkinter import ttk
 import pandas as pd
 from projectManagment.actions import modifyProject, createProject, deleteProject, getAllProjects, savePdf, saveXml
 
@@ -10,6 +10,13 @@ class ProjectManagment(tk.Frame):
         self.previous_frame = ""
         self.next_frame = "exportToMoodle"
 
+        try:
+            self.projects = getAllProjects()[['Numéro du projet','Intitulé', 'Proposé par']]
+        except FileNotFoundError:
+            self.projects = pd.DataFrame()
+
+        self.objective_fulfilled = len(self.projects)>0
+
         self.controller = controller
         self.show()
     
@@ -18,6 +25,12 @@ class ProjectManagment(tk.Frame):
         for item in children:
             item.pack_forget()
             item.grid_forget()
+
+        try:
+            self.projects = getAllProjects()[['Numéro du projet','Intitulé', 'Proposé par']]
+        except FileNotFoundError:
+            self.projects = pd.DataFrame()
+
         self.show()
     
     def show(self):        
@@ -39,12 +52,9 @@ class ProjectManagment(tk.Frame):
         project_label_titles_2 = ttk.Label(self, text='Proposé par')
         project_label_titles_2.grid(row = 4, column = 2, padx = 5, pady = 5)
 
-        try:
-            projects = getAllProjects()[['Numéro du projet','Intitulé', 'Proposé par']]
-        except FileNotFoundError:
-            projects = pd.DataFrame()
 
-        for i, project in projects.iterrows():
+
+        for i, project in self.projects.iterrows():
             project_label = ttk.Label(self, text=project['Numéro du projet'])
             project_label.grid(row = i+5, column = 0, padx = 5, pady = 5)
             project_label_1 = ttk.Label(self, text=project['Intitulé'])

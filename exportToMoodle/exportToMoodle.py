@@ -7,6 +7,7 @@ class exportToMoodle(tk.Frame):
                 
         self.previous_frame = "projectManagment"
         self.next_frame = "solverInputFile"
+        self.objective_fulfilled = True
 
         self.controller = controller
         self.show()

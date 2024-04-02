@@ -63,6 +63,6 @@ class MainApp(tk.Tk):
         self.show_frame(self.mainFrame.previous_frame)
 
     def get_np(self):
-        return self.mainFrame.next_frame, self.mainFrame.previous_frame
+        return self.mainFrame.next_frame, self.mainFrame.previous_frame, self.mainFrame.objective_fulfilled
 
 MainApp().mainloop()

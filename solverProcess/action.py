@@ -7,11 +7,8 @@ import pandas as pd
 from tkinter import filedialog
 import shutil
 
-def solve():
+def solve(controller):
     students_projects_array, students_info_finance_projects_array = get_data()
-
-    print(students_projects_array)
-    print(students_info_finance_projects_array)
 
     ##################################################################
 
@@ -69,14 +66,12 @@ def solve():
 
     result_array = [[variables_normal[i, j].varValue for j in range(len(students_projects_array[i]))] for i in range(len(students_projects_array))] + [[variables_info_finance[i, j].varValue for j in range(len(students_info_finance_projects_array[i]))] for i in range(len(students_info_finance_projects_array))]
 
-    print(result_array)
-
     binaries = [binary_variables[j].varValue for j in range(len(projects_students_array))]
-
-    print(binaries)
 
     result_df = pd.DataFrame(result_array)
     result_df.to_csv('common/result.csv', index=False)
+
+    controller.show_frame("solverProcess")    
 
 def formated_table(data):
     data = pd.DataFrame(data[1:], columns=data[0])

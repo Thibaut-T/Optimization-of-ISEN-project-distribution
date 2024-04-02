@@ -1,6 +1,6 @@
 import pandas as pd
 from tkinter import filedialog
-from projectCreation.pdf import generate_pdf_with_values
+from projectCreation.action import generate_pdf_with_values
 
 def getAllProjects():
     try:
@@ -35,9 +35,13 @@ def createProject(controller):
 def deleteProject(controller, i):
     projects = getAllProjects()
     projects = projects[projects['Numéro du projet'] != i]
+
+    projects['Numéro du projet'] = projects['Numéro du projet'].apply(lambda x: x - 1)
+
     projects.to_excel('output.xlsx', index=False)
 
     controller.show_frame("projectManagment")
+    
 def savePdf():
     projects = getAllProjects()
     projects = projects.astype(str)  

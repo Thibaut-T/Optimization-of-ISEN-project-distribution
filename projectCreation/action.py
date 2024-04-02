@@ -59,10 +59,67 @@ def generate_pdf_with_values(input_values):
     filename = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
     if filename:
         pdf.output(filename)
-    
 
-def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10):
-    input1 = entry1.get()
+def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entry9, entry10, controller):
+    input1 = id
+    input2 = entry2.get()
+    input3 = entry3.get()
+    input4 = entry4.get()
+    input5 = entry5.get()
+    input6 = entry6.get()
+    input8 = entry8.get()
+    input9 = entry9.get()
+    input10 = entry10.get()
+    input7 = entry7.get("1.0", tk.END)
+    if input10 == "":
+        input10 = "N/A"
+
+    input_dict = {
+        "Numéro du projet": input1,
+        "Intitulé": input2,
+        "Proposé par": input3,
+        "Equipe": input4,
+        "Tél": input5,
+        "Mail": input6,
+        "Description": input7,
+        "Minimum d'étudiants": input8,
+        "Maximum d'étudiants": input9,
+        "Entreprise": input10
+    }
+
+    try:
+        df = pd.read_excel("output.xlsx")
+    except FileNotFoundError:
+        df = pd.DataFrame()
+
+    # Check if the project already exists in the DataFrame
+    
+    row = df[df["Numéro du projet"] == input1]
+
+    index = row.index[0]  # Get the index of the project
+
+    df.loc[index] = input_dict  # Update the row with new details
+
+    df.to_excel("output.xlsx", index=False)
+
+    # Clear the entry widgets
+    entry2.delete(0, tk.END)
+    entry3.delete(0, tk.END)
+    entry4.delete(0, tk.END)
+    entry5.delete(0, tk.END)
+    entry6.delete(0, tk.END)
+    entry8.delete(0, tk.END)
+    entry9.delete(0, tk.END)
+    entry10.delete(0, tk.END)
+    entry7.delete("1.0", tk.END)
+
+    # Show the "projectManagment" frame
+    controller.show_frame("projectManagment")
+
+
+
+def add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10, controller):
+    input1 = id
     input2 = entry2.get()
     input3 = entry3.get()
     input4 = entry4.get()
@@ -100,9 +157,7 @@ def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7,entry8,e
     new_row = pd.DataFrame(input_dict, index=[0])
     df = pd.concat([df, new_row], ignore_index=True)
     df.to_excel("output.xlsx", index=False)
-    generate_pdf_with_values(input_values)
 
-    entry1.delete(0, tk.END)
     entry2.delete(0, tk.END)
     entry3.delete(0, tk.END)
     entry4.delete(0, tk.END)
@@ -113,7 +168,4 @@ def generate_pdf(entry1, entry2, entry3, entry4, entry5, entry6, entry7,entry8,e
     entry10.delete(0, tk.END)
     entry7.delete("1.0", tk.END)
 
-def finish_pdf():
-    sys.exit()  
-
-
+    controller.show_frame("projectManagment")

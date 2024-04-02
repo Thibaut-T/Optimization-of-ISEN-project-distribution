@@ -7,7 +7,9 @@ class SolverOutputManagment(tk.Frame):
 
         self.previous_frame = "solverProcess"
         self.next_frame = "exportStudentDistribution"
-                
+        self.objective_fulfilled = True
+
+
         self.controller = controller
         self.show()
     
