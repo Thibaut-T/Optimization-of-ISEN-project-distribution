@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import pandas as pd
 from projectCreation.action import add_line, modify_line
-
+import re 
 class ProjectCreation(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg="purple")
@@ -14,6 +14,13 @@ class ProjectCreation(tk.Frame):
         self.controller = controller
         self.show()
     
+    def is_number(s):
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
+        
     def reload(self):
         children = self.winfo_children()
         for item in children:
@@ -27,7 +34,30 @@ class ProjectCreation(tk.Frame):
         label = ttk.Label(self, text ="ProjectCreation")
         label.pack()
 
+        def is_number(value):
+            try:
+                float(value)
+                return True
+            except ValueError:
+                return False
 
+        def validate_email(value):
+            email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+            emails = value.split(";")
+            valid = all(re.match(email_regex, email) is not None for email in emails)
+            label6.config({"foreground": "red" if not valid else "black"})
+            return True
+        
+        def validate_emails(value):     # For the equipe field
+            email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+            emails = value.split(";")
+            valid = all(re.match(email_regex, email.strip()) is not None for email in emails)
+            label4.config({"foreground": "red" if not valid else "black"})
+            return True
+
+        def is_phone_number(value):
+            return all(char.isdigit() or char == "+" for char in value)
+        
         idCurrent = -1
         try:
             with open('./common/currentCreation.txt', 'r') as file:
@@ -98,37 +128,43 @@ class ProjectCreation(tk.Frame):
         entry3.insert(tk.END, entry3Text)
         entry3.pack()
 
+        vcmd_mail2 = (self.register(validate_emails), '%P')
         label4 = tk.Label(self, text="Equipe:")
         label4.pack()
-        entry4 = tk.Entry(self)
+        entry4 = tk.Entry(self,validate='key', validatecommand=vcmd_mail2)
         entry4.insert(tk.END, entry4Text)
         entry4.pack()
 
+
+
+        vcmd_phone = (self.register(is_phone_number), '%P')
+
         label5 = tk.Label(self, text="Tél:")
         label5.pack()
-        entry5 = tk.Entry(self)
+        entry5 = tk.Entry(self, validate='key', validatecommand=vcmd_phone)
         entry5.insert(tk.END, entry5Text)
         entry5.pack()
 
+        vcmd_mail = (self.register(validate_email), '%P')
+
         label6 = tk.Label(self, text="Mail:")
         label6.pack()
-        entry6 = tk.Entry(self)
+        entry6 = tk.Entry(self, validate='key', validatecommand=vcmd_mail)
         entry6.insert(tk.END, entry6Text)
         entry6.pack()
 
+        vcmd = (self.register(is_number), '%P')
         label8 = tk.Label(self, text="Minimum:")
         label8.pack()
-        entry8 = tk.Entry(self)
+        entry8 = tk.Entry(self, validate='key', validatecommand=vcmd)
         entry8.insert(tk.END, entry8Text)
-
         entry8.pack()
 
         label9 = tk.Label(self, text="Maximum:")
         label9.pack()
-        entry9 = tk.Entry(self)
+        entry9 = tk.Entry(self, validate='key', validatecommand=vcmd)
         entry9.insert(tk.END, entry9Text)
         entry9.pack()
-
 
         label20 = tk.Label(self, text="Entreprise:")
         label20.pack()
