@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from exportToMoodle.action import save
 
 class exportToMoodle(tk.Frame):
     def __init__(self, parent, controller): 
@@ -23,3 +24,7 @@ class exportToMoodle(tk.Frame):
         # label of frame exportToMoodle
         label = ttk.Label(self, text ="exportToMoodle")
         label.grid(row = 0, column = 0, padx = 10, pady = 10)
+
+        # save button
+        save_button = ttk.Button(self, text="Download Moodle initialisation file", command=save)
+        save_button.grid(row = 1, column = 0, padx = 10, pady = 10)
