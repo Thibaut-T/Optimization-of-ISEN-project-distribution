@@ -24,7 +24,7 @@ class Eleve:
         self.mail = ""
 
 # Charger le fichier Excel
-donnees = pd.read_excel('test_projet.xlsx')
+donnees = pd.read_csv('./common/result.csv')
 
 projets = []  # Liste pour stocker les objets de la classe Projet
 
@@ -84,7 +84,7 @@ class SolverOutputManagment(tk.Frame):
         self.next_frame = "exportStudentDistribution"
         self.objective_fulfilled = True
 
-
+        self.parent = parent
         self.controller = controller
         self.show()
     
@@ -121,7 +121,7 @@ class SolverOutputManagment(tk.Frame):
 
         # Conteneur pour les éléments dans le Canvas
         # Calcul des coordonnées au milieu de la fenêtre
-        mid_x = parent.winfo_width() // 2  # Coordonnée x au milieu de la fenêtre
+        mid_x = self.parent.winfo_width() // 2  # Coordonnée x au milieu de la fenêtre
         
         scrollable_frame = tk.Frame(canvas)
         canvas.create_window((mid_x, 0), window=scrollable_frame, anchor="nw")
