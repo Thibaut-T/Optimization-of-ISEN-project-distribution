@@ -23,58 +23,6 @@ class Eleve:
         self.prenom = ""
         self.mail = ""
 
-# Charger le fichier Excel
-donnees = pd.read_csv('./common/result.csv')
-
-projets = []  # Liste pour stocker les objets de la classe Projet
-
-# Parcourir toutes les colonnes
-for colonne in donnees.columns:
-    # Vérifier si la colonne contient la valeur 1
-    if (donnees[colonne] == 1).any():
-        # Créer une instance de la classe Projet
-        projet = Projet()
-        # Affecter le nom de la colonne au champ nom de l'objet Projet
-        projet.nom = colonne
-        # Afficher le titre de la colonne
-        print(f"Projet : {colonne}")
-        # Afficher les titres de ligne avec la valeur 1 dans cette colonne
-        lignes = donnees[donnees[colonne] == 1].index
-        for ligne in lignes:
-            # Récupérer le titre de la ligne (première cellule de la ligne)
-            titre_ligne = donnees.iloc[ligne, 0]  # Utilisation de iloc pour accéder à la première cellule de la ligne
-            # Créer une instance de la classe Eleve
-            eleve = Eleve()
-            # Affecter le titre de la ligne au champ nom de l'objet Eleve
-            eleve.nom = titre_ligne
-            # Ajouter l'objet Eleve à la liste eleves de l'objet Projet
-            projet.eleves.append(eleve)
-            print(f" - Elève : {titre_ligne}")
-        # Ajouter l'objet Projet à la liste projets
-        projets.append(projet)
-
-# Charger les données du fichier output.xlsx
-donnees_output = pd.read_excel('output.xlsx')
-
-# Parcourir les projets et compléter les informations
-for projet in projets:
-    # Récupérer les informations du projet correspondant à son nom dans output.xlsx
-    infos_projet = donnees_output[donnees_output['Intitulé'] == projet.nom]
-    if not infos_projet.empty:
-        infos_projet = infos_projet.iloc[0]
-        # Remplir les attributs de l'objet Projet
-        projet.intitule = infos_projet['Intitulé']
-        projet.par = infos_projet['Proposé par']
-        projet.equipe = infos_projet['Equipe']
-        projet.tel = infos_projet['Tél']
-        projet.mail = infos_projet['Mail']
-        projet.description = infos_projet['Description']
-        projet.nbmin = infos_projet['Minimum d\'étudiants']
-        projet.nbmax = infos_projet['Maximum d\'étudiants']
-        projet.entreprise = infos_projet['Entreprise']
-    else:
-        print(f"Aucune information trouvée pour le projet {projet.nom} dans le fichier output.xlsx")
-
 # Créer l'interface utilisateur avec tkinter
 class SolverOutputManagment(tk.Frame):
     def __init__(self, parent, controller): 
@@ -83,23 +31,74 @@ class SolverOutputManagment(tk.Frame):
         self.previous_frame = "solverProcess"
         self.next_frame = "exportStudentDistribution"
         self.objective_fulfilled = True
-
+        self.projets = []  # Liste pour stocker les objets de la classe Projet
         self.parent = parent
         self.controller = controller
-        self.show()
+
+        self.reload()
     
     def reload(self):
         children = self.winfo_children()
         for item in children:
             item.pack_forget()
             item.grid_forget()
+
+        # Charger le fichier Excel
+        donnees = pd.read_csv('./common/result.csv')
+
+        self.projets = []  # Liste pour stocker les objets de la classe Projet
+
+        # Parcourir toutes les colonnes
+        for colonne in donnees.columns:
+            # Vérifier si la colonne contient la valeur 1
+            if (donnees[colonne] == 1).any():
+                # Créer une instance de la classe Projet
+                projet = Projet()
+                # Affecter le nom de la colonne au champ nom de l'objet Projet
+                projet.nom = colonne
+                # Afficher le titre de la colonne
+                print(f"Projet : {colonne}")
+                # Afficher les titres de ligne avec la valeur 1 dans cette colonne
+                lignes = donnees[donnees[colonne] == 1].index
+                for ligne in lignes:
+                    # Récupérer le titre de la ligne (première cellule de la ligne)
+                    titre_ligne = donnees.iloc[ligne, 0]  # Utilisation de iloc pour accéder à la première cellule de la ligne
+                    # Créer une instance de la classe Eleve
+                    eleve = Eleve()
+                    # Affecter le titre de la ligne au champ nom de l'objet Eleve
+                    eleve.nom = titre_ligne
+                    # Ajouter l'objet Eleve à la liste eleves de l'objet Projet
+                    projet.eleves.append(eleve)
+                    print(f" - Elève : {titre_ligne}")
+                # Ajouter l'objet Projet à la liste self.projets
+                self.projets.append(projet)
+
+        # Charger les données du fichier output.xlsx
+        donnees_output = pd.read_excel('output.xlsx')
+
+        # Parcourir les self.projets et compléter les informations
+        for projet in self.projets:
+            # Récupérer les informations du projet correspondant à son nom dans output.xlsx
+            infos_projet = donnees_output[donnees_output['Intitulé'] == int(projet.nom)]
+            if not infos_projet.empty:
+                infos_projet = infos_projet.iloc[0]
+                # Remplir les attributs de l'objet Projet
+                projet.intitule = infos_projet['Intitulé']
+                projet.par = infos_projet['Proposé par']
+                projet.equipe = infos_projet['Equipe']
+                projet.tel = infos_projet['Tél']
+                projet.mail = infos_projet['Mail']
+                projet.description = infos_projet['Description']
+                projet.nbmin = infos_projet['Minimum d\'étudiants']
+                projet.nbmax = infos_projet['Maximum d\'étudiants']
+                projet.entreprise = infos_projet['Entreprise']
+            else:
+                print(f"Aucune information trouvée pour le projet {projet.nom} dans le fichier output.xlsx")
+
+            
         self.show()
     
     def show(self):
-        # label of frame SolverOutputManagment
-        label = ttk.Label(self, text ="SolverOutputManagment")
-        label.grid(row = 0, column = 0, padx = 10, pady = 10)
-
         # Cadre principal pour contenir les cadres gauche et droit
         self.grid_columnconfigure(0, weight=1)  # Colonne 0
         self.grid_columnconfigure(1, weight=1)  # Colonne 1
@@ -125,9 +124,9 @@ class SolverOutputManagment(tk.Frame):
         
         scrollable_frame = tk.Frame(canvas)
         canvas.create_window((mid_x, 0), window=scrollable_frame, anchor="nw")
-
-        # Ajouter les informations des projets dans le conteneur scrollable_frame
-        for projet in projets:
+        
+        # Ajouter les informations des self.projets dans le conteneur scrollable_frame
+        for projet in self.projets:
             projet_label = ttk.Label(scrollable_frame, text=f"Nom du projet : {projet.nom}\n"
                                                         f"Elèves du projet :\n"
                                                         f"Informations du projet :\n"
@@ -144,15 +143,3 @@ class SolverOutputManagment(tk.Frame):
 
         # Configurer le Canvas pour le défilement
         scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-
-if __name__ == "__main__":
-    # Créer une instance de Tkinter
-    root = tk.Tk()
-    root.title("Gestion des projets")
-
-    # Créer une instance de SolverOutputManagment
-    solver_output = SolverOutputManagment(root, None)
-    solver_output.pack(expand=True, fill="both")
-
-    # Lancer la boucle principale de Tkinter
-    root.mainloop()
