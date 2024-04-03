@@ -30,6 +30,8 @@ class ProjectManagment(tk.Frame):
             self.projects = getAllProjects()[['Numéro du projet','Intitulé', 'Proposé par']]
         except FileNotFoundError:
             self.projects = pd.DataFrame()
+        
+        self.objective_fulfilled = len(self.projects)>0
 
         self.show()
     

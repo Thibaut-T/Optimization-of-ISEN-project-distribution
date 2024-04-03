@@ -9,6 +9,10 @@ import pandas as pd
 def solve(controller):
     students_projects_array, students_info_finance_projects_array = get_data()
 
+    if not students_projects_array:
+        return
+    
+
     ##################################################################
 
     lp_file = 'common/solver.lp'
@@ -81,33 +85,36 @@ def formated_table(data):
     return data
 
 def get_data():
-    data = pd.read_excel("./common/answerProjects.xlsx")
-    if not data.empty:
-        data_array = []
-        num_projects = len([col for col in data.columns if 'Réponse' in col])
-        project_numbers = ["Project number"] + [f"Project {i}" for i in range(1, num_projects + 1)]
-        data_array.append(project_numbers)
+    try:
+        data = pd.read_excel("./common/dataProjects.xlsx")
+        if not data.empty:
+            data_array = []
+            num_projects = len([col for col in data.columns if 'Réponse' in col])
+            project_numbers = ["Project number"] + [f"Project {i}" for i in range(1, num_projects + 1)]
+            data_array.append(project_numbers)
 
-        for index, row in data.iterrows():
-            student_data = [f"{row['Nom de famille']} {row['Prénom']}"]
-            grades = []
-            for i in range(1, num_projects + 1):
-                try:
-                    grade = int(row[f'Réponse {i}'])
-                except ValueError:
-                    grade = 0  
-                grades.append(grade)
+            for index, row in data.iterrows():
+                student_data = [f"{row['Nom de famille']} {row['Prénom']}"]
+                grades = []
+                for i in range(1, num_projects + 1):
+                    try:
+                        grade = int(row[f'Réponse {i}'])
+                    except ValueError:
+                        grade = 0  
+                    grades.append(grade)
 
-            non_zero_grades = [grade for grade in grades if grade != 0]
-            zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
-            if zero_indices:
-                random_index = random.choice(zero_indices)
-                grades[random_index] = 5
-                non_zero_grades.append(5)
+                non_zero_grades = [grade for grade in grades if grade != 0]
+                zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
+                if zero_indices:
+                    random_index = random.choice(zero_indices)
+                    grades[random_index] = 5
+                    non_zero_grades.append(5)
 
-            top_grades = sorted(grades, reverse=True)[:5]
-            student_data += [grade if grade in top_grades else 0 for grade in grades]
+                top_grades = sorted(grades, reverse=True)[:5]
+                student_data += [grade if grade in top_grades else 0 for grade in grades]
 
-            data_array.append(student_data)
-        print(data_array)
-        return formated_table(data_array),[[7, 0, 9, 0, 8, 10, 0, 7, 8]]
+                data_array.append(student_data)
+            print(data_array)
+            return formated_table(data_array),[[7, 0, 9, 0, 8, 10, 0, 7, 8]]
+    except FileNotFoundError:
+        return [],[]
