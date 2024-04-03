@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
 from fpdf import FPDF
-import sys
 import pandas as pd
 
 input_values = []
