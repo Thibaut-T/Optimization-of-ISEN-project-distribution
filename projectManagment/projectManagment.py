@@ -9,16 +9,11 @@ class ProjectManagment(tk.Frame):
 
         self.previous_frame = ""
         self.next_frame = "exportToMoodle"
-
-        try:
-            self.projects = getAllProjects()[['Numéro du projet','Intitulé', 'Proposé par']]
-        except FileNotFoundError:
-            self.projects = pd.DataFrame()
-
-        self.objective_fulfilled = len(self.projects)>0
-
+        self.projects = pd.DataFrame()
         self.controller = controller
-        self.show()
+        self.objective_fulfilled = False
+
+        self.reload()
     
     def reload(self):
         children = self.winfo_children()

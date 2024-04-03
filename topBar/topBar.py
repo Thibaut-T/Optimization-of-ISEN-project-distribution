@@ -8,18 +8,15 @@ class TopBar(tk.Frame):
         self.pack(side="top", fill="x")
 
         self.controller = controller
+        self.next, self.previous, self.objective_fulfilled = None, None, False
 
-        self.next, self.previous, self.objective_fulfilled = self.controller.get_np()
-
-        self.show()
+        self.reload()
          
     def reload(self):
         children = self.winfo_children()
         for item in children:
             item.pack_forget()
-            item.grid_forget()
-
-        
+            item.grid_forget()      
 
         self.next, self.previous, self.objective_fulfilled = self.controller.get_np()
 
