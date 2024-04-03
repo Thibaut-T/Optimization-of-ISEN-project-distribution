@@ -73,12 +73,12 @@ class SolverOutputManagment(tk.Frame):
                 # Ajouter l'objet Projet à la liste self.projets
                 self.projets.append(projet)
 
-        # Charger les données du fichier output.xlsx
-        donnees_output = pd.read_excel('output.xlsx')
+        # Charger les données du fichier common/output.xlsx
+        donnees_output = pd.read_excel('common/output.xlsx')
 
         # Parcourir les self.projets et compléter les informations
         for projet in self.projets:
-            # Récupérer les informations du projet correspondant à son nom dans output.xlsx
+            # Récupérer les informations du projet correspondant à son nom dans common/output.xlsx
             infos_projet = donnees_output[donnees_output['Intitulé'] == int(projet.nom)]
             if not infos_projet.empty:
                 infos_projet = infos_projet.iloc[0]
@@ -93,7 +93,7 @@ class SolverOutputManagment(tk.Frame):
                 projet.nbmax = infos_projet['Maximum d\'étudiants']
                 projet.entreprise = infos_projet['Entreprise']
             else:
-                print(f"Aucune information trouvée pour le projet {projet.nom} dans le fichier output.xlsx")
+                print(f"Aucune information trouvée pour le projet {projet.nom} dans le fichier common/output.xlsx")
 
             
         self.show()

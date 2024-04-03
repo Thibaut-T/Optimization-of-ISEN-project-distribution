@@ -4,10 +4,10 @@ from projectCreation.action import generate_pdf_with_values
 
 def getAllProjects():
     try:
-        df = pd.read_excel('output.xlsx')
+        df = pd.read_excel('common/output.xlsx')
     except FileNotFoundError:
         df = pd.DataFrame(columns=['Numéro du projet', 'Intitulé', 'Proposé par', 'Equipe', 'Tél', 'Mail', 'Description', 'Minimum d\'étudiants', 'Maximum d\'étudiants', 'Entreprise'])
-        df.to_excel('output.xlsx', index=False)
+        df.to_excel('common/output.xlsx', index=False)
     return df
 
 def modifyProject(controller, i):
@@ -38,7 +38,7 @@ def deleteProject(controller, i):
 
     projects['Numéro du projet'] = projects['Numéro du projet'].apply(lambda x: x - 1)
 
-    projects.to_excel('output.xlsx', index=False)
+    projects.to_excel('common/output.xlsx', index=False)
 
     controller.show_frame("projectManagment")
     

@@ -42,7 +42,7 @@ class ProjectCreation(tk.Frame):
 
         if idCurrent != -1:
             try:
-                df = pd.read_excel('output.xlsx')
+                df = pd.read_excel('common/output.xlsx')
                 filtered_df = df[df['Numéro du projet'] == idCurrent]
 
                 id = filtered_df['Numéro du projet'].values[0] if not filtered_df.empty else ""
@@ -67,7 +67,7 @@ class ProjectCreation(tk.Frame):
                 entry10Text = ""
         else:
             try:
-                id = len(pd.read_excel('output.xlsx'))+1
+                id = len(pd.read_excel('common/output.xlsx'))+1
             except FileNotFoundError:
                 id = 1
             entry2Text = ""
