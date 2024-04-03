@@ -11,7 +11,7 @@ class SolverInputFile(tk.Frame):
         self.previous_frame = "exportToMoodle"
         self.next_frame = "solverProcess"
 
-        self.objective_fulfilled = os.path.exists("./common/dataProjects.xlsx")
+        self.objective_fulfilled = os.path.exists("./common/answerProjects.xlsx")
                 
         self.controller = controller
         self.show()
