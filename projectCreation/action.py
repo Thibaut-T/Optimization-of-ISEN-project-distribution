@@ -88,7 +88,7 @@ def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entr
     }
 
     try:
-        df = pd.read_excel("common/output.xlsx")
+        df = pd.read_excel("common/dataProjects.xlsx")
     except FileNotFoundError:
         df = pd.DataFrame()
 
@@ -100,7 +100,7 @@ def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entr
 
     df.loc[index] = input_dict  # Update the row with new details
 
-    df.to_excel("common/output.xlsx", index=False)
+    df.to_excel("common/dataProjects.xlsx", index=False)
 
     # Clear the entry widgets
     entry2.delete(0, tk.END)
@@ -149,14 +149,14 @@ def add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,en
     
   
     try:
-        df = pd.read_excel("common/output.xlsx")
+        df = pd.read_excel("common/dataProjects.xlsx")
   
     except FileNotFoundError:
         df = pd.DataFrame()
         
     new_row = pd.DataFrame(input_dict, index=[0])
     df = pd.concat([df, new_row], ignore_index=True)
-    df.to_excel("common/output.xlsx", index=False)
+    df.to_excel("common/dataProjects.xlsx", index=False)
 
     entry2.delete(0, tk.END)
     entry3.delete(0, tk.END)

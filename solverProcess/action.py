@@ -4,15 +4,14 @@ from numpy import transpose
 import numpy as np
 import random
 import pandas as pd
-from tkinter import filedialog
-import shutil
+
 
 def solve(controller):
     students_projects_array, students_info_finance_projects_array = get_data()
 
     ##################################################################
 
-    lp_file = 'common/output.lp'
+    lp_file = 'common/solver.lp'
     projects_students_array = transpose(students_projects_array)
     projects_projects_info_finance_array = transpose(students_info_finance_projects_array)
     number_of_projects = len(projects_students_array)
@@ -69,7 +68,7 @@ def solve(controller):
     binaries = [binary_variables[j].varValue for j in range(len(projects_students_array))]
 
     result_df = pd.DataFrame(result_array)
-    result_df.to_csv('common/result.csv', index=False)
+    result_df.to_csv('common/resultSolver.csv', index=False)
 
     controller.show_frame("solverProcess")    
 
@@ -82,7 +81,7 @@ def formated_table(data):
     return data
 
 def get_data():
-    data = pd.read_excel("./common/dataMoodle.xlsx")
+    data = pd.read_excel("./common/answerProjects.xlsx")
     if not data.empty:
         data_array = []
         num_projects = len([col for col in data.columns if 'Réponse' in col])

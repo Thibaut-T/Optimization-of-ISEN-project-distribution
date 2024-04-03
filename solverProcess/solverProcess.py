@@ -10,7 +10,7 @@ class SolverProcess(tk.Frame):
         self.previous_frame = "solverInputFile"
         self.next_frame = "solverOutputManagment"
 
-        self.objective_fulfilled = True if os.path.exists("./common/result.csv") else False
+        self.objective_fulfilled = True if os.path.exists("./common/resultSolver.csv") else False
 
         self.controller = controller
         self.show()

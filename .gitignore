@@ -1,6 +1,7 @@
 # FILEPATH: /home/iemelian/Documents/ProjetM1/Optimization-of-ISEN-project-distribution/.gitignore
 __pycache__/
 
+*.lp
 *.pdf
 *.xml
 *.txt

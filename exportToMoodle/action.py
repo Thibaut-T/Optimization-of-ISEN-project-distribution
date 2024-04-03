@@ -1,5 +1,6 @@
 import os
 from tkinter import filedialog
+import pandas as pd
 
 
 def create_xml_file(filename):
@@ -61,14 +62,18 @@ def create_xml_file(filename):
         </question>
         """)
         
-        for i in range(1, 1 + 1):
-            project_number = str(i).zfill(2)
+        # Open the Excel file with pandas
+        df = pd.read_excel('common/dataProjects.xlsx')
+
+        # Loop over df to create a question for each project
+        for i in range(len(df)):
+            project_number = df.loc[i, 'Numéro du projet']
             file.write(r"""<question type="multichoice">
             <name format="html">
-            <text><![CDATA[Projet """ + project_number + """ ]]></text>
+            <text><![CDATA[Projet """ + str(project_number) + """ ]]></text>
             </name>
             <questiontext format="html">
-            <text><![CDATA[<p>Évaluez le projet """ + str(i) + """ : temp de 1 à 10 (10 = votre projet préféré) <BR/>Rate the project """ + str(i) + """ : temp from 1 to 10 (10 = your favorite project) </p>]]></text>
+            <text><![CDATA[<p>Évaluez le projet """ + str(project_number) + """ : temp de 1 à 10 (10 = votre projet préféré) <BR/>Rate the project """ + str(i) + """ : temp from 1 to 10 (10 = your favorite project) </p>]]></text>
             </questiontext>
             <defaultgrade>1.0</defaultgrade>
             <generalfeedback format="html"><text/></generalfeedback>
