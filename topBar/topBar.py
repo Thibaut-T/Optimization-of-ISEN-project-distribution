@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from topBar.actions import Help
 
 class TopBar(tk.Frame):
     def __init__(self, parent, controller): 
@@ -25,15 +26,14 @@ class TopBar(tk.Frame):
         self.show()
     
     def show(self):
-        # label of frame TopBar
-        label = ttk.Label(self, text ="TopBar")
-        label.pack(side="left", padx = 10, pady = 10)
+        help_button = ttk.Button(self, text="Prise en main de l'application (tutoriel)", command=lambda: Help())
+        help_button.pack(side = "left", padx = 20, pady = 20)
 
         next_button = ttk.Button(self, text="Next", command=self.controller.show_next_frame)
-        next_button.pack(side="right", padx = 10, pady = 10)
+        next_button.pack(side="right", padx = 20, pady = 20)
         
         previous_button = ttk.Button(self, text="Previous", command=self.controller.show_previous_frame)
-        previous_button.pack(side="right", padx = 10, pady = 10)
+        previous_button.pack(side="right", padx = 20, pady = 20)
 
         if not self.previous:
             previous_button.config(state='disabled')
