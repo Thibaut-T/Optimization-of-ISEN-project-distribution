@@ -5,7 +5,7 @@ from projectManagment.actions import modifyProject, createProject, deleteProject
 
 class ProjectManagment(tk.Frame):
     def __init__(self, parent, controller): 
-        tk.Frame.__init__(self, parent, bg="black")
+        tk.Frame.__init__(self, parent, bg="lightgrey")
 
         self.previous_frame = ""
         self.next_frame = "exportToMoodle"
