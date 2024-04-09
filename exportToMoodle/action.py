@@ -2,7 +2,7 @@ import os
 from tkinter import filedialog
 import pandas as pd
 
-def create_xml_file(filename):
+def create_xml_file(filename, moodle_folder):
     try:
         os.remove(filename)
     except FileNotFoundError:
@@ -13,7 +13,7 @@ def create_xml_file(filename):
 
         <question type="category">
         <category>
-        <text>$course$/top/MoodleOfficieltest</text>
+        <text>$course$/top/""" + moodle_folder + """</text>
         </category>
         </question>
 
@@ -26,7 +26,6 @@ def create_xml_file(filename):
         </questiontext>
         <defaultgrade>0</defaultgrade>
         <generalfeedback format="html"><text/></generalfeedback>
-        <hidden>0</hidden>
         <single>true</single>
         <shuffleanswers>1</shuffleanswers>
         <answernumbering>abc</answernumbering>
@@ -46,7 +45,6 @@ def create_xml_file(filename):
         </questiontext>
         <defaultgrade>0</defaultgrade>
         <generalfeedback format="html"><text/></generalfeedback>
-        <hidden>0</hidden>
         <single>true</single>
         <shuffleanswers>1</shuffleanswers>
         <answernumbering>abc</answernumbering>
@@ -70,11 +68,10 @@ def create_xml_file(filename):
             <text><![CDATA[Projet {:02d}]]></text>
             </name>
             <questiontext format="html">
-            <text><![CDATA[<p>Évaluez le projet """ + str(project_number) + """ : """ + str(df.loc[i, "Intitulé"]) + """ de 1 à 10 (10 = votre projet préféré) <BR/>Rate the project """ + str(project_number) + """ : """ + str(df.loc[i, "Intitulé"]) + """ from 1 to 10 (10 = your favorite project) </p>]]></text>
+            <text><![CDATA[<p>Évaluez le projet """ + str(project_number) + """ : """ + str(df.loc[i, "Intitulé"]) + """ de 1 à 10 (10 = votre projet préféré)<BR/><em>Rate the project """ + str(project_number) + """ : """ + str(df.loc[i, "Intitulé"]) + """ from 1 to 10 (10 = your favorite project)</em></p>]]></text>
             </questiontext>
             <defaultgrade>0</defaultgrade>
             <generalfeedback format="html"><text/></generalfeedback>
-            <hidden>0</hidden>
             <single>true</single>
             <shuffleanswers>1</shuffleanswers>
             <answernumbering>none</answernumbering>
@@ -111,6 +108,6 @@ def create_xml_file(filename):
             </question>
             """.format(project_number, project_number, project_number))
 
-def save():
+def save(entry):
     filename = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML files", "*.xml")])
-    create_xml_file(filename)
+    create_xml_file(filename, entry.get())

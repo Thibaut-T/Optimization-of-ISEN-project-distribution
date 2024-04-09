@@ -26,5 +26,9 @@ class exportToMoodle(tk.Frame):
         label.grid(row = 0, column = 0, padx = 10, pady = 10)
 
         # save button
-        save_button = ttk.Button(self, text="Download Moodle initialisation file", command=save)
+        folder_name = tk.Label(self, text="Nom de la banque de questions:")
+        folder_name.grid(row = 2, column = 0)
+        entry = tk.Entry(self)
+        entry.grid()
+        save_button = ttk.Button(self, text="Download Moodle initialisation file", command=lambda moodle_folder=entry: save(moodle_folder))
         save_button.grid(row = 1, column = 0, padx = 10, pady = 10)
