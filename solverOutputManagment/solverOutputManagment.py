@@ -2,7 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 import pandas as pd
 
+
+#####################################################################################
 # Définition des classes existantes
+
 class Projet:
     def __init__(self):
         self.nom = ""
@@ -86,6 +89,9 @@ class Ptropeleve(Anomalies):
                 self.error = f"{intitule_projet} contient trop d'étudiants"
                 print(self)
 
+#####################################################################################################
+# Chargement des différents fichier
+
 def charger_donnees_output():
     return pd.read_excel('output.xlsx')
 
@@ -103,7 +109,9 @@ donnees_output = charger_donnees_output()
 donnees_output2 = charger_donnees_output2()
 donnees_test_projet = charger_donnees_test_projet()
 
-# Utilisation des données pour vérifier les anomalies dans les projets
+######################################################################################################
+# Vérification des données à la recherche d'anomalie
+
 epasdeproj_anomalies = Epasdeproj()
 epasdeproj_anomalies.verifier_anomalies(donnees_output2)
 
@@ -115,6 +123,10 @@ ppasassezeleve_anomalies.verifier_anomalies(donnees_output2, 'output.xlsx')
 
 ptropeleve_anomalies = Ptropeleve()
 ptropeleve_anomalies.verifier_anomalies(donnees_output2, 'output.xlsx')
+
+
+##############################################################################################
+# Interface en TKinter
 
 # Création de l'interface utilisateur avec tkinter
 class SolverOutputManagment(tk.Frame):
@@ -186,6 +198,47 @@ class SolverOutputManagment(tk.Frame):
         # Configurer le Canvas pour le défilement
         scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
 
+
+
+# Charger les données du fichier Excel
+donnees_output2 = pd.read_excel('output2.xlsx')
+
+# Initialiser un dictionnaire pour stocker les données des projets et des élèves
+donnees_projet_eleves = {}
+
+# Parcourir chaque colonne du DataFrame
+for colonne in donnees_output2.columns:
+    # Vérifier si la colonne contient au moins un 1
+    if (donnees_output2[colonne] == 1).any():
+        # Récupérer le nom du projet (première cellule de la colonne)
+        nom_projet = colonne
+        # Initialiser une liste pour stocker les noms des élèves
+        eleves_projet = []
+        # Parcourir chaque ligne de la colonne
+        for index, valeur in donnees_output2[colonne].items():
+            # Vérifier si la valeur est égale à 1
+            if valeur == 1:
+                # Récupérer le nom de l'élève (première cellule de la ligne)
+                nom_eleve = donnees_output2.iloc[index, 0]
+                # Ajouter le nom de l'élève à la liste des élèves du projet
+                eleves_projet.append(nom_eleve)
+        # Ajouter les élèves du projet au dictionnaire
+        donnees_projet_eleves[nom_projet] = eleves_projet
+
+# Créer un DataFrame à partir du dictionnaire
+df_excel = pd.DataFrame.from_dict(donnees_projet_eleves, orient='index').transpose()
+
+# Spécifier le nom du fichier Excel de sortie
+nom_fichier_sortie = "resultats_output2.xlsx"
+
+# Écrire les données dans un nouveau fichier Excel
+df_excel.to_excel(nom_fichier_sortie, index=False)
+
+print(f"Les résultats ont été écrits dans le fichier Excel : {nom_fichier_sortie}")
+
+
+
+
 if __name__ == "__main__":
     # Créer une instance de Tkinter
     root = tk.Tk()
@@ -193,6 +246,7 @@ if __name__ == "__main__":
 
     # Créer une instance de SolverOutputManagment après le traitement des données
     projets = []  # Liste pour stocker les objets de la classe Projet
+    
 
     # Parcourir toutes les colonnes
     for colonne in donnees_test_projet.columns:
@@ -218,6 +272,7 @@ if __name__ == "__main__":
                 print(f" - Elève : {titre_ligne}")
             # Ajouter l'objet Projet à la liste projets
             projets.append(projet)
+    
 
     # Utilisation des données pour afficher les informations des projets
     solver_output = SolverOutputManagment(root, None)
