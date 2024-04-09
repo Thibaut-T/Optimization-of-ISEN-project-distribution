@@ -22,7 +22,7 @@ def create_xml_file(filename):
         <text><![CDATA[Présence]]></text>
         </name>
         <questiontext format="html">
-        <text><![CDATA[<p>Êtes-vous présent.e.s au semestre 2 ?<BR/>Are you present in semester 2 ?</p>]]></text>
+        <text><![CDATA[<p>Êtes-vous présent.e.s au semestre 2 ?<BR/><em>Are you present in semester 2 ?</em></p>]]></text>
         </questiontext>
         <defaultgrade>0</defaultgrade>
         <generalfeedback format="html"><text/></generalfeedback>
@@ -42,7 +42,7 @@ def create_xml_file(filename):
         <text><![CDATA[Informatique et Finance]]></text>
         </name>
         <questiontext format="html">
-        <text><![CDATA[<p>Êtes-vous en spécialité Informatique et Finance ?<BR/>Are you specialized in Information Technology and Finance ?</p>]]></text>
+        <text><![CDATA[<p>Êtes-vous en spécialité Informatique et Finance ?<BR/><em>Are you specialized in Information Technology and Finance ?</em></p>]]></text>
         </questiontext>
         <defaultgrade>0</defaultgrade>
         <generalfeedback format="html"><text/></generalfeedback>
@@ -77,7 +77,7 @@ def create_xml_file(filename):
             <hidden>0</hidden>
             <single>true</single>
             <shuffleanswers>1</shuffleanswers>
-            <answernumbering>123</answernumbering>
+            <answernumbering>none</answernumbering>
             <answer fraction="0" format="html">
             <text><![CDATA[<p>1</p>]]></text>
             </answer>
