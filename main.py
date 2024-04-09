@@ -1,7 +1,6 @@
 import tkinter as tk
 from exportStudentDistribution import exportStudentDistribution
 from exportToMoodle import exportToMoodle
-from listAllProjects import listAllProjects
 from menu import menu
 from projectCreation import projectCreation
 from projectManagment import projectManagment
@@ -24,12 +23,11 @@ class MainApp(tk.Tk):
         self.allFrames = {
             "projectCreation": projectCreation.ProjectCreation(self, self),
             "projectManagment": projectManagment.ProjectManagment(self, self),
+            "exportToMoodle": exportToMoodle.exportToMoodle(self, self),
             "solverInputFile": solverInputFile.SolverInputFile(self, self),
             "solverProcess": solverProcess.SolverProcess(self, self),
             "solverOutputManagment": solverOutputManagment.SolverOutputManagment(self, self),
             "exportStudentDistribution": exportStudentDistribution.ExportStudentDistribution(self, self),
-            "exportToMoodle": exportToMoodle.exportToMoodle(self, self),
-            "listAllProjects": listAllProjects.ListAllProjects(self, self)
         }
                 
         self.mainFrame = self.allFrames["projectManagment"]
@@ -38,7 +36,7 @@ class MainApp(tk.Tk):
         self.topBarFrame = topBar.TopBar(self, self)
 
         # Create a frame for the menu
-        self.menu_frame = menu.Menu(self, self)
+        self.menuFrame = menu.Menu(self, self)
 
         self.mainFrame.pack(fill="both", expand=True)
 
@@ -54,6 +52,7 @@ class MainApp(tk.Tk):
         self.mainFrame.pack(fill="both", expand=True)
         self.mainFrame.reload()
         self.topBarFrame.reload()
+        self.menuFrame.reload()
         self.mainFrame.tkraise()
 
     def show_next_frame(self):

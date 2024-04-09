@@ -12,7 +12,7 @@ class ProjectCreation(tk.Frame):
         self.objective_fulfilled = True
 
         self.controller = controller
-        self.show()
+        self.reload()
     
     def is_number(s):
         try:

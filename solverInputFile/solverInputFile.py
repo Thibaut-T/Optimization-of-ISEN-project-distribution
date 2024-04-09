@@ -10,17 +10,18 @@ class SolverInputFile(tk.Frame):
                 
         self.previous_frame = "exportToMoodle"
         self.next_frame = "solverProcess"
-
-        self.objective_fulfilled = os.path.exists("./common/dataProjects.xlsx")
-                
         self.controller = controller
-        self.show()
+        self.objective_fulfilled = False
+
+        self.reload()
     
     def reload(self):
         children = self.winfo_children()
         for item in children:
             item.pack_forget()
             item.grid_forget()
+        self.objective_fulfilled = os.path.exists("./common/answerProjects.xlsx")
+
         self.show()
     
     def show(self):
