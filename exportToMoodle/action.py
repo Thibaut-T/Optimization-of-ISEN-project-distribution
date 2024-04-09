@@ -13,7 +13,7 @@ def create_xml_file(filename, moodle_folder):
 
         <question type="category">
         <category>
-        <text>$course$/top/""" + moodle_folder + """</text>
+        <text>$course$/top/""" + moodle_folder + r"""</text>
         </category>
         </question>
 
