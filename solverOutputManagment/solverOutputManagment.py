@@ -269,6 +269,9 @@ class SolverOutputManagment(tk.Frame):
         
         # Ajouter les informations des self.projets dans le conteneur scrollable_frame
         for projet in self.projets:
+        
+        # Ajouter les informations des self.projets dans le conteneur scrollable_frame
+        for projet in self.projets:
             projet_label = ttk.Label(scrollable_frame, text=f"Nom du projet : {projet.nom}\n"
                                                         f"Elèves du projet :\n"
                                                         f"Informations du projet :\n"

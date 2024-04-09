@@ -11,7 +11,7 @@ class exportToMoodle(tk.Frame):
         self.objective_fulfilled = True
 
         self.controller = controller
-        self.show()
+        self.reload()
     
     def reload(self):
         children = self.winfo_children()

@@ -9,17 +9,17 @@ class SolverProcess(tk.Frame):
 
         self.previous_frame = "solverInputFile"
         self.next_frame = "solverOutputManagment"
-
-        self.objective_fulfilled = True if os.path.exists("./common/result.csv") else False
-
+        self.objective_fulfilled = False
         self.controller = controller
-        self.show()
+
+        self.reload()
 
     def reload(self):
         children = self.winfo_children()
         for item in children:
             item.pack_forget()
             item.grid_forget()
+        self.objective_fulfilled = True if os.path.exists("./common/resultSolver.csv") else False
         self.show()
 
     def show(self):

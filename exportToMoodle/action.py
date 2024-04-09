@@ -1,6 +1,6 @@
 import os
 from tkinter import filedialog
-
+import pandas as pd
 
 def create_xml_file(filename):
     try:
@@ -13,7 +13,7 @@ def create_xml_file(filename):
 
         <question type="category">
         <category>
-        <text>$course$/top/MoodleOfficiel</text>
+        <text>$course$/top/MoodleOfficieltest</text>
         </category>
         </question>
 
@@ -22,61 +22,62 @@ def create_xml_file(filename):
         <text><![CDATA[Présence]]></text>
         </name>
         <questiontext format="html">
-        <text><![CDATA[<p>Êtes-vous présent.e.s au semestre 2 ? <BR/>Are you present in semester 2 ? </p>]]></text>
+        <text><![CDATA[<p>Êtes-vous présent.e.s au semestre 2 ?<BR/><em>Are you present in semester 2 ?</em></p>]]></text>
         </questiontext>
-        <defaultgrade>1.0</defaultgrade>
+        <defaultgrade>0</defaultgrade>
         <generalfeedback format="html"><text/></generalfeedback>
-        <penalty>0.10</penalty>
         <hidden>0</hidden>
         <single>true</single>
         <shuffleanswers>1</shuffleanswers>
         <answernumbering>abc</answernumbering>
         <answer fraction="0" format="html">
-        <text><![CDATA[<p>Oui <BR/>Yes</p>]]></text>
+        <text><![CDATA[<p>Oui<BR/>Yes</p>]]></text>
         </answer>
         <answer fraction="0" format="html">
-        <text><![CDATA[<p>Non <BR/>No</p>]]></text>
+        <text><![CDATA[<p>Non<BR/>No</p>]]></text>
         </answer>
         </question>
         <question type="multichoice">
         <name format="html">
-        <text><![CDATA[Informatique et finance]]></text>
+        <text><![CDATA[Informatique et Finance]]></text>
         </name>
         <questiontext format="html">
-        <text><![CDATA[<p>Êtes-vous en spécialité informatique et finance ? <BR/>Are you specializing in informatics and finance ? </p>]]></text>
+        <text><![CDATA[<p>Êtes-vous en spécialité Informatique et Finance ?<BR/><em>Are you specialized in Information Technology and Finance ?</em></p>]]></text>
         </questiontext>
-        <defaultgrade>1.0</defaultgrade>
+        <defaultgrade>0</defaultgrade>
         <generalfeedback format="html"><text/></generalfeedback>
-        <penalty>0.10</penalty>
         <hidden>0</hidden>
         <single>true</single>
         <shuffleanswers>1</shuffleanswers>
         <answernumbering>abc</answernumbering>
         <answer fraction="0" format="html">
-        <text><![CDATA[<p>Oui <BR/>Yes</p>]]></text>
+        <text><![CDATA[<p>Oui<BR/>Yes</p>]]></text>
         </answer>
         <answer fraction="0" format="html">
-        <text><![CDATA[<p>Non <BR/>No</p>]]></text>
+        <text><![CDATA[<p>Non<BR/>No</p>]]></text>
         </answer>
         </question>
         """)
         
-        for i in range(1, 1 + 1):
-            project_number = str(i).zfill(2)
+        # Open the Excel file with pandas
+        df = pd.read_excel('common/dataProjects.xlsx')
+
+        # Loop over df to create a question for each project
+        for i in range(len(df)):
+            project_number = df.loc[i, 'Numéro du projet']
             file.write(r"""<question type="multichoice">
             <name format="html">
-            <text><![CDATA[Projet """ + project_number + """ ]]></text>
+            <text><![CDATA[Projet {:02d}]]></text>
             </name>
             <questiontext format="html">
-            <text><![CDATA[<p>Évaluez le projet """ + str(i) + """ : temp de 1 à 10 (10 = votre projet préféré) <BR/>Rate the project """ + str(i) + """ : temp from 1 to 10 (10 = your favorite project) </p>]]></text>
+            <text><![CDATA[<p>Évaluez le projet """ + str(project_number) + """ : """ + str(df.loc[i, "Intitulé"]) + """ de 1 à 10 (10 = votre projet préféré) <BR/>Rate the project """ + str(project_number) + """ : """ + str(df.loc[i, "Intitulé"]) + """ from 1 to 10 (10 = your favorite project) </p>]]></text>
             </questiontext>
-            <defaultgrade>1.0</defaultgrade>
+            <defaultgrade>0</defaultgrade>
             <generalfeedback format="html"><text/></generalfeedback>
-            <penalty>0.10</penalty>
             <hidden>0</hidden>
             <single>true</single>
             <shuffleanswers>1</shuffleanswers>
-            <answernumbering>abc</answernumbering>
+            <answernumbering>none</answernumbering>
             <answer fraction="0" format="html">
             <text><![CDATA[<p>1</p>]]></text>
             </answer>
@@ -108,7 +109,7 @@ def create_xml_file(filename):
             <text><![CDATA[<p>10</p>]]></text>
             </answer>
             </question>
-            """)
+            """.format(project_number, project_number, project_number))
 
 def save():
     filename = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML files", "*.xml")])
