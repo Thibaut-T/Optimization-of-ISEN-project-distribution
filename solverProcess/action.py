@@ -7,7 +7,13 @@ import pandas as pd
 
 
 def solve(controller):
-    students_projects_array, students_projects_info_finance_array, data_project = get_data()
+    students_projects_array_with_mails, students_projects_info_finance_array_with_mails, data_project = get_data()
+
+    print(students_projects_array_with_mails)
+    print(students_projects_info_finance_array_with_mails)
+
+    students_projects_info_finance_array = pd.DataFrame([row[1:] for row in students_projects_info_finance_array_with_mails]).to_numpy()
+    students_projects_array = pd.DataFrame([row[1:] for row in students_projects_array_with_mails]).to_numpy()
 
     print(students_projects_array)
     print(students_projects_info_finance_array)
@@ -16,7 +22,7 @@ def solve(controller):
     if not students_projects_array.any():
         print("No data")
         return
-    
+
 
     ##################################################################
 
@@ -24,9 +30,9 @@ def solve(controller):
     projects_students_array = transpose(students_projects_array)
     projects_students_info_finance_array = transpose(students_projects_info_finance_array)
     number_of_projects = len(projects_students_array)
-    max_students_per_project = 7
-    min_students_per_project = 3
     bigM = 99999
+
+    already_assigned = []
 
     ##################################################################
 
@@ -36,9 +42,23 @@ def solve(controller):
     variables_info_finance = {(i, j): LpVariable(name=f"s{i+1}p{j+1}IF", cat=LpBinary) for i in range(len(students_projects_info_finance_array)) for j in range(len(students_projects_info_finance_array[i]))}
 
     binary_variables = {j: LpVariable(name=f"b{j}", cat=LpBinary) for j in range(len(projects_students_array))}
-
+    
     tmp = [(variables_normal[i, j],students_projects_array[i][j]) for i in range(len(students_projects_array)) for j in range(len(students_projects_array[i]))]
     tmp += [(variables_info_finance[i, j],students_projects_info_finance_array[i][j]) for i in range(len(students_projects_info_finance_array)) for j in range(len(students_projects_info_finance_array[i]))]
+
+    for i in range(number_of_projects):
+        for email in data_project[i][0]:
+            for j in range(len(students_projects_array_with_mails)):
+                if students_projects_array_with_mails[j][0] == email:
+                    for lp_var in tmp:
+                        if lp_var[0].name == f"s{j+1}p{i+1}N":
+                            tmp[tmp.index(lp_var)] = (lp_var[0], 1)
+                            break
+                    if j not in already_assigned:
+                        already_assigned.append(j)
+                    else:
+                        print("Error: Student already assigned to a project")
+                        return
 
     model += LpAffineExpression(tmp)
 
@@ -83,6 +103,11 @@ def solve(controller):
             tmp1 = lpSum(variables_info_finance[i, j] for i in range(len(projects_students_info_finance_array[j])))
             model += tmp1 <= 2
 
+    for i in range(number_of_projects):
+        for email in data_project[i][0]:
+            for j in range(len(students_projects_array_with_mails)):
+                if students_projects_array_with_mails[j][0] == email:
+                    model += variables_normal[j, i] == 1
     model.solve()
     model.writeLP(lp_file)
 
@@ -96,17 +121,14 @@ def solve(controller):
     controller.show_frame("solverProcess")    
 
 def formated_table(data):
-    print(data)
-
     data = pd.DataFrame(data[1:], columns=data[0])
-    
-    print(data)
 
-    data = data.iloc[:, 3:]
+    tmp_data = data.iloc[:, 0]
+    tmp_data = pd.concat([tmp_data, data.iloc[:, 3:]], axis=1)
 
-    data = data.to_numpy()
+    tmp_data = tmp_data.to_numpy()
 
-    return data
+    return tmp_data
 
 def get_data():
     table_normal = []
@@ -123,12 +145,13 @@ def get_data():
 
             data_array_norm.append(project_numbers)
             data_array_info_finance.append(project_numbers)
-
+            
             for index, row in data.iterrows():
+                student_data = [f"{row['Email address']}"]
+                grades = []
+
                 # vérifier si la personne est en informatique et finance
                 if row['Response 1'] == "Non   No":
-                    student_data = [f"{row['Last name']} {row['First name']}"]
-                    grades = []
                     for i in range(1, num_projects + 1):
                         try:
                             grade = int(row[f'Response {i}'])
@@ -151,8 +174,6 @@ def get_data():
 
 
                 elif row['Response 1'] == "Oui   Yes":
-                    student_data = [f"{row['Last name']} {row['First name']}"]
-                    grades = []
                     for i in range(1, num_projects + 1):
                         try:
                             grade = int(row[f'Response {i}'])
@@ -174,9 +195,6 @@ def get_data():
                     data_array_info_finance.append(student_data)
                 
                 else:
-                    student_data = [f"{row['Last name']} {row['First name']}"]
-                    grades = []
-
                     for i in range(1, num_projects + 1):
                         grade = 0  
                         grades.append(grade)
