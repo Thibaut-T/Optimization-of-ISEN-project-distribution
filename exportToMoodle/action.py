@@ -73,7 +73,7 @@ def create_xml_file(filename):
             <text><![CDATA[Projet """ + str(project_number) + """ ]]></text>
             </name>
             <questiontext format="html">
-            <text><![CDATA[<p>Évaluez le projet """ + str(project_number) + """ : """ + str(df.loc[i, "Intitulé"]) + """ de 1 à 10 (10 = votre projet préféré) <BR/>Rate the project """ + str(i) + """ : temp from 1 to 10 (10 = your favorite project) </p>]]></text>
+            <text><![CDATA[<p>Évaluez le projet """ + str(project_number) + """ : """ + str(df.loc[i, "Intitulé"]) + """ de 1 à 10 (10 = votre projet préféré) <BR/>Rate the project """ + str(project_number) + """ : """ + str(df.loc[i, "Intitulé"]) + """ from 1 to 10 (10 = your favorite project) </p>]]></text>
             </questiontext>
             <defaultgrade>1.0</defaultgrade>
             <generalfeedback format="html"><text/></generalfeedback>
