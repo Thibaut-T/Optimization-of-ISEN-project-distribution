@@ -33,8 +33,12 @@ class SolverInputFile(tk.Frame):
   
     def open_file(self):
         filename = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx")])
+
         if filename:
             shutil.copy(filename, "./common")
+            if os.path.exists(f"./common/{os.path.basename(filename)}"):
+                os.remove(f"./common/{os.path.basename(filename)}")
+            os.remove(f"./common/answerProjects.xlsx")
             os.rename(f"./common/{os.path.basename(filename)}", f"./common/answerProjects.xlsx")
         self.controller.show_frame("solverInputFile")
 
