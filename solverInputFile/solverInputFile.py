@@ -37,8 +37,10 @@ class SolverInputFile(tk.Frame):
         if filename:
             if os.path.exists(f"./common/{os.path.basename(filename)}"):
                 os.remove(f"./common/{os.path.basename(filename)}")
-            os.remove(f"./common/answerProjects.xlsx")
-            
+
+            if os.path.exists("./common/answerProjects.xlsx"):
+                os.remove(f"./common/answerProjects.xlsx")
+
             shutil.copy(filename, "./common")
             os.rename(f"./common/{os.path.basename(filename)}", f"./common/answerProjects.xlsx")
         self.controller.show_frame("solverInputFile")
