@@ -96,8 +96,12 @@ def solve(controller):
     controller.show_frame("solverProcess")    
 
 def formated_table(data):
+    print(data)
+
     data = pd.DataFrame(data[1:], columns=data[0])
     
+    print(data)
+
     data = data.iloc[:, 3:]
 
     data = data.to_numpy()
@@ -134,14 +138,14 @@ def get_data():
 
                     non_zero_grades = [grade for grade in grades if grade != 0]
                     zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
-                    if zero_indices:
+
+                    while len(non_zero_grades) <= 5:
                         random_index = random.choice(zero_indices)
                         grades[random_index] = 5
                         non_zero_grades.append(5)
 
-                    top_grades = sorted(grades, reverse=True)[:5]
-
-                    student_data += [grade if grade in top_grades else 0 for grade in grades]
+                    normalized_grades = [int((grade / max(non_zero_grades))*5) if grade != 0 else 0 for grade in grades]
+                    student_data += normalized_grades
 
                     data_array_norm.append(student_data)
 
@@ -158,13 +162,14 @@ def get_data():
 
                     non_zero_grades = [grade for grade in grades if grade != 0]
                     zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
-                    if zero_indices:
+
+                    while len(non_zero_grades) <= 5:
                         random_index = random.choice(zero_indices)
                         grades[random_index] = 5
                         non_zero_grades.append(5)
 
-                    top_grades = sorted(grades, reverse=True)[:5]
-                    student_data += [grade if grade in top_grades else 0 for grade in grades]
+                    normalized_grades = [int((grade / max(non_zero_grades))*5) if grade != 0 else 0 for grade in grades]
+                    student_data += normalized_grades
 
                     data_array_info_finance.append(student_data)
                 
@@ -178,15 +183,16 @@ def get_data():
 
                     non_zero_grades = [grade for grade in grades if grade != 0]
                     zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
-                    if zero_indices:
+                    
+                    while len(non_zero_grades) <= 5:
                         random_index = random.choice(zero_indices)
                         grades[random_index] = 5
                         non_zero_grades.append(5)
 
-                    top_grades = sorted(grades, reverse=True)[:5]
-                    student_data += [grade if grade in top_grades else 0 for grade in grades]
+                    normalized_grades = [int((grade / max(non_zero_grades))*5) if grade != 0 else 0 for grade in grades]
+                    student_data += normalized_grades
 
-                    data_array_info_finance.append(student_data)
+                    data_array_norm.append(student_data)
 
             table_normal = formated_table(data_array_norm)
             table_info_finance = formated_table(data_array_info_finance)
