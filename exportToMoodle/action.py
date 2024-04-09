@@ -28,7 +28,7 @@ def create_xml_file(filename, moodle_folder):
         <generalfeedback format="html"><text/></generalfeedback>
         <single>true</single>
         <shuffleanswers>1</shuffleanswers>
-        <answernumbering>abc</answernumbering>
+        <answernumbering>none</answernumbering>
         <answer fraction="0" format="html">
         <text><![CDATA[<p>Oui<BR/>Yes</p>]]></text>
         </answer>
@@ -47,7 +47,7 @@ def create_xml_file(filename, moodle_folder):
         <generalfeedback format="html"><text/></generalfeedback>
         <single>true</single>
         <shuffleanswers>1</shuffleanswers>
-        <answernumbering>abc</answernumbering>
+        <answernumbering>none</answernumbering>
         <answer fraction="0" format="html">
         <text><![CDATA[<p>Oui<BR/>Yes</p>]]></text>
         </answer>
