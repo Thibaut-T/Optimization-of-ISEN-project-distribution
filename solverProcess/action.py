@@ -1,7 +1,7 @@
 from pulp import LpProblem, LpMaximize, LpVariable, LpBinary, lpSum, LpAffineExpression
 import pandas as pd
 from numpy import transpose
-import numpy as np
+from math import isnan
 import random
 import pandas as pd
 
@@ -114,7 +114,7 @@ def get_data():
             data_array_norm = []
             data_array_info_finance = []
             
-            num_projects = len([col for col in data.columns if 'Réponse' in col]) - 2
+            num_projects = len([col for col in data.columns if 'Response' in col]) - 2
             project_numbers = ["Project number"] + [f"Project {i}" for i in range(1, num_projects + 1)]
 
             data_array_norm.append(project_numbers)
@@ -122,12 +122,12 @@ def get_data():
 
             for index, row in data.iterrows():
                 # vérifier si la personne est en informatique et finance
-                if row['Réponse 1'] == "Non   No":
-                    student_data = [f"{row['Nom de famille']} {row['Prénom']}"]
+                if row['Response 1'] == "Non   No":
+                    student_data = [f"{row['Last name']} {row['First name']}"]
                     grades = []
                     for i in range(1, num_projects + 1):
                         try:
-                            grade = int(row[f'Réponse {i}'])
+                            grade = int(row[f'Response {i}'])
                         except ValueError:
                             grade = 0  
                         grades.append(grade)
@@ -140,15 +140,18 @@ def get_data():
                         non_zero_grades.append(5)
 
                     top_grades = sorted(grades, reverse=True)[:5]
+
                     student_data += [grade if grade in top_grades else 0 for grade in grades]
 
                     data_array_norm.append(student_data)
-                elif row['Réponse 1'] == "Oui   Yes":
-                    student_data = [f"{row['Nom de famille']} {row['Prénom']}"]
+
+
+                elif row['Response 1'] == "Oui   Yes":
+                    student_data = [f"{row['Last name']} {row['First name']}"]
                     grades = []
                     for i in range(1, num_projects + 1):
                         try:
-                            grade = int(row[f'Réponse {i}'])
+                            grade = int(row[f'Response {i}'])
                         except ValueError:
                             grade = 0  
                         grades.append(grade)
@@ -164,6 +167,27 @@ def get_data():
                     student_data += [grade if grade in top_grades else 0 for grade in grades]
 
                     data_array_info_finance.append(student_data)
+                
+                else:
+                    student_data = [f"{row['Last name']} {row['First name']}"]
+                    grades = []
+
+                    for i in range(1, num_projects + 1):
+                        grade = 0  
+                        grades.append(grade)
+
+                    non_zero_grades = [grade for grade in grades if grade != 0]
+                    zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
+                    if zero_indices:
+                        random_index = random.choice(zero_indices)
+                        grades[random_index] = 5
+                        non_zero_grades.append(5)
+
+                    top_grades = sorted(grades, reverse=True)[:5]
+                    student_data += [grade if grade in top_grades else 0 for grade in grades]
+
+                    data_array_info_finance.append(student_data)
+
             table_normal = formated_table(data_array_norm)
             table_info_finance = formated_table(data_array_info_finance)
     except FileNotFoundError:
@@ -176,6 +200,22 @@ def get_data():
             data_array_norm = []
             for index, row in data.iterrows():
                 project_data = [row['Equipe'], row["Minimum d'étudiants"], row["Maximum d'étudiants"]]
+
+                if isinstance(project_data[0], str):
+                    project_data[0] = [data for data in project_data[0].split(";")]
+                else:
+                    project_data[0] = []
+
+                if not isnan(project_data[1]):
+                    project_data[1] = int(project_data[1])
+                else:
+                    project_data[1] = 3
+
+                if not isnan(project_data[2]):
+                    project_data[2] = int(project_data[2])
+                else:
+                    project_data[2] = 7
+
                 data_array_norm.append(project_data)
             
             data_project = data_array_norm
