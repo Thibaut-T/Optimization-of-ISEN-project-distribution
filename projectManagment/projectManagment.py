@@ -2,10 +2,21 @@ import tkinter as tk
 from tkinter import ttk
 import pandas as pd
 from projectManagment.actions import modifyProject, createProject, deleteProject, getAllProjects, savePdf, saveXml
+from tkinter import PhotoImage
+
+image_path = "Sécurité-routière-glissière-bois-métal-TLC18-3.png"
 
 class ProjectManagment(tk.Frame):
     def __init__(self, parent, controller): 
-        tk.Frame.__init__(self, parent, bg="black")
+        tk.Frame.__init__(self, parent)
+
+        # Charger l'image
+        self.bg_image = PhotoImage(file=image_path)
+
+        # Ajouter l'image en tant que background
+        self.bg_label = tk.Label(self, image=self.bg_image)
+        self.bg_label.place(relwidth=1, relheight=1)
+
 
         self.previous_frame = ""
         self.next_frame = "exportToMoodle"

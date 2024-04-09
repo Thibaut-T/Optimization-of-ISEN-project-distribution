@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import pandas as pd
 
+# Définition des classes existantes
 class Projet:
     def __init__(self):
         self.nom = ""
@@ -23,59 +24,99 @@ class Eleve:
         self.prenom = ""
         self.mail = ""
 
-# Charger le fichier Excel
-donnees = pd.read_csv('./common/result.csv')
+class Anomalies:
+    def __init__(self):
+        self.error = ""
+    def __str__(self):
+        return f"Erreur : {self.error}"
 
-projets = []  # Liste pour stocker les objets de la classe Projet
+class Epasdeproj(Anomalies):
+    def __init__(self):
+        super().__init__()
+        self.student = ""
 
-# Parcourir toutes les colonnes
-for colonne in donnees.columns:
-    # Vérifier si la colonne contient la valeur 1
-    if (donnees[colonne] == 1).any():
-        # Créer une instance de la classe Projet
-        projet = Projet()
-        # Affecter le nom de la colonne au champ nom de l'objet Projet
-        projet.nom = colonne
-        # Afficher le titre de la colonne
-        print(f"Projet : {colonne}")
-        # Afficher les titres de ligne avec la valeur 1 dans cette colonne
-        lignes = donnees[donnees[colonne] == 1].index
-        for ligne in lignes:
-            # Récupérer le titre de la ligne (première cellule de la ligne)
-            titre_ligne = donnees.iloc[ligne, 0]  # Utilisation de iloc pour accéder à la première cellule de la ligne
-            # Créer une instance de la classe Eleve
-            eleve = Eleve()
-            # Affecter le titre de la ligne au champ nom de l'objet Eleve
-            eleve.nom = titre_ligne
-            # Ajouter l'objet Eleve à la liste eleves de l'objet Projet
-            projet.eleves.append(eleve)
-            print(f" - Elève : {titre_ligne}")
-        # Ajouter l'objet Projet à la liste projets
-        projets.append(projet)
+    def verifier_anomalies(self, donnees_anomalie):
+        for index, row in donnees_anomalie.iterrows():
+            if sum(row.iloc[1:]) < 1:
+                self.error = f"{row.iloc[0]} n'est pas affecté à un projet"
+                print(self)
 
-# Charger les données du fichier output.xlsx
-donnees_output = pd.read_excel('output.xlsx')
+class Etropdeproj(Anomalies):
+    def __init__(self):
+        super().__init__()
+        self.student = ""
 
-# Parcourir les projets et compléter les informations
-for projet in projets:
-    # Récupérer les informations du projet correspondant à son nom dans output.xlsx
-    infos_projet = donnees_output[donnees_output['Intitulé'] == projet.nom]
-    if not infos_projet.empty:
-        infos_projet = infos_projet.iloc[0]
-        # Remplir les attributs de l'objet Projet
-        projet.intitule = infos_projet['Intitulé']
-        projet.par = infos_projet['Proposé par']
-        projet.equipe = infos_projet['Equipe']
-        projet.tel = infos_projet['Tél']
-        projet.mail = infos_projet['Mail']
-        projet.description = infos_projet['Description']
-        projet.nbmin = infos_projet['Minimum d\'étudiants']
-        projet.nbmax = infos_projet['Maximum d\'étudiants']
-        projet.entreprise = infos_projet['Entreprise']
-    else:
-        print(f"Aucune information trouvée pour le projet {projet.nom} dans le fichier output.xlsx")
+    def verifier_anomalies(self, donnees_anomalie):
+        for index, row in donnees_anomalie.iterrows():
+            if sum(row.iloc[1:]) > 1:
+                self.error = f"{row.iloc[0]} est affecté à plusieurs projets"
+                print(self)
 
-# Créer l'interface utilisateur avec tkinter
+class Ppasassezeleve(Anomalies):
+    def __init__(self):
+        super().__init__()
+        self.projet = ""
+    
+    def verifier_anomalies(self, donnees_anomalie, donnees_projet):
+        df_projet = pd.read_excel(donnees_projet)
+
+        for index, row in df_projet.iterrows():
+            intitule_projet = row["Intitulé"]
+            nb_min_etudiants = row["Minimum d'étudiants"]
+            somme_etudiants = donnees_anomalie[intitule_projet].sum()
+            
+            if somme_etudiants < nb_min_etudiants:
+                self.error = f"{intitule_projet} n'a pas le minimum requis d'étudiants"
+                print(self)
+
+class Ptropeleve(Anomalies):
+    def __init__(self):
+        super().__init__()
+        self.projet = ""
+    
+    def verifier_anomalies(self, donnees_anomalie, donnees_projet):
+        df_projet = pd.read_excel(donnees_projet)
+
+        for index, row in df_projet.iterrows():
+            intitule_projet = row["Intitulé"]
+            nb_max_etudiants = row["Maximum d'étudiants"]
+            somme_etudiants = donnees_anomalie[intitule_projet].sum()
+            
+            if somme_etudiants > nb_max_etudiants:
+                self.error = f"{intitule_projet} contient trop d'étudiants"
+                print(self)
+
+def charger_donnees_output():
+    return pd.read_excel('output.xlsx')
+
+def charger_donnees_output2():
+    return pd.read_excel('output2.xlsx')
+
+def charger_donnees_test_projet():
+    return pd.read_excel('test_projet.xlsx')
+
+
+projets = []
+
+# Chargement des données
+donnees_output = charger_donnees_output()
+donnees_output2 = charger_donnees_output2()
+donnees_test_projet = charger_donnees_test_projet()
+
+# Utilisation des données pour vérifier les anomalies dans les projets
+epasdeproj_anomalies = Epasdeproj()
+epasdeproj_anomalies.verifier_anomalies(donnees_output2)
+
+etropdeproj_anomalies = Etropdeproj()
+etropdeproj_anomalies.verifier_anomalies(donnees_output2)
+
+ppasassezeleve_anomalies = Ppasassezeleve()
+ppasassezeleve_anomalies.verifier_anomalies(donnees_output2, 'output.xlsx')
+
+ptropeleve_anomalies = Ptropeleve()
+ptropeleve_anomalies.verifier_anomalies(donnees_output2, 'output.xlsx')
+
+# Création de l'interface utilisateur avec tkinter
 class SolverOutputManagment(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent, bg="white")
@@ -150,7 +191,35 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.title("Gestion des projets")
 
-    # Créer une instance de SolverOutputManagment
+    # Créer une instance de SolverOutputManagment après le traitement des données
+    projets = []  # Liste pour stocker les objets de la classe Projet
+
+    # Parcourir toutes les colonnes
+    for colonne in donnees_test_projet.columns:
+        # Vérifier si la colonne contient la valeur 1
+        if (donnees_test_projet[colonne] == 1).any():
+            # Créer une instance de la classe Projet
+            projet = Projet()
+            # Affecter le nom de la colonne au champ nom de l'objet Projet
+            projet.nom = colonne
+            # Afficher le titre de la colonne
+            print(f"Projet : {colonne}")
+            # Afficher les titres de ligne avec la valeur 1 dans cette colonne
+            lignes = donnees_test_projet[donnees_test_projet[colonne] == 1].index
+            for ligne in lignes:
+                # Récupérer le titre de la ligne (première cellule de la ligne)
+                titre_ligne = donnees_test_projet.iloc[ligne, 0]  # Utilisation de iloc pour accéder à la première cellule de la ligne
+                # Créer une instance de la classe Eleve
+                eleve = Eleve()
+                # Affecter le titre de la ligne au champ nom de l'objet Eleve
+                eleve.nom = titre_ligne
+                # Ajouter l'objet Eleve à la liste eleves de l'objet Projet
+                projet.eleves.append(eleve)
+                print(f" - Elève : {titre_ligne}")
+            # Ajouter l'objet Projet à la liste projets
+            projets.append(projet)
+
+    # Utilisation des données pour afficher les informations des projets
     solver_output = SolverOutputManagment(root, None)
     solver_output.pack(expand=True, fill="both")
 
