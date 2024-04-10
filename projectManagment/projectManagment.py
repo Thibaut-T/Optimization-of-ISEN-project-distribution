@@ -47,11 +47,16 @@ class ProjectManagment(tk.Frame):
         sub_frame.pack(side="bottom", fill="both", expand=True)
 
         canvas = tk.Canvas(sub_frame, bd=0)
+
         scrollbary = tk.Scrollbar(sub_frame, orient="vertical", command=canvas.yview)
         scrollbary.pack(side="right", fill="y")
 
+        scrollbarx = tk.Scrollbar(sub_frame, orient="horizontal", command=canvas.xview)
+        scrollbarx.pack(side="bottom", fill="x")
+
         canvas.pack(side="left", fill="both", expand=True)
         canvas.configure(yscrollcommand=scrollbary.set)
+        canvas.configure(xscrollcommand=scrollbarx.set)
 
         # Conteneur pour les éléments dans le Canvas
         # Calcul des coordonnées au milieu de la fenêtre
