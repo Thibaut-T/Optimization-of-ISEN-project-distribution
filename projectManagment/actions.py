@@ -36,7 +36,7 @@ def deleteProject(controller, i):
     projects = getAllProjects()
     projects = projects[projects['Numéro du projet'] != i]
 
-    projects['Numéro du projet'] = projects['Numéro du projet'].apply(lambda x: x - 1)
+    projects['Numéro du projet'] = projects['Numéro du projet'].apply(lambda x: int(x - 1) if x > i else int(x))
 
     projects.to_excel('common/dataProjects.xlsx', index=False)
 

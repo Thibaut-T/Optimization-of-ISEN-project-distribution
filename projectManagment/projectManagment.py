@@ -61,7 +61,7 @@ class ProjectManagment(tk.Frame):
         # Conteneur pour les éléments dans le Canvas
         # Calcul des coordonnées au milieu de la fenêtre
         # Coordonnée x au milieu de la fenêtre
-        
+
         scrollable_frame = tk.Frame(canvas)
         canvas.create_window((self.winfo_width(), 0), window=scrollable_frame, anchor="nw")
 
