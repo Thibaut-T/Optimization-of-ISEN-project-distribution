@@ -69,7 +69,7 @@ def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entr
     input8 = entry8.get()
     input9 = entry9.get()
     input10 = entry10.get()
-    input7 = entry7.get("1.0", tk.END)
+    input7 = entry7.get("1.0", END)
     if input10 == "":
         input10 = "N/A"
 
@@ -102,15 +102,15 @@ def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entr
     df.to_excel("common/dataProjects.xlsx", index=False)
 
     # Clear the entry widgets
-    entry2.delete(0, tk.END)
-    entry3.delete(0, tk.END)
-    entry4.delete(0, tk.END)
-    entry5.delete(0, tk.END)
-    entry6.delete(0, tk.END)
-    entry8.delete(0, tk.END)
-    entry9.delete(0, tk.END)
-    entry10.delete(0, tk.END)
-    entry7.delete("1.0", tk.END)
+    entry2.delete(0, END)
+    entry3.delete(0, END)
+    entry4.delete(0, END)
+    entry5.delete(0, END)
+    entry6.delete(0, END)
+    entry8.delete(0, END)
+    entry9.delete(0, END)
+    entry10.delete(0, END)
+    entry7.delete("1.0", END)
 
     # Show the "projectManagment" frame
     controller.show_frame("projectManagment")
@@ -127,7 +127,7 @@ def add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,en
     input8 = entry8.get()
     input9 = entry9.get()
     input10 = entry10.get()
-    input7 = entry7.get("1.0", tk.END)
+    input7 = entry7.get("1.0", END)
     if(input10==""):
         input10="N/A"
     
@@ -157,14 +157,14 @@ def add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,en
     df = pd.concat([df, new_row], ignore_index=True)
     df.to_excel("common/dataProjects.xlsx", index=False)
 
-    entry2.delete(0, tk.END)
-    entry3.delete(0, tk.END)
-    entry4.delete(0, tk.END)
-    entry5.delete(0, tk.END)
-    entry6.delete(0, tk.END)
-    entry8.delete(0, tk.END)
-    entry9.delete(0, tk.END)
-    entry10.delete(0, tk.END)
-    entry7.delete("1.0", tk.END)
+    entry2.delete(0, END)
+    entry3.delete(0, END)
+    entry4.delete(0, END)
+    entry5.delete(0, END)
+    entry6.delete(0, END)
+    entry8.delete(0, END)
+    entry9.delete(0, END)
+    entry10.delete(0, END)
+    entry7.delete("1.0", END)
 
     controller.show_frame("projectManagment")

@@ -1,10 +1,10 @@
 import tkinter as tk
-from tkinter import ttk
+from customtkinter import CTkButton, CTkLabel, CTkFrame
 from exportToMoodle.action import save
 
-class exportToMoodle(tk.Frame):
+class exportToMoodle(CTkFrame):
     def __init__(self, parent, controller): 
-        tk.Frame.__init__(self, parent, bg="white")
+        CTkFrame.__init__(self, parent)
                 
         self.previous_frame = "projectManagment"
         self.next_frame = "solverInputFile"
@@ -22,9 +22,9 @@ class exportToMoodle(tk.Frame):
     
     def show(self):
         # label of frame exportToMoodle
-        label = ttk.Label(self, text ="exportToMoodle")
+        label = CTkLabel(self, text ="exportToMoodle")
         label.grid(row = 0, column = 0, padx = 10, pady = 10)
 
         # save button
-        save_button = ttk.Button(self, text="Download Moodle initialisation file", command=save)
+        save_button = CTkButton(self, text="Download Moodle initialisation file", command=save)
         save_button.grid(row = 1, column = 0, padx = 10, pady = 10)

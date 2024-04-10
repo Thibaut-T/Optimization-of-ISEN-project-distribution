@@ -1,4 +1,4 @@
-import tkinter as tk
+import customtkinter as ctk
 from exportStudentDistribution import exportStudentDistribution
 from exportToMoodle import exportToMoodle
 from menu import menu
@@ -10,7 +10,7 @@ from solverOutputManagment import solverOutputManagment
 from topBar import topBar
 import traceback
 
-class MainApp(tk.Tk):
+class MainApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 

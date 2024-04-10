@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from customtkinter import CTkFrame, CTkLabel, CTkCanvas, CTkScrollableFrame
 import pandas as pd
 
 class Projet:
@@ -24,9 +24,9 @@ class Eleve:
         self.mail = ""
 
 # Créer l'interface utilisateur avec tkinter
-class SolverOutputManagment(tk.Frame):
+class SolverOutputManagment(CTkFrame):
     def __init__(self, parent, controller): 
-        tk.Frame.__init__(self, parent, bg="white")
+        CTkFrame.__init__(self, parent)
 
         self.previous_frame = "solverProcess"
         self.next_frame = "exportStudentDistribution"
@@ -108,29 +108,16 @@ class SolverOutputManagment(tk.Frame):
         self.grid_rowconfigure(0, weight=1)     # Ligne 0
         
         # Cadre gauche avec un poids de 1
-        left_frame = tk.Frame(self, bg="purple")
+        left_frame = CTkScrollableFrame(self)
         left_frame.grid(row=0, column=0, sticky="nsew")
         
         # Cadre droit avec un poids de 1
-        right_frame = tk.Frame(self, bg="green")
+        right_frame = CTkScrollableFrame(self)
         right_frame.grid(row=0, column=1, sticky="nsew")
-
-        canvas = tk.Canvas(right_frame, bd=0)
-        scrollbar = tk.Scrollbar(right_frame, orient="vertical", command=canvas.yview)
-        scrollbar.pack(side="right", fill="y")
-        canvas.pack(side="left", fill="both", expand=True)
-        canvas.configure(yscrollcommand=scrollbar.set)
-
-        # Conteneur pour les éléments dans le Canvas
-        # Calcul des coordonnées au milieu de la fenêtre
-        mid_x = self.parent.winfo_width() // 2  # Coordonnée x au milieu de la fenêtre
-        
-        scrollable_frame = tk.Frame(canvas)
-        canvas.create_window((mid_x, 0), window=scrollable_frame, anchor="nw")
-        
-        # Ajouter les informations des self.projets dans le conteneur scrollable_frame
+                
+        # Ajouter les informations des self.projets dans le conteneur canvas
         for projet in self.projets:
-            projet_label = ttk.Label(scrollable_frame, text=f"Nom du projet : {projet.nom}\n"
+            projet_label = CTkLabel(right_frame, text=f"Nom du projet : {projet.nom}\n"
                                                         f"Elèves du projet :\n"
                                                         f"Informations du projet :\n"
                                                         f"Intitulé : {projet.intitule}\n"
@@ -143,6 +130,3 @@ class SolverOutputManagment(tk.Frame):
                                                         f"Maximum d'étudiants : {projet.nbmax}\n"
                                                         f"Entreprise : {projet.entreprise}\n",anchor="e",justify="right")
             projet_label.pack(padx=10, pady=10, anchor="e")
-
-        # Configurer le Canvas pour le défilement
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
