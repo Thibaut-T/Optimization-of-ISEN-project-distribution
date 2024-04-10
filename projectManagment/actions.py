@@ -47,7 +47,3 @@ def savePdf():
     projects = projects.astype(str)  
     projects_dict = projects.to_dict('records') 
     generate_pdf_with_values(projects_dict)
-
-def saveXml():
-    filename = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML files", "*.xml")])
-    

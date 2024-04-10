@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import pandas as pd
-from projectManagment.actions import modifyProject, createProject, deleteProject, getAllProjects, savePdf, saveXml
+from projectManagment.actions import modifyProject, createProject, deleteProject, getAllProjects, savePdf
 
 class ProjectManagment(tk.Frame):
     def __init__(self, parent, controller): 
@@ -14,12 +14,18 @@ class ProjectManagment(tk.Frame):
         self.objective_fulfilled = False
 
         self.reload()
+
+    def recursive_destroy(self, item):
+        if item.winfo_children():
+            for item2 in item.winfo_children():
+                self.recursive_destroy(item2)
+        item.destroy()
     
     def reload(self):
         children = self.winfo_children()
-        for item in children:
-            item.pack_forget()
-            item.grid_forget()
+        
+        for child in children:
+            self.recursive_destroy(child)
 
         try:
             self.projects = getAllProjects()[['Numéro du projet','Intitulé', 'Proposé par']]
@@ -39,8 +45,6 @@ class ProjectManagment(tk.Frame):
         button1.pack(pady=10,padx=10)
         button2 = ttk.Button(self, text="save pdf of all projects", command=lambda: savePdf())
         button2.pack(pady=10,padx=10)
-        button3 = ttk.Button(self, text="save xml of all projects", command=lambda: saveXml())
-        button3.pack(pady=10,padx=10)
 
         # Cadre droit avec un poids de 1
         sub_frame = tk.Frame(self, bg="green")
@@ -63,7 +67,8 @@ class ProjectManagment(tk.Frame):
         # Coordonnée x au milieu de la fenêtre
 
         scrollable_frame = tk.Frame(canvas)
-        canvas.create_window((self.winfo_width(), 0), window=scrollable_frame, anchor="nw")
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
 
         scrollable_frame.grid_columnconfigure(0, weight=1)  # Colonne 0
         scrollable_frame.grid_columnconfigure(1, weight=1)  # Colonne 1
@@ -90,7 +95,4 @@ class ProjectManagment(tk.Frame):
             project_label_2.grid(row = i+5, column = 3, padx = 5, pady = 5)
             project_label_3 = ttk.Button(scrollable_frame, text="supprimer", command=lambda index=project['Numéro du projet']: deleteProject(self.controller, index))
             project_label_3.grid(row = i+5, column = 4, padx = 5, pady = 5)
-
-        # Configurer le Canvas pour le défilement
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
         
