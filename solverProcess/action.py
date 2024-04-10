@@ -134,27 +134,41 @@ def get_data():
     table_normal = []
     table_info_finance = []
 
+
+    traduction_ = {
+        'response' : {
+            'fr' : 'Réponse',
+            'en' : 'Response',
+        },
+        'email' : {
+            'fr' : 'Adresse de courriel',
+            'en' : 'Email address',
+        }
+    }
+
     try:
         data = pd.read_excel("./common/answerProjects.xlsx")
         if not data.empty:
             data_array_norm = []
             data_array_info_finance = []
+
+            language = 'fr' if data.columns[0] == "Nom de famille" else 'en'
             
-            num_projects = len([col for col in data.columns if 'Response' in col]) - 2
+            num_projects = len([col for col in data.columns if traduction_['response'][language] in col]) - 2
             project_numbers = ["Project number"] + [f"Project {i}" for i in range(1, num_projects + 1)]
 
             data_array_norm.append(project_numbers)
             data_array_info_finance.append(project_numbers)
             
             for index, row in data.iterrows():
-                student_data = [f"{row['Email address']}"]
+                student_data = [f"{row[traduction_['email'][language]]}"]
                 grades = []
 
                 # vérifier si la personne est en informatique et finance
-                if row['Response 1'] == "Non   No":
+                if row[f'{traduction_["response"][language]} 1'] == "Non   No":
                     for i in range(1, num_projects + 1):
                         try:
-                            grade = int(row[f'Response {i}'])
+                            grade = int(row[f'{traduction_["response"][language]} {i}'])
                         except ValueError:
                             grade = 0  
                         grades.append(grade)
@@ -173,10 +187,10 @@ def get_data():
                     data_array_norm.append(student_data)
 
 
-                elif row['Response 1'] == "Oui   Yes":
+                elif row[f'{traduction_["response"][language]} 1'] == "Oui   Yes":
                     for i in range(1, num_projects + 1):
                         try:
-                            grade = int(row[f'Response {i}'])
+                            grade = int(row[f'{traduction_["response"][language]} {i}'])
                         except ValueError:
                             grade = 0  
                         grades.append(grade)
