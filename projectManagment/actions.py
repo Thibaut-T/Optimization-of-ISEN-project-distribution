@@ -1,8 +1,11 @@
 import pandas as pd
 from tkinter import filedialog
 from projectCreation.action import generate_pdf_with_values
-
+import os
 def getAllProjects():
+    directory = 'common'
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     try:
         df = pd.read_excel('common/dataProjects.xlsx')
     except FileNotFoundError:
