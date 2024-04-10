@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from customtkinter import CTkFrame, CTkLabel, CTkCanvas, CTkScrollableFrame
 import pandas as pd
 
 
@@ -118,7 +118,7 @@ def verifier_anomalies(resultSolver, projets, eleves):
 # Création de l'interface utilisateur avec tkinter
 class SolverOutputManagment(tk.Frame):
     def __init__(self, parent, controller): 
-        tk.Frame.__init__(self, parent, bg="white")
+        CTkFrame.__init__(self, parent)
 
         self.previous_frame = "solverProcess"
         self.next_frame = "exportStudentDistribution"
@@ -244,11 +244,11 @@ class SolverOutputManagment(tk.Frame):
         self.grid_rowconfigure(0, weight=1)     # Ligne 0
         
         # Cadre gauche avec un poids de 1
-        left_frame = tk.Frame(self, bg="purple")
+        left_frame = CTkScrollableFrame(self)
         left_frame.grid(row=0, column=0, sticky="nsew")
         
         # Cadre droit avec un poids de 1
-        right_frame = tk.Frame(self, bg="green")
+        right_frame = CTkScrollableFrame(self)
         right_frame.grid(row=0, column=1, sticky="nsew")
 
         canvas = tk.Canvas(right_frame, bd=0)

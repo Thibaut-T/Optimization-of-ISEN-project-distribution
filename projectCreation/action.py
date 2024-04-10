@@ -38,26 +38,31 @@ def generate_pdf_with_values(input_values):
         for key, value in input_set.items():
             if key != "Numéro du projet" and key != "Description":
                 pdf.ln(2)  # Reduce space between inputs
-                if key == ["Intitulé", "Minimum d'étudiants","Maximum d'étudiants","Entreprise"]:
-                    pdf.set_font("Arial", "B", 14)  # Change font size and style for "Intitulé"
+                if key == ["Minimum d'étudiants","Maximum d'étudiants","Entreprise"]:
+                    pdf.set_font("Arial", "B", 14)  
                 else:
                     pdf.set_font("Arial", size=12)  # Reset font for other keys
-                pdf.cell(50, 8, txt=f"{key}:", ln=False)
-                pdf.cell(0, 8, txt=value, ln=True)
+                pdf.cell(50, 8, txt=f"{key}:".encode('latin-1', 'ignore').decode('latin-1'), ln=False)
+                if pdf.get_string_width(value.encode('latin-1', 'ignore').decode('latin-1')) > (pdf.w - 2 * pdf.l_margin - 50):
+                    pdf.multi_cell(0, 8, txt=value.encode('latin-1', 'ignore').decode('latin-1'), align="L")
+                else:
+                    pdf.cell(0, 5, txt=value.encode('latin-1', 'ignore').decode('latin-1'), ln=True)
         
         # Description Title
         if "Description" in input_set:
-            pdf.set_text_color(0, 0, 139)  # Dark blue color for Description title
-            pdf.set_font("Arial", "BU", 12)  # Underlined and regular font size for Description title
-            pdf.cell(50, 10, txt="Description:", ln=False)
-            pdf.ln(8)  # Space between Description title and value
-            pdf.set_draw_color(0, 100, 0)  # Dark green color for outline of rectangle
-            pdf.rect(10, pdf.get_y() - 5, 190, 40)  # Rectangle around the Description
-            pdf.set_font("Arial", size=12)  # Reset font size for Description value
-            pdf.multi_cell(0, 8, txt=input_set["Description"])
+            pdf.set_text_color(0, 0, 139)  
+            pdf.set_font("Arial", "BU", 12) 
+            pdf.cell(0, 10, txt="Description:", ln=True)  
+            pdf.ln(2)  
+            pdf.set_font("Arial", size=10)  
+            page_width = pdf.w - 2 * pdf.l_margin 
+            description_text = input_set["Description"]
+            pdf.multi_cell(page_width, 5, txt=description_text.encode('latin-1', 'ignore').decode('latin-1'))
+
+
     filename = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
     if filename:
-        pdf.output(filename)
+        pdf.output(filename, 'F')
 
 def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entry9, entry10, controller):
     input1 = id
@@ -69,7 +74,7 @@ def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entr
     input8 = entry8.get()
     input9 = entry9.get()
     input10 = entry10.get()
-    input7 = entry7.get("1.0", tk.END)
+    input7 = entry7.get("1.0", END)
     if input10 == "":
         input10 = "N/A"
 
@@ -102,15 +107,15 @@ def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entr
     df.to_excel("common/dataProjects.xlsx", index=False)
 
     # Clear the entry widgets
-    entry2.delete(0, tk.END)
-    entry3.delete(0, tk.END)
-    entry4.delete(0, tk.END)
-    entry5.delete(0, tk.END)
-    entry6.delete(0, tk.END)
-    entry8.delete(0, tk.END)
-    entry9.delete(0, tk.END)
-    entry10.delete(0, tk.END)
-    entry7.delete("1.0", tk.END)
+    entry2.delete(0, END)
+    entry3.delete(0, END)
+    entry4.delete(0, END)
+    entry5.delete(0, END)
+    entry6.delete(0, END)
+    entry8.delete(0, END)
+    entry9.delete(0, END)
+    entry10.delete(0, END)
+    entry7.delete("1.0", END)
 
     # Show the "projectManagment" frame
     controller.show_frame("projectManagment")
@@ -127,7 +132,7 @@ def add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,en
     input8 = entry8.get()
     input9 = entry9.get()
     input10 = entry10.get()
-    input7 = entry7.get("1.0", tk.END)
+    input7 = entry7.get("1.0", END)
     if(input10==""):
         input10="N/A"
     
@@ -157,14 +162,14 @@ def add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,en
     df = pd.concat([df, new_row], ignore_index=True)
     df.to_excel("common/dataProjects.xlsx", index=False)
 
-    entry2.delete(0, tk.END)
-    entry3.delete(0, tk.END)
-    entry4.delete(0, tk.END)
-    entry5.delete(0, tk.END)
-    entry6.delete(0, tk.END)
-    entry8.delete(0, tk.END)
-    entry9.delete(0, tk.END)
-    entry10.delete(0, tk.END)
-    entry7.delete("1.0", tk.END)
+    entry2.delete(0, END)
+    entry3.delete(0, END)
+    entry4.delete(0, END)
+    entry5.delete(0, END)
+    entry6.delete(0, END)
+    entry8.delete(0, END)
+    entry9.delete(0, END)
+    entry10.delete(0, END)
+    entry7.delete("1.0", END)
 
     controller.show_frame("projectManagment")
