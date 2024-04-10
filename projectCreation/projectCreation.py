@@ -7,7 +7,7 @@ class ProjectCreation(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg="purple")
 
-        self.previous_frame = ""
+        self.previous_frame = "projectManagment"
         self.next_frame = ""
         self.objective_fulfilled = True
 
