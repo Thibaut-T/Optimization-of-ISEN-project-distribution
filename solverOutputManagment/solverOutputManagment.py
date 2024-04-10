@@ -44,8 +44,7 @@ class Etropdeproj(Anomalies):
         super().__init__()
         self.student = ""
 
-    
-        
+ 
 
 class Ppasassezeleve(Anomalies):
     def __init__(self):
@@ -60,7 +59,8 @@ class Ptropeleve(Anomalies):
         self.projet = ""
     
 
-def verifier_anomalies(self, donnees_anomalie):
+def verifier_anomalies(donnees_anomalie):
+        
         all_errors = []
         for index, row in donnees_anomalie.iterrows():
             if sum(row.iloc[1:]) < 1:
@@ -75,7 +75,7 @@ def verifier_anomalies(self, donnees_anomalie):
                 print(tmp)
                 all_errors.append(tmp.error)
         
-        df_projet = pd.read_excel("dataProjects.xlsx")
+        df_projet = pd.read_excel("./common/dataProjects.xlsx")
 
         for index, row in df_projet.iterrows():
             intitule_projet = row["Intitulé"]
@@ -83,19 +83,22 @@ def verifier_anomalies(self, donnees_anomalie):
             somme_etudiants = donnees_anomalie[intitule_projet].sum()
             
             if somme_etudiants < nb_min_etudiants:
-                self.error = f"{intitule_projet} n'a pas le minimum requis d'étudiants"
-                print(self)
+                tmp = Ppasassezeleve()
+                tmp.error = f"{intitule_projet} n'a pas le minimum requis d'étudiants"
+                print(tmp)
+                all_errors.append(tmp.error)
         
             intitule_projet = row["Intitulé"]
             nb_max_etudiants = row["Maximum d'étudiants"]
             somme_etudiants = donnees_anomalie[intitule_projet].sum()
             
             if somme_etudiants > nb_max_etudiants:
-                self.error = f"{intitule_projet} contient trop d'étudiants"
-                print(self)
+                tmp = Ptropeleve()
+                tmp.error = f"{intitule_projet} contient trop d'étudiants"
+                print(tmp)
+                all_errors.append(tmp.error)
 
         return all_errors
-
 
 
     
@@ -113,6 +116,9 @@ class SolverOutputManagment(tk.Frame):
         self.controller = controller
 
         self.reload()
+
+    
+
     
     def reload(self):
         children = self.winfo_children()
@@ -124,11 +130,10 @@ class SolverOutputManagment(tk.Frame):
         
         try: 
             # Chargement des fichiers Excel
-            donnees_output = pd.read_excel('output.xlsx')
+            donnees_output = pd.read_excel('./common/dataProjects.xlsx')
             donnees_output2 = pd.read_excel('output2.xlsx')
             donnees_test_projet = pd.read_excel('test_projet.xlsx')
-
-
+            
             self.projets = [] # Liste pour stocker les objets de la classe Projet
 
             # Parcourir toutes les colonnes
@@ -156,29 +161,6 @@ class SolverOutputManagment(tk.Frame):
                     # Ajouter l'objet Projet à la liste projets
                     self.projets.append(projet)
 
-            
-            # Vérification des données à la recherche d'anomalie
-            epasdeproj_anomalies = Epasdeproj()
-            epasdeproj_anomalies.verifier_anomalies(donnees_output2)
-            if epasdeproj_anomalies.error:
-                self.all_errors.append(str(epasdeproj_anomalies))
-            
-
-            etropdeproj_anomalies = Etropdeproj()
-            etropdeproj_anomalies.verifier_anomalies(donnees_output2)
-            if etropdeproj_anomalies.error:
-                self.all_errors.append(str(etropdeproj_anomalies))
-            
-
-            ppasassezeleve_anomalies = Ppasassezeleve()
-            ppasassezeleve_anomalies.verifier_anomalies(donnees_output2, 'output.xlsx')
-            if ppasassezeleve_anomalies.error:
-                self.all_errors.append(str(ppasassezeleve_anomalies))
-
-            ptropeleve_anomalies = Ptropeleve()
-            ptropeleve_anomalies.verifier_anomalies(donnees_output2, 'output.xlsx')
-            if ptropeleve_anomalies.error:
-                self.all_errors.append(str(ptropeleve_anomalies))
 
             # Ajouter les informations des projets dans le conteneur scrollable_frame
             # Parcourir les self.projets et compléter les informations
@@ -267,8 +249,6 @@ class SolverOutputManagment(tk.Frame):
         scrollable_frame = tk.Frame(canvas)
         canvas.create_window((mid_x, 0), window=scrollable_frame, anchor="nw")
         
-        # Ajouter les informations des self.projets dans le conteneur scrollable_frame
-        for projet in self.projets:
         
         # Ajouter les informations des self.projets dans le conteneur scrollable_frame
         for projet in self.projets:
@@ -299,7 +279,8 @@ class SolverOutputManagment(tk.Frame):
         # Configurer le Canvas pour le défilement
         scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
 
+        
 
 
 
-
+# all_errors = la fonction 
