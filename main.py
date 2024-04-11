@@ -19,6 +19,7 @@ class MainApp(ctk.CTk):
 
         # Set the window size
         self.minsize(width=800, height=600)
+        self.attributes('-zoomed', True)
 
         self.allFrames = {
             "projectCreation": projectCreation.ProjectCreation(self, self),

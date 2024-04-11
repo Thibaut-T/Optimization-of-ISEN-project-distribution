@@ -259,7 +259,10 @@ class SolverOutputManagment(CTkFrame):
             projet_label.pack(padx=10, pady=10, anchor="w")
 
         for i, error in enumerate(self.all_errors):
-            error_label = CTkLabel(left_frame, text=error, bg_color="red", anchor="w", justify="left")
+            card = CTkFrame(left_frame, fg_color="red")
+            card.pack(padx=5, pady=5, fill="x")
+
+            error_label = CTkLabel(card, text=error, anchor="w", justify="left", fg_color="red", wraplength=card.winfo_width() - 20)
             error_label.grid(row=i, column=0, padx=5, pady=2)
 
 # all_errors = la fonction 
