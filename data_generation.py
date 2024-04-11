@@ -2,7 +2,6 @@ import random
 from faker import Faker
 from openpyxl import Workbook
 
-
 def generate_random_data(num_rows):
     fake = Faker()
     data = []
@@ -13,13 +12,19 @@ def generate_random_data(num_rows):
         state = "-"
         started_on = "-"  
         completed = "-"    
-        time_taken = "-"   #Remplace par ce que tu veux si "-" ne te convient pas
+        time_taken = "-"   
         grade = "-"      
         responses = []
         for i in range(1, 18):
-            responses.append(None)  
             response = random.randint(0, 10)
-            responses.append(response)
+            responses.append(f"Question {i}")
+            if i == 1:
+                response_text = random.choice(["Non No"]) if random.random() < 0.9 else random.choice(["Oui Yes"])
+            elif i == 2:
+                response_text = random.choice(["Oui Yes"]) if random.random() < 0.9 else random.choice(["Non No"])
+            else:
+                response_text = response
+            responses.append(response_text)
         row = [last_name, first_name, email, state, started_on, completed, time_taken, grade] + responses
         data.append(row)
     return data
