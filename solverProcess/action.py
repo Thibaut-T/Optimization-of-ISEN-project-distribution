@@ -9,15 +9,9 @@ import pandas as pd
 def solve(controller):
     students_projects_array_with_mails, students_projects_info_finance_array_with_mails, data_project = get_data()
 
-    print(students_projects_array_with_mails)
-    print(students_projects_info_finance_array_with_mails)
-
     students_projects_info_finance_array = pd.DataFrame([row[1:] for row in students_projects_info_finance_array_with_mails]).to_numpy()
     students_projects_array = pd.DataFrame([row[1:] for row in students_projects_array_with_mails]).to_numpy()
 
-    print(students_projects_array)
-    print(students_projects_info_finance_array)
-    print(data_project)
 
     if not students_projects_array.any():
         print("No data")
@@ -116,6 +110,9 @@ def solve(controller):
         result_array = [[variables_normal[i, j].varValue for j in range(len(students_projects_array[i]))] for i in range(len(students_projects_array))] + [[variables_info_finance[i, j].varValue for j in range(len(students_projects_info_finance_array[i]))] for i in range(len(students_projects_info_finance_array))]
 
         result_df = pd.DataFrame(result_array)
+
+        print(result_df)
+
         result_df.to_csv('common/resultSolver.csv', index=False)
 
         controller.show_frame("solverProcess")
@@ -124,12 +121,16 @@ def solve(controller):
         return Exception
 
 def formated_table(data):
+    print("first data ___________________________________\n", data)
+
     data = pd.DataFrame(data[1:], columns=data[0])
 
     tmp_data = data.iloc[:, 0]
-    tmp_data = pd.concat([tmp_data, data.iloc[:, 3:]], axis=1)
+    tmp_data = pd.concat([tmp_data, data.iloc[:, 1:]], axis=1)
 
     tmp_data = tmp_data.to_numpy()
+
+    print("second data ___________________________________\n", tmp_data)
 
     return tmp_data
 
@@ -158,6 +159,7 @@ def get_data():
             language = 'fr' if data.columns[0] == "Nom de famille" else 'en'
             
             num_projects = len([col for col in data.columns if traduction_['response'][language] in col]) - 2
+
             project_numbers = ["Project number"] + [f"Project {i}" for i in range(1, num_projects + 1)]
 
             data_array_norm.append(project_numbers)
