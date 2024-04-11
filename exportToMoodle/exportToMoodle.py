@@ -1,5 +1,5 @@
 import tkinter as tk
-from customtkinter import CTkButton, CTkLabel, CTkFrame
+from customtkinter import CTkButton, CTkLabel, CTkFrame, CTkEntry
 from exportToMoodle.action import save
 
 class exportToMoodle(CTkFrame):
@@ -26,9 +26,9 @@ class exportToMoodle(CTkFrame):
         label.grid(row = 0, column = 0, padx = 10, pady = 10)
 
         # save button
-        folder_name = tk.Label(self, text="Nom de la banque de questions:")
+        folder_name = CTkLabel(self, text="Nom de la banque de questions:")
         folder_name.grid(row = 2, column = 0)
-        entry = tk.Entry(self)
+        entry = CTkEntry(self)
         entry.grid()
         save_button = CTkButton(self, text="Download Moodle initialisation file", command=lambda moodle_folder=entry: save(moodle_folder))
         save_button.grid(row = 1, column = 0, padx = 10, pady = 10)

@@ -1,5 +1,6 @@
 import tkinter as tk
-from customtkinter import CTkFrame, CTkLabel, CTkCanvas, CTkScrollableFrame
+from customtkinter import CTkFrame, CTkLabel, CTkScrollableFrame
+import math
 import pandas as pd
 
 
@@ -21,7 +22,7 @@ class Projet:
         self.entreprise = ""
 
     def __str__(self):
-        return f"Projet {self.intitule} : {len(self.eleves)} élèves"
+        return f"Projet {self.intitule} :\n - Min : {int(self.nbmin) if not math.isnan(self.nbmin) else 3}\n - Max : {int(self.nbmax) if not math.isnan(self.nbmax) else 7}\n - Equipe de {len(self.eleves)} étudiants :\n" + "\n".join([f"\t- {eleve.nom} {eleve.prenom}" for eleve in self.eleves]) + "\n"
     
     def __repr__(self):
         return f"<Projet> Projet {self.intitule} : {len(self.eleves)} élèves"
@@ -251,18 +252,11 @@ class SolverOutputManagment(CTkFrame):
         
         # Ajouter les informations des self.projets dans le conteneur scrollable_frame
         for projet in self.projets:
-            projet_label = CTkLabel(right_frame, text=f"Intitulé : {projet.intitule}\n"
-                                                        f"Elèves du projet :\n"
-                                                        f"Informations du projet :\n"
-                                                        f"Proposé par : {projet.par}\n"
-                                                        f"Equipe : {projet.equipe}\n"
-                                                        f"Téléphone : {projet.tel}\n"
-                                                        f"Mail : {projet.mail}\n"
-                                                        f"Description : {projet.description}\n"
-                                                        f"Minimum d'étudiants : {projet.nbmin}\n"
-                                                        f"Maximum d'étudiants : {projet.nbmax}\n"
-                                                        f"Entreprise : {projet.entreprise}\n",anchor="e",justify="right")
-            projet_label.pack(padx=10, pady=10, anchor="e")
+            card = CTkFrame(right_frame)
+            card.pack(padx=5, pady=5, fill="x")
+
+            projet_label = CTkLabel(card, text=projet,justify="left")
+            projet_label.pack(padx=10, pady=10, anchor="w")
 
         for i, error in enumerate(self.all_errors):
             error_label = CTkLabel(left_frame, text=error, bg_color="red", anchor="w", justify="left")
