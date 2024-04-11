@@ -74,41 +74,36 @@ def verifier_anomalies(resultSolver, projets, eleves):
                 tmp = Epasdeproj()
                 tmp.student = eleves[index]
                 tmp.error = f"{tmp.student.nom} {tmp.student.prenom} n'est pas affecté à un projet"
-                print(tmp)
                 all_errors.append(tmp.error)
 
             if sum(row.iloc[1:]) > 1:
                 tmp = Etropdeproj()
                 tmp.student = eleves[index]
                 tmp.error = f"{tmp.student.nom} {tmp.student.prenom} est affecté à plusieurs projets"
-                print(tmp)
                 all_errors.append(tmp.error)
-        
+
         df_projet = pd.read_excel("./common/dataProjects.xlsx")
 
-        print("df_projet -----------------------------\n", df_projet)
-        print("projets -----------------------------\n", projets)
+        print("Projets : ", projets)
+        print("longgggggggggggggggggggggggggggggg",len(projets))
 
-        # for index, row in df_projet.iterrows():
-        #     num_project = row["Numéro du projet"]
-        #     nb_min_etudiants = row["Minimum d'étudiants"]
-        #     nb_max_etudiants = row["Maximum d'étudiants"]
-            
-        #     somme_etudiants = resultSolver[str(int(num_project)-1)].sum()
-            
-        #     if somme_etudiants < nb_min_etudiants:
-        #         tmp = Ppasassezeleve()
-        #         tmp.projet = projets[index]
-        #         tmp.error = f"{tmp.projet.intitule} n'a pas le minimum requis d'étudiants"
-        #         print(tmp)
-        #         all_errors.append(tmp.error)
-            
-        #     if somme_etudiants > nb_max_etudiants:
-        #         tmp = Ptropeleve()
-        #         tmp.projet = projets[index]
-        #         tmp.error = f"{tmp.projet.intitule} contient trop d'étudiants"
-        #         print(tmp)
-        #         all_errors.append(tmp.error)
+        for projet in projets:
+            print("projet : ", projet)
+            corresponding_row = df_projet[df_projet["Numéro du projet"] == projet.numero_proj]
+            somme_etudiants = len(projet.eleves)
+            print("somme_etudiants : ", somme_etudiants)
+
+            if somme_etudiants < corresponding_row["Minimum d'étudiants"].values[0]:
+                tmp = Ppasassezeleve()
+                tmp.projet = projet
+                tmp.error = f"{tmp.projet.intitule} n'a pas le minimum requis d'étudiants"
+                all_errors.append(tmp.error)
+
+            if somme_etudiants > corresponding_row["Maximum d'étudiants"].values[0]:
+                tmp = Ptropeleve()
+                tmp.projet = projet
+                tmp.error = f"{tmp.projet.intitule} contient trop d'étudiants"
+                all_errors.append(tmp.error)
 
         return all_errors
 
@@ -116,7 +111,7 @@ def verifier_anomalies(resultSolver, projets, eleves):
     
 
 # Création de l'interface utilisateur avec tkinter
-class SolverOutputManagment(tk.Frame):
+class SolverOutputManagment(CTkFrame):
     def __init__(self, parent, controller): 
         CTkFrame.__init__(self, parent)
 
@@ -144,22 +139,23 @@ class SolverOutputManagment(tk.Frame):
         result_solver = pd.read_csv('./common/resultSolver.csv')
         
         self.projets = [] # Liste pour stocker les objets de la classe Projet
+        self.eleves = [] # Liste pour stocker les objets de la classe Eleve
 
         # Parcourir toutes les colonnes
         for colonne in result_solver.columns:
         # Vérifier si la colonne contient la valeur 1
+            # Créer une instance de la classe Projet
+            projet = Projet()
+    
+            tmp_projet = dataProjects[dataProjects['Numéro du projet'] == int(colonne)+1]
+
+            # Affecter le nom de la colonne au champ nom de l'objet Projet
+            projet.numero_proj = tmp_projet["Numéro du projet"].values[0]
+
             if (result_solver[colonne] == 1).any():
-                # Créer une instance de la classe Projet
-                projet = Projet()
-                
-                # Affecter le nom de la colonne au champ nom de l'objet Projet
-                projet.intitule = dataProjects[dataProjects['Numéro du projet'] == int(colonne[0])+1]["Intitulé"].values[0]
-                # Afficher le titre de la colonne
-
-
                 # Afficher les titres de ligne avec la valeur 1 dans cette colonne
                 lignes = result_solver[result_solver[colonne] == 1].index
-
+                
                 for ligne in lignes:
                     # Créer une instance de la classe Eleve
                     eleve = Eleve()
@@ -171,15 +167,17 @@ class SolverOutputManagment(tk.Frame):
                     projet.eleves.append(eleve)
                     self.eleves.append(eleve)
                 # Ajouter l'objet Projet à la liste projets
-                self.projets.append(projet)
 
-        print("projets -----------------------------\n", self.projets)
+            else:
+                print(f"Le projet {colonne} n'a pas été sélectionné")
+
+            self.projets.append(projet)
 
         # Ajouter les informations des projets dans le conteneur scrollable_frame
         # Parcourir les self.projets et compléter les informations
         for projet in self.projets:
             # Récupérer les informations du projet correspondant à son nom dans common/dataProjects.xlsx
-            infos_projet = dataProjects[dataProjects['Intitulé'] == projet.intitule]
+            infos_projet = dataProjects[dataProjects['Numéro du projet'] == projet.numero_proj]
             if not infos_projet.empty:
                 infos_projet = infos_projet.iloc[0]
                 # Remplir les attributs de l'objet Projet
@@ -245,29 +243,15 @@ class SolverOutputManagment(tk.Frame):
         
         # Cadre gauche avec un poids de 1
         left_frame = CTkScrollableFrame(self)
-        left_frame.grid(row=0, column=0, sticky="nsew")
+        left_frame.grid(row=0, column=0, padx=5, sticky="nsew")
         
         # Cadre droit avec un poids de 1
         right_frame = CTkScrollableFrame(self)
-        right_frame.grid(row=0, column=1, sticky="nsew")
-
-        canvas = tk.Canvas(right_frame, bd=0)
-        scrollbar = tk.Scrollbar(right_frame, orient="vertical", command=canvas.yview)
-        scrollbar.pack(side="right", fill="y")
-        canvas.pack(side="left", fill="both", expand=True)
-        canvas.configure(yscrollcommand=scrollbar.set)
-
-        # Conteneur pour les éléments dans le Canvas
-        # Calcul des coordonnées au milieu de la fenêtre
-        mid_x = self.parent.winfo_width() // 2  # Coordonnée x au milieu de la fenêtre
-        
-        scrollable_frame = tk.Frame(canvas)
-        canvas.create_window((mid_x, 0), window=scrollable_frame, anchor="nw")
-        
+        right_frame.grid(row=0, column=1, padx=5, sticky="nsew")
         
         # Ajouter les informations des self.projets dans le conteneur scrollable_frame
         for projet in self.projets:
-            projet_label = ttk.Label(scrollable_frame, text=f"Intitulé : {projet.intitule}\n"
+            projet_label = CTkLabel(right_frame, text=f"Intitulé : {projet.intitule}\n"
                                                         f"Elèves du projet :\n"
                                                         f"Informations du projet :\n"
                                                         f"Proposé par : {projet.par}\n"
@@ -279,22 +263,9 @@ class SolverOutputManagment(tk.Frame):
                                                         f"Maximum d'étudiants : {projet.nbmax}\n"
                                                         f"Entreprise : {projet.entreprise}\n",anchor="e",justify="right")
             projet_label.pack(padx=10, pady=10, anchor="e")
-            
-        # Ajoutez des étiquettes dans le cadre gauche pour afficher les anomalies
-        error_frame = tk.Frame(left_frame, bg="red")
-        error_frame.pack(fill="both", padx=10, pady=10)
-        
-        print(self.all_errors)
 
         for i, error in enumerate(self.all_errors):
-            error_label = tk.Label(error_frame, text=error, bg="red", fg="white")
+            error_label = CTkLabel(left_frame, text=error, bg_color="red", anchor="w", justify="left")
             error_label.grid(row=i, column=0, padx=5, pady=2)
-
-        # Configurer le Canvas pour le défilement
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-
-        
-
-
 
 # all_errors = la fonction 
