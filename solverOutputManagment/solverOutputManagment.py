@@ -1,10 +1,13 @@
 import tkinter as tk
-from tkinter import ttk
+from customtkinter import CTkFrame, CTkLabel, CTkCanvas, CTkScrollableFrame
 import pandas as pd
+
+
+#####################################################################################
+# Définition des classes existantes
 
 class Projet:
     def __init__(self):
-        self.nom = ""
         self.nbmax = ""
         self.nbmin = ""
         self.eleves = []
@@ -17,23 +20,110 @@ class Projet:
         self.description = ""
         self.entreprise = ""
 
+    def __str__(self):
+        return f"Projet {self.intitule} : {len(self.eleves)} élèves"
+    
+    def __repr__(self):
+        return f"<Projet> Projet {self.intitule} : {len(self.eleves)} élèves"
+
 class Eleve:
     def __init__(self):
         self.nom = ""
         self.prenom = ""
         self.mail = ""
 
-# Créer l'interface utilisateur avec tkinter
-class SolverOutputManagment(tk.Frame):
+    def __str__(self):
+        return f"{self.nom} {self.prenom}"
+
+class Anomalies:
+    def __init__(self):
+        self.error = ""
+    def __str__(self):
+        return f"Warning : {self.error}"
+
+class Epasdeproj(Anomalies):
+    def __init__(self):
+        super().__init__()
+        self.student = None
+
+
+class Etropdeproj(Anomalies):
+    def __init__(self):
+        super().__init__()
+        self.student = None
+
+ 
+
+class Ppasassezeleve(Anomalies):
+    def __init__(self):
+        super().__init__()
+        self.projet = None
+    
+    
+
+class Ptropeleve(Anomalies):
+    def __init__(self):
+        super().__init__()
+        self.projet = None
+    
+
+def verifier_anomalies(resultSolver, projets, eleves):
+        all_errors = []
+        for index, row in resultSolver.iterrows():
+            if sum(row.iloc[1:]) < 1:
+                tmp = Epasdeproj()
+                tmp.student = eleves[index]
+                tmp.error = f"{tmp.student.nom} {tmp.student.prenom} n'est pas affecté à un projet"
+                all_errors.append(tmp.error)
+
+            if sum(row.iloc[1:]) > 1:
+                tmp = Etropdeproj()
+                tmp.student = eleves[index]
+                tmp.error = f"{tmp.student.nom} {tmp.student.prenom} est affecté à plusieurs projets"
+                all_errors.append(tmp.error)
+
+        df_projet = pd.read_excel("./common/dataProjects.xlsx")
+
+        print("Projets : ", projets)
+        print("longgggggggggggggggggggggggggggggg",len(projets))
+
+        for projet in projets:
+            print("projet : ", projet)
+            corresponding_row = df_projet[df_projet["Numéro du projet"] == projet.numero_proj]
+            somme_etudiants = len(projet.eleves)
+            print("somme_etudiants : ", somme_etudiants)
+
+            if somme_etudiants < corresponding_row["Minimum d'étudiants"].values[0]:
+                tmp = Ppasassezeleve()
+                tmp.projet = projet
+                tmp.error = f"{tmp.projet.intitule} n'a pas le minimum requis d'étudiants"
+                all_errors.append(tmp.error)
+
+            if somme_etudiants > corresponding_row["Maximum d'étudiants"].values[0]:
+                tmp = Ptropeleve()
+                tmp.projet = projet
+                tmp.error = f"{tmp.projet.intitule} contient trop d'étudiants"
+                all_errors.append(tmp.error)
+
+        return all_errors
+
+
+    
+
+# Création de l'interface utilisateur avec tkinter
+class SolverOutputManagment(CTkFrame):
     def __init__(self, parent, controller): 
-        tk.Frame.__init__(self, parent, bg="white")
+        CTkFrame.__init__(self, parent)
 
         self.previous_frame = "solverProcess"
         self.next_frame = "exportStudentDistribution"
         self.objective_fulfilled = True
-        self.projets = []  # Liste pour stocker les objets de la classe Projet
         self.parent = parent
         self.controller = controller
+
+        self.projets = []
+        self.eleves = []
+        self.all_errors = []
 
         self.reload()
     
@@ -42,65 +132,109 @@ class SolverOutputManagment(tk.Frame):
         for item in children:
             item.pack_forget()
             item.grid_forget()
+        
+        # Chargement des fichiers Excel
+        dataProjects = pd.read_excel('./common/dataProjects.xlsx')
+        answerProjects = pd.read_excel('./common/answerProjects.xlsx')
+        result_solver = pd.read_csv('./common/resultSolver.csv')
+        
+        self.projets = [] # Liste pour stocker les objets de la classe Projet
+        self.eleves = [] # Liste pour stocker les objets de la classe Eleve
 
-        try:
-            # Charger le fichier Excel
-            donnees = pd.read_csv('./common/resultSolver.csv')
-
-            self.projets = []  # Liste pour stocker les objets de la classe Projet
-
-            # Parcourir toutes les colonnes
-            for colonne in donnees.columns:
-                # Vérifier si la colonne contient la valeur 1
-                if (donnees[colonne] == 1).any():
-                    # Créer une instance de la classe Projet
-                    projet = Projet()
-                    # Affecter le nom de la colonne au champ nom de l'objet Projet
-                    projet.nom = colonne
-                    # Afficher le titre de la colonne
-                    print(f"Projet : {colonne}")
-                    # Afficher les titres de ligne avec la valeur 1 dans cette colonne
-                    lignes = donnees[donnees[colonne] == 1].index
-                    for ligne in lignes:
-                        # Récupérer le titre de la ligne (première cellule de la ligne)
-                        titre_ligne = donnees.iloc[ligne, 0]  # Utilisation de iloc pour accéder à la première cellule de la ligne
-                        # Créer une instance de la classe Eleve
-                        eleve = Eleve()
-                        # Affecter le titre de la ligne au champ nom de l'objet Eleve
-                        eleve.nom = titre_ligne
-                        # Ajouter l'objet Eleve à la liste eleves de l'objet Projet
-                        projet.eleves.append(eleve)
-                        print(f" - Elève : {titre_ligne}")
-                    # Ajouter l'objet Projet à la liste self.projets
-                    self.projets.append(projet)
-
-            # Charger les données du fichier common/dataProjects.xlsx
-            donnees_output = pd.read_excel('common/dataProjects.xlsx')
-
-            # Parcourir les self.projets et compléter les informations
-            for projet in self.projets:
-                # Récupérer les informations du projet correspondant à son nom dans common/dataProjects.xlsx
-                infos_projet = donnees_output[donnees_output['Intitulé'] == int(projet.nom)]
-                if not infos_projet.empty:
-                    infos_projet = infos_projet.iloc[0]
-                    # Remplir les attributs de l'objet Projet
-                    projet.intitule = infos_projet['Intitulé']
-                    projet.par = infos_projet['Proposé par']
-                    projet.equipe = infos_projet['Equipe']
-                    projet.tel = infos_projet['Tél']
-                    projet.mail = infos_projet['Mail']
-                    projet.description = infos_projet['Description']
-                    projet.nbmin = infos_projet['Minimum d\'étudiants']
-                    projet.nbmax = infos_projet['Maximum d\'étudiants']
-                    projet.entreprise = infos_projet['Entreprise']
-                else:
-                    print(f"Aucune information trouvée pour le projet {projet.nom} dans le fichier common/dataProjects.xlsx")
-        except FileNotFoundError:
-            print("Fichier common/resultSolver.csv non trouvé")
-            self.projets = []
-            
-        self.show()
+        # Parcourir toutes les colonnes
+        for colonne in result_solver.columns:
+        # Vérifier si la colonne contient la valeur 1
+            # Créer une instance de la classe Projet
+            projet = Projet()
     
+            tmp_projet = dataProjects[dataProjects['Numéro du projet'] == int(colonne)+1]
+
+            # Affecter le nom de la colonne au champ nom de l'objet Projet
+            projet.numero_proj = tmp_projet["Numéro du projet"].values[0]
+
+            if (result_solver[colonne] == 1).any():
+                # Afficher les titres de ligne avec la valeur 1 dans cette colonne
+                lignes = result_solver[result_solver[colonne] == 1].index
+                
+                for ligne in lignes:
+                    # Créer une instance de la classe Eleve
+                    eleve = Eleve()
+                    # Affecter le titre de la ligne au champ nom de l'objet Eleve
+                    eleve.nom = answerProjects.iloc[ligne, 0]
+                    eleve.prenom = answerProjects.iloc[ligne, 1]
+                    eleve.mail = answerProjects.iloc[ligne, 2]
+                    # Ajouter l'objet Eleve à la liste eleves de l'objet Projet
+                    projet.eleves.append(eleve)
+                    self.eleves.append(eleve)
+                # Ajouter l'objet Projet à la liste projets
+
+            else:
+                print(f"Le projet {colonne} n'a pas été sélectionné")
+
+            self.projets.append(projet)
+
+        # Ajouter les informations des projets dans le conteneur scrollable_frame
+        # Parcourir les self.projets et compléter les informations
+        for projet in self.projets:
+            # Récupérer les informations du projet correspondant à son nom dans common/dataProjects.xlsx
+            infos_projet = dataProjects[dataProjects['Numéro du projet'] == projet.numero_proj]
+            if not infos_projet.empty:
+                infos_projet = infos_projet.iloc[0]
+                # Remplir les attributs de l'objet Projet
+                projet.intitule = infos_projet['Intitulé']
+                projet.par = infos_projet['Proposé par']
+                projet.equipe = infos_projet['Equipe']
+                projet.tel = infos_projet['Tél']
+                projet.mail = infos_projet['Mail']
+                projet.description = infos_projet['Description']
+                projet.nbmin = infos_projet['Minimum d\'étudiants']
+                projet.nbmax = infos_projet['Maximum d\'étudiants']
+                projet.entreprise = infos_projet['Entreprise']
+            else:
+                print(f"Aucune information trouvée pour le projet {projet.nom} dans le fichier common/dataProjects.xlsx")
+
+        # Vérifier les anomalies
+        self.all_errors = verifier_anomalies(result_solver, self.projets, self.eleves)
+
+        print("Anomalies -----------------------------\n", self.all_errors)
+        
+
+
+        # # Initialiser un dictionnaire pour stocker les données des projets et des élèves
+        # donnees_projet_eleves = {}
+
+        # # Parcourir chaque colonne du DataFrame
+        # for colonne in result_solver.columns:
+        #     # Vérifier si la colonne contient au moins un 1
+        #     if (result_solver[colonne] == 1).any():
+        #         # Récupérer le nom du projet (première cellule de la colonne)
+        #         nom_projet = colonne
+        #         # Initialiser une liste pour stocker les noms des élèves
+        #         eleves_projet = []
+        #         # Parcourir chaque ligne de la colonne
+        #         for index, valeur in result_solver[colonne].items():
+        #             # Vérifier si la valeur est égale à 1
+        #             if valeur == 1:
+        #                 # Récupérer le nom de l'élève (première cellule de la ligne)
+        #                 nom_eleve = result_solver.iloc[index, 0]
+        #                 # Ajouter le nom de l'élève à la liste des élèves du projet
+        #                 eleves_projet.append(nom_eleve)
+        #         # Ajouter les élèves du projet au dictionnaire
+        #         donnees_projet_eleves[nom_projet] = eleves_projet
+
+        # # Créer un DataFrame à partir du dictionnaire
+        # df_excel = pd.DataFrame.from_dict(donnees_projet_eleves, orient='index').transpose()
+
+        # # Spécifier le nom du fichier Excel de sortie
+        # nom_fichier_sortie = "resultats_output2.xlsx"
+
+        # # Écrire les données dans un nouveau fichier Excel
+        # df_excel.to_excel(nom_fichier_sortie, index=False)
+        
+        #print(f"Les résultats ont été écrits dans le fichier Excel : {nom_fichier_sortie}")
+
+        self.show()
+
     def show(self):
         # Cadre principal pour contenir les cadres gauche et droit
         self.grid_columnconfigure(0, weight=1)  # Colonne 0
@@ -108,32 +242,18 @@ class SolverOutputManagment(tk.Frame):
         self.grid_rowconfigure(0, weight=1)     # Ligne 0
         
         # Cadre gauche avec un poids de 1
-        left_frame = tk.Frame(self, bg="purple")
-        left_frame.grid(row=0, column=0, sticky="nsew")
+        left_frame = CTkScrollableFrame(self)
+        left_frame.grid(row=0, column=0, padx=5, sticky="nsew")
         
         # Cadre droit avec un poids de 1
-        right_frame = tk.Frame(self, bg="green")
-        right_frame.grid(row=0, column=1, sticky="nsew")
-
-        canvas = tk.Canvas(right_frame, bd=0)
-        scrollbar = tk.Scrollbar(right_frame, orient="vertical", command=canvas.yview)
-        scrollbar.pack(side="right", fill="y")
-        canvas.pack(side="left", fill="both", expand=True)
-        canvas.configure(yscrollcommand=scrollbar.set)
-
-        # Conteneur pour les éléments dans le Canvas
-        # Calcul des coordonnées au milieu de la fenêtre
-        mid_x = self.parent.winfo_width() // 2  # Coordonnée x au milieu de la fenêtre
-        
-        scrollable_frame = tk.Frame(canvas)
-        canvas.create_window((mid_x, 0), window=scrollable_frame, anchor="nw")
+        right_frame = CTkScrollableFrame(self)
+        right_frame.grid(row=0, column=1, padx=5, sticky="nsew")
         
         # Ajouter les informations des self.projets dans le conteneur scrollable_frame
         for projet in self.projets:
-            projet_label = ttk.Label(scrollable_frame, text=f"Nom du projet : {projet.nom}\n"
+            projet_label = CTkLabel(right_frame, text=f"Intitulé : {projet.intitule}\n"
                                                         f"Elèves du projet :\n"
                                                         f"Informations du projet :\n"
-                                                        f"Intitulé : {projet.intitule}\n"
                                                         f"Proposé par : {projet.par}\n"
                                                         f"Equipe : {projet.equipe}\n"
                                                         f"Téléphone : {projet.tel}\n"
@@ -144,5 +264,8 @@ class SolverOutputManagment(tk.Frame):
                                                         f"Entreprise : {projet.entreprise}\n",anchor="e",justify="right")
             projet_label.pack(padx=10, pady=10, anchor="e")
 
-        # Configurer le Canvas pour le défilement
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        for i, error in enumerate(self.all_errors):
+            error_label = CTkLabel(left_frame, text=error, bg_color="red", anchor="w", justify="left")
+            error_label.grid(row=i, column=0, padx=5, pady=2)
+
+# all_errors = la fonction 

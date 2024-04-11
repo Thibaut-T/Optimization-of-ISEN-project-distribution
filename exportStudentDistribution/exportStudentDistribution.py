@@ -1,9 +1,9 @@
 import tkinter as tk
-from tkinter import ttk
+from customtkinter import CTkLabel, CTkFrame
 
-class ExportStudentDistribution(tk.Frame):
+class ExportStudentDistribution(CTkFrame):
     def __init__(self, parent, controller): 
-        tk.Frame.__init__(self, parent, bg="white")
+        CTkFrame.__init__(self, parent)
         
         self.previous_frame = "solverOutputManagment"
         self.next_frame = ""
@@ -21,5 +21,5 @@ class ExportStudentDistribution(tk.Frame):
     
     def show(self):
         # label of frame ExportStudentDistribution
-        label = ttk.Label(self, text ="ExportStudentDistribution")
+        label = CTkLabel(self, text ="ExportStudentDistribution")
         label.grid(row = 0, column = 0, padx = 10, pady = 10)

@@ -1,13 +1,13 @@
 import tkinter as tk
-from tkinter import ttk
+from customtkinter import CTkButton, CTkLabel, CTkEntry, CTkFrame, END
 import pandas as pd
 from projectCreation.action import add_line, modify_line
 import re 
-class ProjectCreation(tk.Frame):
+class ProjectCreation(CTkFrame):
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg="purple")
+        CTkFrame.__init__(self, parent)
 
-        self.previous_frame = ""
+        self.previous_frame = "projectManagment"
         self.next_frame = ""
         self.objective_fulfilled = True
 
@@ -31,7 +31,7 @@ class ProjectCreation(tk.Frame):
     def show(self):
         input_values = []
         # label of frame ProjectCreation
-        label = ttk.Label(self, text ="ProjectCreation")
+        label = CTkLabel(self, text ="ProjectCreation")
         label.pack()
 
         def is_number(value):
@@ -45,14 +45,14 @@ class ProjectCreation(tk.Frame):
             email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
             emails = value.split(";")
             valid = all(re.match(email_regex, email) is not None for email in emails)
-            label6.config({"foreground": "red" if not valid else "black"})
+            label6.configure({"foreground": "red" if not valid else "black"})
             return True
         
         def validate_emails(value):     # For the equipe field
             email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
             emails = value.split(";")
             valid = all(re.match(email_regex, email.strip()) is not None for email in emails)
-            label4.config({"foreground": "red" if not valid else "black"})
+            label4.configure({"foreground": "red" if not valid else "black"})
             return True
 
         def is_phone_number(value):
@@ -112,75 +112,75 @@ class ProjectCreation(tk.Frame):
 
         entry1Text = id
         
-        label1 = tk.Label(self, text="Numéro du projet:")
+        label1 = CTkLabel(self, text="Numéro du projet:")
         label1.pack()
-        entry1 = tk.Label(self, text=entry1Text)
+        entry1 = CTkLabel(self, text=entry1Text)
         entry1.pack()
-        label2 = tk.Label(self, text="Intitulé:")
+        label2 = CTkLabel(self, text="Intitulé:")
         label2.pack()
-        entry2 = tk.Entry(self)
-        entry2.insert(tk.END, entry2Text)
+        entry2 = CTkEntry(self)
+        entry2.insert(END, entry2Text)
         entry2.pack()
 
-        label3 = tk.Label(self, text="Proposé par :")
+        label3 = CTkLabel(self, text="Proposé par :")
         label3.pack()
-        entry3 = tk.Entry(self)
-        entry3.insert(tk.END, entry3Text)
+        entry3 = CTkEntry(self)
+        entry3.insert(END, entry3Text)
         entry3.pack()
 
         vcmd_mail2 = (self.register(validate_emails), '%P')
-        label4 = tk.Label(self, text="Equipe:")
+        label4 = CTkLabel(self, text="Equipe:")
         label4.pack()
-        entry4 = tk.Entry(self,validate='key', validatecommand=vcmd_mail2)
-        entry4.insert(tk.END, entry4Text)
+        entry4 = CTkEntry(self,validate='key', validatecommand=vcmd_mail2)
+        entry4.insert(END, entry4Text)
         entry4.pack()
 
 
 
         vcmd_phone = (self.register(is_phone_number), '%P')
 
-        label5 = tk.Label(self, text="Tél:")
+        label5 = CTkLabel(self, text="Tél:")
         label5.pack()
-        entry5 = tk.Entry(self, validate='key', validatecommand=vcmd_phone)
-        entry5.insert(tk.END, entry5Text)
+        entry5 = CTkEntry(self, validate='key', validatecommand=vcmd_phone)
+        entry5.insert(END, entry5Text)
         entry5.pack()
 
         vcmd_mail = (self.register(validate_email), '%P')
 
-        label6 = tk.Label(self, text="Mail:")
+        label6 = CTkLabel(self, text="Mail:")
         label6.pack()
-        entry6 = tk.Entry(self, validate='key', validatecommand=vcmd_mail)
-        entry6.insert(tk.END, entry6Text)
+        entry6 = CTkEntry(self, validate='key', validatecommand=vcmd_mail)
+        entry6.insert(END, entry6Text)
         entry6.pack()
 
         vcmd = (self.register(is_number), '%P')
-        label8 = tk.Label(self, text="Minimum:")
+        label8 = CTkLabel(self, text="Minimum:")
         label8.pack()
-        entry8 = tk.Entry(self, validate='key', validatecommand=vcmd)
-        entry8.insert(tk.END, entry8Text)
+        entry8 = CTkEntry(self, validate='key', validatecommand=vcmd)
+        entry8.insert(END, entry8Text)
         entry8.pack()
 
-        label9 = tk.Label(self, text="Maximum:")
+        label9 = CTkLabel(self, text="Maximum:")
         label9.pack()
-        entry9 = tk.Entry(self, validate='key', validatecommand=vcmd)
-        entry9.insert(tk.END, entry9Text)
+        entry9 = CTkEntry(self, validate='key', validatecommand=vcmd)
+        entry9.insert(END, entry9Text)
         entry9.pack()
 
-        label20 = tk.Label(self, text="Entreprise:")
+        label20 = CTkLabel(self, text="Entreprise:")
         label20.pack()
-        entry10 = tk.Entry(self)
-        entry10.insert(tk.END, entry10Text)
+        entry10 = CTkEntry(self)
+        entry10.insert(END, entry10Text)
         entry10.pack()
 
-        label7 = tk.Label(self, text="Description:")
+        label7 = CTkLabel(self, text="Description:")
         label7.pack()
         entry7 = tk.Text(self, height=5)
-        entry7.insert(tk.END, entry7Text)
+        entry7.insert(END, entry7Text)
         entry7.pack()
         
         if idCurrent == -1:
-            generate_button = tk.Button(self,text="Add Project", command=lambda id = id: add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10, self.controller))
+            generate_button = CTkButton(self,text="Add Project", command=lambda id = id: add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10, self.controller))
             generate_button.pack()
         else:
-            modify_button = tk.Button(self, text="Modify Project", command=lambda id = id: modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10, self.controller))
+            modify_button = CTkButton(self, text="Modify Project", command=lambda id = id: modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10, self.controller))
             modify_button.pack()

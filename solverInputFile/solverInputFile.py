@@ -1,12 +1,12 @@
 import tkinter as tk
-from tkinter import ttk
+from customtkinter import CTkButton, CTkFrame, CTkLabel
 from tkinter import filedialog
 import shutil
 import os
 import pandas as pd
-class SolverInputFile(tk.Frame):
+class SolverInputFile(CTkFrame):
     def __init__(self, parent, controller): 
-        tk.Frame.__init__(self, parent, bg="white")
+        CTkFrame.__init__(self, parent)
                 
         self.previous_frame = "exportToMoodle"
         self.next_frame = "solverProcess"
@@ -26,9 +26,9 @@ class SolverInputFile(tk.Frame):
     
     def show(self):
         # label of frame SolverInputFile
-        label = ttk.Label(self, text ="SolverInputFile")
+        label = CTkLabel(self, text ="SolverInputFile")
         label.grid(row = 0, column = 0, padx = 10, pady = 10)
-        open_file_button = ttk.Button(self, text="Open File", command=self.open_file)
+        open_file_button = CTkButton(self, text="Open File", command=self.open_file)
         open_file_button.grid(row=1, column=0, padx=10, pady=10)
   
     def open_file(self):

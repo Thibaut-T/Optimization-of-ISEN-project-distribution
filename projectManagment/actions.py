@@ -1,8 +1,11 @@
 import pandas as pd
 from tkinter import filedialog
 from projectCreation.action import generate_pdf_with_values
-
+import os
 def getAllProjects():
+    directory = 'common'
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     try:
         df = pd.read_excel('common/dataProjects.xlsx')
     except FileNotFoundError:
@@ -36,7 +39,7 @@ def deleteProject(controller, i):
     projects = getAllProjects()
     projects = projects[projects['Numéro du projet'] != i]
 
-    projects['Numéro du projet'] = projects['Numéro du projet'].apply(lambda x: x - 1)
+    projects['Numéro du projet'] = projects['Numéro du projet'].apply(lambda x: int(x - 1) if x > i else int(x))
 
     projects.to_excel('common/dataProjects.xlsx', index=False)
 
@@ -47,7 +50,3 @@ def savePdf():
     projects = projects.astype(str)  
     projects_dict = projects.to_dict('records') 
     generate_pdf_with_values(projects_dict)
-
-def saveXml():
-    filename = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML files", "*.xml")])
-    
