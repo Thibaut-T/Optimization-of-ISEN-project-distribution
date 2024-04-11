@@ -41,5 +41,5 @@ if __name__ == "__main__":
     headers = ["Last name", "First name", "Email address", "State", "Started on", "Completed", 
                "Time taken", "Grade/10.00"] + sum([[f"Question {i}", f"Response {i}"] for i in range(1, 18)], [])
 
-    data = generate_random_data(1000)  
+    data = generate_random_data(200)  
     create_excel_file("testing.xlsx", headers, data)
