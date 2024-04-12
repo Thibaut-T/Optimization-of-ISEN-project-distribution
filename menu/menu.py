@@ -31,19 +31,19 @@ class Menu(CTkFrame):
         # label of frame Menu
         
         top_frame = CTkFrame(self)
-        top_frame.pack()    
+        top_frame.pack(side="top", padx=10, pady=10)    
 
         bottom_frame = CTkFrame(self)
-        bottom_frame.pack(side="bottom")
+        bottom_frame.pack(side="bottom", padx=10, pady=10)
 
         label = CTkLabel(top_frame, text="Menu")
-        label.grid(row=1, column=1, padx=10, pady=10)
+        label.grid(row=1, padx=10, pady=10)
 
         problem = False
 
         for i,frame in enumerate(self.menu):
             button = CTkButton(top_frame, text=frame, command=lambda frame=frame: self.controller.show_frame(frame))
-            button.grid(row=2 + i, column=1, padx=5, pady=10)
+            button.grid(row=2 + i, padx=10, pady=10)
 
             if i > 0 and (not self.controller.allFrames[self.controller.allFrames[frame].previous_frame].objective_fulfilled or problem):
                 button.configure(state="disabled")

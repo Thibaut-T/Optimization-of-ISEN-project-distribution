@@ -44,7 +44,7 @@ def create_excel_file(filename, headers, data):
 
 if __name__ == "__main__":
     headers = ["Last name", "First name", "Email address", "State", "Started on", "Completed", 
-               "Time taken", "Grade/10.00"] + sum([[f"Question {i}", f"Response {i}"] for i in range(1, 18)], [])
+               "Time taken", "Grade/10.00"] + sum([[f"Question {i}", f"Response {i}"] for i in range(1, 203)], [])
 
-    data = generate_random_data(200)  
-    create_excel_file("testing.xlsx", headers, data)
+    data = generate_random_data(1000)  
+    create_excel_file("./common/answerProjects.xlsx", headers, data)
