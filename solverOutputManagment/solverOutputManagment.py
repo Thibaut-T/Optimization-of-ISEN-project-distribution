@@ -22,11 +22,14 @@ class Projet:
         self.description = ""
         self.entreprise = ""
 
-    def __str__(self):
+    def representation(self):
         return f"Projet {self.intitule} :\n - Min : {int(self.nbmin) if not math.isnan(self.nbmin) else 3}\n - Max : {int(self.nbmax) if not math.isnan(self.nbmax) else 7}\n - Equipe de {len(self.eleves)} étudiants :\n" + "\n".join([f"\t- {eleve.nom} {eleve.prenom}" for eleve in self.eleves]) + "\n"
     
+    def __str__(self):
+        return f"Projet {self.intitule}"
+    
     def __repr__(self):
-        return f"<Projet> {self.numero_proj} : {self.intitule}"
+        return f"<Projet> {self.intitule}"
 
 class Eleve:
     def __init__(self):
@@ -35,7 +38,7 @@ class Eleve:
         self.mail = ""
 
     def __str__(self):
-        return f"{self.nom} {self.prenom}"
+        return f"Eleve {self.mail}"
     
     def __repr__(self):
         return f"<Eleve> {self.mail}"
@@ -46,12 +49,12 @@ class Anomalies:
     def __str__(self):
         return f"Warning : {self.error}"
 
-class AnomaliesProjet(Anomalies):
+class AnomaliesEleve(Anomalies):
     def __init__(self):
         super().__init__()
         self.student = None
 
-class AnomaliesEleve(Anomalies):
+class AnomaliesProjet(Anomalies):
     def __init__(self):
         super().__init__()
         self.projet = None    
@@ -60,13 +63,13 @@ def verifier_anomalies(resultSolver, projets, eleves):
         all_errors = []
         for index, row in resultSolver.iterrows():
             if sum(row.iloc[1:]) < 1:
-                tmp = AnomaliesProjet()
+                tmp = AnomaliesEleve()
                 tmp.student = eleves[index]
                 tmp.error = f"{tmp.student.nom} {tmp.student.prenom} n'est pas affecté à un projet"
                 all_errors.append(tmp)
 
             if sum(row.iloc[1:]) > 1:
-                tmp = AnomaliesProjet()
+                tmp = AnomaliesEleve()
                 tmp.student = eleves[index]
                 tmp.error = f"{tmp.student.nom} {tmp.student.prenom} est affecté à plusieurs projets"
                 all_errors.append(tmp)
@@ -78,13 +81,13 @@ def verifier_anomalies(resultSolver, projets, eleves):
             somme_etudiants = len(projet.eleves)
 
             if somme_etudiants < corresponding_row["Minimum d'étudiants"].values[0]:
-                tmp = AnomaliesEleve()
+                tmp = AnomaliesProjet()
                 tmp.projet = projet
                 tmp.error = f"{tmp.projet.intitule} n'a pas le minimum requis d'étudiants"
                 all_errors.append(tmp)
 
             if somme_etudiants > corresponding_row["Maximum d'étudiants"].values[0]:
-                tmp = AnomaliesEleve()
+                tmp = AnomaliesProjet()
                 tmp.projet = projet
                 tmp.error = f"{tmp.projet.intitule} contient trop d'étudiants"
                 all_errors.append(tmp)
@@ -242,10 +245,10 @@ class SolverOutputManagment(CTkFrame):
 
             for i, row in dataFrameAnomalies.iterrows():
                 self.all_errors[i].error = row["error"]
-                if "student" in row:
-                    self.all_errors[i].student = row["student"]
+                if "eleve" in row:
+                    self.all_errors[i].student = [eleve for eleve in self.eleves if eleve.mail in row["eleve"]][0]
                 if "projet" in row:
-                    self.all_errors[i].projet = row["projet"]
+                    self.all_errors[i].projet = [projet for projet in self.projets if projet.intitule in row["projet"]][0]
         self.show()
 
     def show(self):
@@ -267,7 +270,7 @@ class SolverOutputManagment(CTkFrame):
             card = CTkFrame(right_frame)
             card.pack(padx=5, pady=5, fill="x")
 
-            projet_label = CTkLabel(card, text=projet,justify="left")
+            projet_label = CTkLabel(card, text=projet.representation() ,justify="left")
             projet_label.pack(padx=10, pady=10, anchor="w")
 
         for i, error in enumerate(self.all_errors):
