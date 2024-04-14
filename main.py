@@ -9,6 +9,7 @@ from solverProcess import solverProcess
 from solverOutputManagment import solverOutputManagment
 from topBar import topBar
 import traceback
+import platform
 
 class MainApp(ctk.CTk):
     def __init__(self):
@@ -19,7 +20,17 @@ class MainApp(ctk.CTk):
 
         # Set the window size
         self.minsize(width=800, height=600)
-        self.attributes('-zoomed', True)
+
+        if platform.system() == 'Windows':
+            print("Windows")
+            self.state('zoomed')
+        elif platform.system() == 'Darwin':  # MacOS
+            print("MacOS")
+            self.attributes('-fullscreen', True)
+        elif platform.system() == 'Linux':
+            print("Linux")
+            self.attributes('-zoomed', True)
+
         ctk.set_default_color_theme("dark-blue")
 
         self.allFrames = {
