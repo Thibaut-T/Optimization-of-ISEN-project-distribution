@@ -19,6 +19,8 @@ class MainApp(ctk.CTk):
 
         # Set the window size
         self.minsize(width=800, height=600)
+        self.attributes('-zoomed', True)
+        ctk.set_default_color_theme("dark-blue")
 
         self.allFrames = {
             "projectCreation": projectCreation.ProjectCreation(self, self),
