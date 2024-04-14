@@ -31,7 +31,7 @@ class MainApp(ctk.CTk):
             print("Linux")
             self.attributes('-zoomed', True)
 
-        ctk.set_default_color_theme("dark-blue")
+        ctk.set_default_color_theme("./theme.json")
 
         self.allFrames = {
             "projectCreation": projectCreation.ProjectCreation(self, self),
