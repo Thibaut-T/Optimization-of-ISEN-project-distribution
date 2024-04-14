@@ -1,5 +1,5 @@
 import tkinter as tk
-from customtkinter import CTkFrame, CTkLabel, CTkCanvas, CTkScrollableFrame
+from customtkinter import CTkFrame, CTkLabel, CTkCanvas, CTkScrollableFrame, CTkButton
 import pandas as pd
 
 
@@ -108,7 +108,8 @@ def verifier_anomalies(resultSolver, projets, eleves):
         return all_errors
 
 
-    
+def solve_function():
+    pass
 
 # Création de l'interface utilisateur avec tkinter
 class SolverOutputManagment(CTkFrame):
@@ -267,5 +268,7 @@ class SolverOutputManagment(CTkFrame):
         for i, error in enumerate(self.all_errors):
             error_label = CTkLabel(left_frame, text=error, bg_color="red", anchor="w", justify="left")
             error_label.grid(row=i, column=0, padx=5, pady=2)
+            solve_button = CTkButton(self, text="Résoudre", command=lambda: solve_function())
+            solve_button.grid(row=2 + i, column=1, padx=5, pady=10)
 
 # all_errors = la fonction 
