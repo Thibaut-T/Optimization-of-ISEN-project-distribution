@@ -42,7 +42,7 @@ class Epasdeproj(Anomalies):
         for index, row in donnees_anomalie.iterrows():
             if sum(row.iloc[1:]) < 1:
                 self.error = f"{row.iloc[0]} n'est pas affecté à un projet"
-                print(self)
+                
 
 class Etropdeproj(Anomalies):
     def __init__(self):
@@ -53,7 +53,7 @@ class Etropdeproj(Anomalies):
         for index, row in donnees_anomalie.iterrows():
             if sum(row.iloc[1:]) > 1:
                 self.error = f"{row.iloc[0]} est affecté à plusieurs projets"
-                print(self)
+                
 
 class Ppasassezeleve(Anomalies):
     def __init__(self):
@@ -70,7 +70,7 @@ class Ppasassezeleve(Anomalies):
             
             if somme_etudiants < nb_min_etudiants:
                 self.error = f"{intitule_projet} n'a pas le minimum requis d'étudiants"
-                print(self)
+                
 
 class Ptropeleve(Anomalies):
     def __init__(self):
@@ -87,7 +87,7 @@ class Ptropeleve(Anomalies):
             
             if somme_etudiants > nb_max_etudiants:
                 self.error = f"{intitule_projet} contient trop d'étudiants"
-                print(self)
+                
 
 #####################################################################################################
 # Chargement des différents fichier
@@ -257,7 +257,7 @@ if __name__ == "__main__":
             # Affecter le nom de la colonne au champ nom de l'objet Projet
             projet.nom = colonne
             # Afficher le titre de la colonne
-            print(f"Projet : {colonne}")
+            
             # Afficher les titres de ligne avec la valeur 1 dans cette colonne
             lignes = donnees_test_projet[donnees_test_projet[colonne] == 1].index
             for ligne in lignes:
@@ -269,7 +269,7 @@ if __name__ == "__main__":
                 eleve.nom = titre_ligne
                 # Ajouter l'objet Eleve à la liste eleves de l'objet Projet
                 projet.eleves.append(eleve)
-                print(f" - Elève : {titre_ligne}")
+                
             # Ajouter l'objet Projet à la liste projets
             projets.append(projet)
     

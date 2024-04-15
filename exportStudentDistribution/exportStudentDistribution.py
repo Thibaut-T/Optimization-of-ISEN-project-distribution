@@ -21,5 +21,8 @@ class ExportStudentDistribution(CTkFrame):
     
     def show(self):
         # label of frame ExportStudentDistribution
-        label = CTkLabel(self, text ="ExportStudentDistribution")
-        label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        label = CTkLabel(self, text = "ExportStudentDistribution")
+        label.pack()
+        
+        centered_frame = CTkFrame(self)
+        centered_frame.pack()

@@ -1,7 +1,6 @@
 import pandas as pd
-from tkinter import filedialog
-from projectCreation.action import generate_pdf_with_values
 import os
+
 def getAllProjects():
     directory = 'common'
     if not os.path.exists(directory):
@@ -44,9 +43,3 @@ def deleteProject(controller, i):
     projects.to_excel('common/dataProjects.xlsx', index=False)
 
     controller.show_frame("projectManagment")
-    
-def savePdf():
-    projects = getAllProjects()
-    projects = projects.astype(str)  
-    projects_dict = projects.to_dict('records') 
-    generate_pdf_with_values(projects_dict)

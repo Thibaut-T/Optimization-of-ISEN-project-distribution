@@ -1,6 +1,6 @@
-import tkinter as tk
-from customtkinter import CTkButton, CTkLabel, CTkFrame, CTkEntry
-from exportToMoodle.action import save
+import tkinter.ttk as ttk
+from customtkinter import CTkButton, CTkLabel, CTkFrame, CTkEntry,VERTICAL
+from exportToMoodle.action import save, savePdf
 
 class exportToMoodle(CTkFrame):
     def __init__(self, parent, controller): 
@@ -23,12 +23,21 @@ class exportToMoodle(CTkFrame):
     def show(self):
         # label of frame exportToMoodle
         label = CTkLabel(self, text ="exportToMoodle")
-        label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        label.pack()
+        
+        centered_frame = CTkFrame(self)
+        centered_frame.pack()
 
         # save button
-        folder_name = CTkLabel(self, text="Nom de la banque de questions:")
-        folder_name.grid(row = 2, column = 0)
-        entry = CTkEntry(self)
-        entry.grid()
-        save_button = CTkButton(self, text="Download Moodle initialisation file", command=lambda moodle_folder=entry: save(moodle_folder))
+        folder_name = CTkLabel(centered_frame, text="Nom de la banque de questions:")
+        folder_name.grid(row = 2, column = 0,pady = 10)
+        entry = CTkEntry(centered_frame)
+        entry.grid(row = 3, column = 0, padx = 10, pady = 10)
+        save_button = CTkButton(centered_frame, text="Download Moodle initialisation file", command=lambda moodle_folder=entry: save(moodle_folder))
         save_button.grid(row = 1, column = 0, padx = 10, pady = 10)
+
+        separator = ttk.Separator(centered_frame, orient=VERTICAL)
+        separator.grid(column=1, row=0, rowspan=4, sticky='ns')
+
+        button2 = CTkButton(centered_frame, text="save pdf of all projects", command=lambda: savePdf())
+        button2.grid(row = 1, column = 2, padx = 10, pady = 10)

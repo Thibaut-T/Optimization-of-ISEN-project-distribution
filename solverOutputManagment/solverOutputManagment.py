@@ -192,7 +192,7 @@ class SolverOutputManagment(CTkFrame):
                 # Vérifier les anomalies
                 self.all_errors = verifier_anomalies(result_solver, self.projets, self.eleves)
 
-                print("Anomalies -----------------------------\n", self.all_errors)
+                
 
             # sauvegarde des résultats dans un fichier Excel
             # # Créer un dictionnaire pour stocker les données des projets et des élèves
@@ -252,17 +252,23 @@ class SolverOutputManagment(CTkFrame):
         self.show()
 
     def show(self):
+        label = CTkLabel(self, text ="SolverProcess")
+        label.pack()
+
+        centered_frame = CTkFrame(self)
+        centered_frame.pack(fill="both", expand=True)
+
         # Cadre principal pour contenir les cadres gauche et droit
-        self.grid_columnconfigure(0, weight=1)  # Colonne 0
-        self.grid_columnconfigure(1, weight=1)  # Colonne 1
-        self.grid_rowconfigure(0, weight=1)     # Ligne 0
+        centered_frame.grid_columnconfigure(0, weight=1)  # Colonne 0
+        centered_frame.grid_columnconfigure(1, weight=1)  # Colonne 1
+        centered_frame.grid_rowconfigure(0, weight=1)     # Ligne 0
         
         # Cadre gauche avec un poids de 1
-        left_frame = CTkScrollableFrame(self)
+        left_frame = CTkScrollableFrame(centered_frame)
         left_frame.grid(row=0, column=0, padx=5, sticky="nsew")
         
         # Cadre droit avec un poids de 1
-        right_frame = CTkScrollableFrame(self)
+        right_frame = CTkScrollableFrame(centered_frame)
         right_frame.grid(row=0, column=1, padx=5, sticky="nsew")
         
         # Ajouter les informations des self.projets dans le conteneur scrollable_frame
@@ -278,8 +284,9 @@ class SolverOutputManagment(CTkFrame):
             card.pack(padx=5, pady=5, fill="x")
 
             error_label = CTkLabel(card, text=error, anchor="w", justify="left", fg_color="red")
-            error_label.grid(row=i, column=0, padx=5, pady=2)
-            solve_button = CTkButton(self, text="Résoudre", command=lambda: solve_function())
-            solve_button.grid(row=2 + i, column=1, padx=5, pady=10)
+            error_label.grid(row=i, column=1, padx=5, pady=2)
+
+            solve_button = CTkButton(card, text="Résoudre", command=lambda: solve_function())
+            solve_button.grid(row=i, column=0, padx=5, pady=10)
 
 # all_errors = la fonction 

@@ -23,10 +23,12 @@ class SolverProcess(CTkFrame):
         self.show()
 
     def show(self):
-        # label of frame SolverOutputManagment
         label = CTkLabel(self, text ="SolverProcess")
-        label.grid(row = 0, column = 0, padx = 10, pady = 10)
+        label.pack()
+
+        centered_frame = CTkFrame(self)
+        centered_frame.pack()
 
         # button to trigger solverProcess.action.solve
-        button = CTkButton(self, text ="Solve", command = lambda controller = self.controller: solve(controller))
+        button = CTkButton(centered_frame, text ="Solve", command = lambda controller = self.controller: solve(controller))
         button.grid(row = 1, column = 0, padx = 10, pady = 10)

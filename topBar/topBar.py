@@ -1,6 +1,6 @@
 import tkinter as tk
 from customtkinter import CTkButton, CTkFrame
-from topBar.actions import Help
+from topBar.actions import help
 
 class TopBar(CTkFrame):
     def __init__(self, parent, controller): 
@@ -23,7 +23,7 @@ class TopBar(CTkFrame):
         self.show()
     
     def show(self):
-        help_button = CTkButton(self, text="Prise en main de l'application (tutoriel)", command=lambda: Help())
+        help_button = CTkButton(self, text="Prise en main de l'application (tutoriel)", command=lambda: help())
         help_button.pack(side = "left", padx = 20, pady = 20)
 
         next_button = CTkButton(self, text="Next", command=self.controller.show_next_frame, corner_radius=2, hover_color="purple")

@@ -111,7 +111,7 @@ def solve(controller):
 
         result_df = pd.DataFrame(result_array)
 
-        print(result_df)
+        
 
         result_df.to_csv('common/resultSolver.csv', index=False)
 
@@ -121,7 +121,7 @@ def solve(controller):
         return Exception
 
 def formated_table(data):
-    print("first data ___________________________________\n", data)
+    
 
     data = pd.DataFrame(data[1:], columns=data[0])
 
@@ -130,7 +130,7 @@ def formated_table(data):
 
     tmp_data = tmp_data.to_numpy()
 
-    print("second data ___________________________________\n", tmp_data)
+    
 
     return tmp_data
 

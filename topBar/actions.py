@@ -2,11 +2,11 @@ import pandas as pd
 from tkinter import filedialog
 import os
 
-def Helptest():
+def helptest():
     filename = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
   
 
-def Help():
+def help():
     # Spécifiez le chemin du fichier PDF
     pdf_file_path = "Tuto_quiz_moodle_v1.pdf"
 

@@ -1,6 +1,7 @@
 import os
 from tkinter import filedialog
 import pandas as pd
+from projectCreation.action import generate_pdf_with_values
 
 def create_xml_file(filename, moodle_folder):
     try:
@@ -111,3 +112,20 @@ def create_xml_file(filename, moodle_folder):
 def save(entry):
     filename = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML files", "*.xml")])
     create_xml_file(filename, entry.get())
+
+def getAllProjects():
+    directory = 'common'
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    try:
+        df = pd.read_excel('common/dataProjects.xlsx')
+    except FileNotFoundError:
+        df = pd.DataFrame(columns=['Numéro du projet', 'Intitulé', 'Proposé par', 'Equipe', 'Tél', 'Mail', 'Description', 'Minimum d\'étudiants', 'Maximum d\'étudiants', 'Entreprise'])
+        df.to_excel('common/dataProjects.xlsx', index=False)
+    return df
+    
+def savePdf():
+    projects = getAllProjects()
+    projects = projects.astype(str)  
+    projects_dict = projects.to_dict('records') 
+    generate_pdf_with_values(projects_dict)

@@ -1,4 +1,3 @@
-import tkinter as tk
 from tkinter import END, filedialog
 from fpdf import FPDF
 import pandas as pd

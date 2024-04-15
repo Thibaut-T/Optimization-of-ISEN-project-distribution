@@ -58,7 +58,7 @@ class SolverOutputManagment(tk.Frame):
                     # Affecter le nom de la colonne au champ nom de l'objet Projet
                     projet.nom = colonne
                     # Afficher le titre de la colonne
-                    print(f"Projet : {colonne}")
+                    
                     # Afficher les titres de ligne avec la valeur 1 dans cette colonne
                     lignes = donnees[donnees[colonne] == 1].index
                     for ligne in lignes:
@@ -70,7 +70,7 @@ class SolverOutputManagment(tk.Frame):
                         eleve.nom = titre_ligne
                         # Ajouter l'objet Eleve à la liste eleves de l'objet Projet
                         projet.eleves.append(eleve)
-                        print(f" - Elève : {titre_ligne}")
+                        
                     # Ajouter l'objet Projet à la liste self.projets
                     self.projets.append(projet)
 

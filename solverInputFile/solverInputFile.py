@@ -27,8 +27,12 @@ class SolverInputFile(CTkFrame):
     def show(self):
         # label of frame SolverInputFile
         label = CTkLabel(self, text ="SolverInputFile")
-        label.grid(row = 0, column = 0, padx = 10, pady = 10)
-        open_file_button = CTkButton(self, text="Open File", command=self.open_file)
+        label.pack()
+
+        centered_frame = CTkFrame(self)
+        centered_frame.pack()
+
+        open_file_button = CTkButton(centered_frame, text="Open File", command=self.open_file)
         open_file_button.grid(row=1, column=0, padx=10, pady=10)
   
     def open_file(self):
