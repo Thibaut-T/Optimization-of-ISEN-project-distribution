@@ -279,8 +279,16 @@ class SolverOutputManagment(CTkFrame):
             card.pack(padx=5, pady=5, fill="x")
 
             error_label = CTkLabel(card, text=error, anchor="w", justify="left", fg_color="red")
-            error_label.grid(row=i, column=0, padx=5, pady=2)
-            solve_button = CTkButton(self, text="Résoudre", command=lambda: solve_function())
-            solve_button.grid(row=2 + i, column=1, padx=5, pady=10)
+            error_label.grid(row=0, column=0, padx=5, pady=(10, 2), sticky="w")
+
+            solve_button = CTkButton(card, text="Résoudre", command=lambda: solve_function())
+            solve_button.grid(row=1, column=0, padx=5, pady=(2, 10), sticky="w")
+            
+            solve_button.update_idletasks()
+            button_width = solve_button.winfo_reqwidth()
+            button_height = solve_button.winfo_reqheight()
+            solve_button.configure(width=button_width, height=button_height)
+
+
 
 # all_errors = la fonction 
