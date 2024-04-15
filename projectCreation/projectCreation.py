@@ -1,11 +1,11 @@
 import tkinter as tk
-from customtkinter import CTkButton, CTkLabel, CTkEntry, CTkFrame, END
+from customtkinter import CTkButton, CTkLabel, CTkEntry, CTkScrollableFrame, END
 import pandas as pd
 from projectCreation.action import add_line, modify_line
 import re 
-class ProjectCreation(CTkFrame):
+class ProjectCreation(CTkScrollableFrame):
     def __init__(self, parent, controller):
-        CTkFrame.__init__(self, parent)
+        CTkScrollableFrame.__init__(self, parent)
 
         self.previous_frame = "projectManagment"
         self.next_frame = ""

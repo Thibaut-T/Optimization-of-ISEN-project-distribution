@@ -30,7 +30,7 @@ class MainApp(ctk.CTk):
         elif platform.system() == 'Linux':
             print("Linux")
             self.attributes('-zoomed', True)
-
+            
         ctk.set_default_color_theme("./theme.json")
 
         self.allFrames = {
