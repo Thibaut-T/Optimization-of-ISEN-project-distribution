@@ -124,7 +124,10 @@ class SolverOutputManagment(CTkFrame):
         if not os.path.exists("./common/recap.xlsx"):
             print("Fichier de récapitulatif non trouvé, génération des données...")
 
-            try:
+            if not os.path.exists("./common/dataProjects.xlsx") or not os.path.exists("./common/answerProjects.xlsx") or not os.path.exists("./common/resultSolver.csv"):
+                print("Fichiers de données non trouvés")
+                return
+            else:
                 # Chargement des fichiers Excel
                 dataProjects = pd.read_excel('./common/dataProjects.xlsx')
                 answerProjects = pd.read_excel('./common/answerProjects.xlsx')
@@ -190,10 +193,6 @@ class SolverOutputManagment(CTkFrame):
                 self.all_errors = verifier_anomalies(result_solver, self.projets, self.eleves)
 
                 print("Anomalies -----------------------------\n", self.all_errors)
-                
-            except FileNotFoundError:
-                print("Fichier non trouvé")
-
 
             # sauvegarde des résultats dans un fichier Excel
             # # Créer un dictionnaire pour stocker les données des projets et des élèves
