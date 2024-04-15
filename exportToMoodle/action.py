@@ -3,6 +3,7 @@ from tkinter import filedialog
 import pandas as pd
 from projectCreation.action import generate_pdf_with_values
 
+# Create the XML file
 def create_xml_file(filename, moodle_folder):
     try:
         os.remove(filename)
@@ -110,10 +111,12 @@ def create_xml_file(filename, moodle_folder):
             """.format(project_number, project_number, project_number))
 
 def save(entry):
+    # save xml
     filename = filedialog.asksaveasfilename(defaultextension=".xml", filetypes=[("XML files", "*.xml")])
     create_xml_file(filename, entry.get())
 
 def getAllProjects():
+    # try to get all projects 
     directory = 'common'
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -125,6 +128,7 @@ def getAllProjects():
     return df
     
 def savePdf():
+    # save the pdf
     projects = getAllProjects()
     projects = projects.astype(str)  
     projects_dict = projects.to_dict('records') 

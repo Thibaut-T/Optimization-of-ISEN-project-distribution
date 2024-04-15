@@ -32,6 +32,8 @@ class TopBar(CTkFrame):
         previous_button = CTkButton(self, text="Previous", command=self.controller.show_previous_frame, corner_radius=2, hover_color="purple")
         previous_button.pack(side="right", padx = 20, pady = 10)
 
+
+        # hide the buttons if there is no next or previous frame or if the objective is not fulfilled
         if not self.previous:
             previous_button.configure(state='disabled')
         if not self.next or not self.objective_fulfilled:

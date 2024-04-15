@@ -20,6 +20,7 @@ class SolverInputFile(CTkFrame):
         for item in children:
             item.pack_forget()
             item.grid_forget()
+
         self.objective_fulfilled = os.path.exists("./common/answerProjects.xlsx")
 
         self.show()
@@ -38,6 +39,7 @@ class SolverInputFile(CTkFrame):
     def open_file(self):
         filename = filedialog.askopenfilename(filetypes=[("Excel files", "*.xlsx")])
 
+        # copy the file to the common folder
         if filename:
             if os.path.exists(f"./common/{os.path.basename(filename)}"):
                 os.remove(f"./common/{os.path.basename(filename)}")
@@ -46,6 +48,8 @@ class SolverInputFile(CTkFrame):
                 os.remove(f"./common/answerProjects.xlsx")
 
             shutil.copy(filename, "./common")
+
+            # rename the file to answerProjects.xlsx
             os.rename(f"./common/{os.path.basename(filename)}", f"./common/answerProjects.xlsx")
         self.controller.show_frame("solverInputFile")
 

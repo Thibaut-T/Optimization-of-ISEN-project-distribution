@@ -7,6 +7,7 @@ import pandas as pd
 
 
 def solve(controller):
+    # get data from the responses or the projects
     students_projects_array_with_mails, students_projects_info_finance_array_with_mails, data_project = get_data()
 
     students_projects_info_finance_array = pd.DataFrame([row[1:] for row in students_projects_info_finance_array_with_mails]).to_numpy()
@@ -20,6 +21,8 @@ def solve(controller):
 
     ##################################################################
 
+    # define the variables used in the solver
+
     lp_file = 'common/solver.lp'
     projects_students_array = transpose(students_projects_array)
     projects_students_info_finance_array = transpose(students_projects_info_finance_array)
@@ -31,14 +34,15 @@ def solve(controller):
     ##################################################################
 
     try:
-
         model = LpProblem(name="assign_students_to_projects", sense=LpMaximize)
 
+        # all the variables
         variables_normal = {(i, j): LpVariable(name=f"s{i+1}p{j+1}N", cat=LpBinary) for i in range(len(students_projects_array)) for j in range(len(students_projects_array[i]))}
         variables_info_finance = {(i, j): LpVariable(name=f"s{i+1}p{j+1}IF", cat=LpBinary) for i in range(len(students_projects_info_finance_array)) for j in range(len(students_projects_info_finance_array[i]))}
 
         binary_variables = {j: LpVariable(name=f"b{j}", cat=LpBinary) for j in range(len(projects_students_array))}
         
+        # add the objective function
         tmp = [(variables_normal[i, j],students_projects_array[i][j]) for i in range(len(students_projects_array)) for j in range(len(students_projects_array[i]))]
         tmp += [(variables_info_finance[i, j],students_projects_info_finance_array[i][j]) for i in range(len(students_projects_info_finance_array)) for j in range(len(students_projects_info_finance_array[i]))]
 
@@ -53,17 +57,21 @@ def solve(controller):
                         if j not in already_assigned:
                             already_assigned.append(j)
                         else:
-                            print("Error: Student already assigned to a project")
-                            return
+                            return f"Error: Student {j}, already assigned to a project"
 
         model += LpAffineExpression(tmp)
 
+        # add the constraints
+
+        # each student can only be assigned to one project
         for i in range(len(students_projects_array)):
             model += lpSum(variables_normal[i, j] for j in range(len(students_projects_array[i]))) <= 1
         
+        # each student in the info finance can only be assigned to one project
         for i in range(len(students_projects_info_finance_array)):
             model += lpSum(variables_info_finance[i, j] for j in range(len(students_projects_info_finance_array[i]))) <= 1
 
+        # each project must have a maximum number of students
         for j in range(number_of_projects):
             tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
 
@@ -74,6 +82,7 @@ def solve(controller):
 
             model += tmp1 + tmp2 <= data_project[j][2]
 
+        # each project must have a minimum number of students 1
         for j in range(number_of_projects):
             tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
 
@@ -84,6 +93,7 @@ def solve(controller):
 
             model += tmp1 + tmp2 <= bigM * binary_variables[j]
 
+        # each project must have a minimum number of students 2
         for j in range(number_of_projects):
             tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
 
@@ -94,16 +104,19 @@ def solve(controller):
 
             model += tmp1 + tmp2 >= data_project[j][1] * binary_variables[j]
 
+        # each project must have a maximum number of students in info finance
         if len(projects_students_info_finance_array) > 0:
             for j in range(number_of_projects):
                 tmp1 = lpSum(variables_info_finance[i, j] for i in range(len(projects_students_info_finance_array[j])))
                 model += tmp1 <= 2
 
+        # student already assigned to a project
         for i in range(number_of_projects):
             for email in data_project[i][0]:
                 for j in range(len(students_projects_array_with_mails)):
                     if students_projects_array_with_mails[j][0] == email:
                         model += variables_normal[j, i] == 1
+        
         model.solve()
         model.writeLP(lp_file)
 
@@ -112,10 +125,8 @@ def solve(controller):
         result_df = pd.DataFrame(result_array)
 
         if(model.status == 1):
-            print("Optimal solution found")
             result_df.to_csv('common/resultSolver.csv', index=False)
         else:
-            print("No optimal solution found")
             return "No optimal solution found"
 
         controller.show_frame("solverProcess")
@@ -124,8 +135,6 @@ def solve(controller):
         return str(e)
 
 def formated_table(data):
-    
-
     data = pd.DataFrame(data[1:], columns=data[0])
 
     tmp_data = data.iloc[:, 0]
@@ -133,14 +142,11 @@ def formated_table(data):
 
     tmp_data = tmp_data.to_numpy()
 
-    
-
     return tmp_data
 
 def get_data():
     table_normal = []
     table_info_finance = []
-
 
     traduction_ = {
         'response' : {
@@ -184,11 +190,13 @@ def get_data():
                     non_zero_grades = [grade for grade in grades if grade != 0]
                     zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
 
+                    # ajouter des notes aléatoires pour les projets non notés
                     while len(non_zero_grades) <= 5:
                         random_index = random.choice(zero_indices)
                         grades[random_index] = 5
                         non_zero_grades.append(5)
 
+                    # normaliser les notes
                     normalized_grades = [int((grade / max(non_zero_grades))*5) if grade != 0 else 0 for grade in grades]
                     student_data += normalized_grades
 
@@ -206,11 +214,13 @@ def get_data():
                     non_zero_grades = [grade for grade in grades if grade != 0]
                     zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
 
+                    # ajouter des notes aléatoires pour les projets non notés
                     while len(non_zero_grades) <= 5:
                         random_index = random.choice(zero_indices)
                         grades[random_index] = 5
                         non_zero_grades.append(5)
 
+                    # normaliser les notes
                     normalized_grades = [int((grade / max(non_zero_grades))*5) if grade != 0 else 0 for grade in grades]
                     student_data += normalized_grades
 
@@ -224,11 +234,13 @@ def get_data():
                     non_zero_grades = [grade for grade in grades if grade != 0]
                     zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
                     
+                    # ajouter des notes aléatoires pour les projets non notés
                     while len(non_zero_grades) <= 5:
                         random_index = random.choice(zero_indices)
                         grades[random_index] = 5
                         non_zero_grades.append(5)
 
+                    # normaliser les notes
                     normalized_grades = [int((grade / max(non_zero_grades))*5) if grade != 0 else 0 for grade in grades]
                     student_data += normalized_grades
 

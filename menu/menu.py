@@ -8,6 +8,7 @@ class Menu(CTkFrame):
 
         self.controller = controller
 
+        # list of frames
         self.menu = [
             "projectManagement",
             "exportToMoodle",
@@ -17,6 +18,7 @@ class Menu(CTkFrame):
             "exportStudentDistribution",
         ]
 
+        # list of names corresponding to the frames
         self.text = {
             "projectManagement": "Project Management",
             "exportToMoodle": "Export to Moodle",
