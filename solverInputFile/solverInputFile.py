@@ -26,7 +26,7 @@ class SolverInputFile(CTkFrame):
     
     def show(self):
         # label of frame SolverInputFile
-        label = CTkLabel(self, text ="SolverInputFile")
+        label = CTkLabel(self, text = "SolverInputFile")
         label.pack()
 
         centered_frame = CTkFrame(self)

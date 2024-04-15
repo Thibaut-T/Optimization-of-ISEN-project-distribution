@@ -31,7 +31,7 @@ class ProjectCreation(CTkScrollableFrame):
     def show(self):
         input_values = []
         # label of frame ProjectCreation
-        label = CTkLabel(self, text ="ProjectCreation")
+        label = CTkLabel(self, text = "Project Creation")
         label.pack()
 
         def is_number(value):

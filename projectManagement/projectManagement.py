@@ -38,7 +38,7 @@ class ProjectManagement(CTkFrame):
     
     def show(self):        
         # label of frame ProjectManagement
-        label = CTkLabel(self, text ="ProjectManagement")
+        label = CTkLabel(self, text = "Project Management")
         label.pack(pady=10,padx=10)
 
         button1 = CTkButton(self, text="create a project", command=lambda: createProject(self.controller))
