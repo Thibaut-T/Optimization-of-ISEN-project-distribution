@@ -8,7 +8,7 @@ def getAllProjects():
     try:
         df = pd.read_excel('common/dataProjects.xlsx')
     except FileNotFoundError:
-        df = pd.DataFrame(columns=['Numéro du projet', 'Intitulé', 'Proposé par', 'Equipe', 'Tél', 'Mail', 'Description', 'Minimum d\'étudiants', 'Maximum d\'étudiants', 'Entreprise'])
+        df = pd.DataFrame(columns=['Project number', 'Project name', 'Person in charge', 'Team emails', 'Phone number', 'Mail', 'Description', 'Minimum students', 'Maximum students', 'Company'])
         df.to_excel('common/dataProjects.xlsx', index=False)
     return df
 
@@ -36,9 +36,9 @@ def createProject(controller):
 
 def deleteProject(controller, i):
     projects = getAllProjects()
-    projects = projects[projects['Numéro du projet'] != i]
+    projects = projects[projects['Project number'] != i]
 
-    projects['Numéro du projet'] = projects['Numéro du projet'].apply(lambda x: int(x - 1) if x > i else int(x))
+    projects['Project number'] = projects['Project number'].apply(lambda x: int(x - 1) if x > i else int(x))
 
     projects.to_excel('common/dataProjects.xlsx', index=False)
 

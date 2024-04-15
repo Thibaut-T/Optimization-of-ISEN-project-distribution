@@ -23,7 +23,7 @@ class Projet:
         self.entreprise = ""
 
     def representation(self):
-        return f"Projet {self.intitule} :\n - Min : {int(self.nbmin) if not math.isnan(self.nbmin) else 3}\n - Max : {int(self.nbmax) if not math.isnan(self.nbmax) else 7}\n - Equipe de {len(self.eleves)} étudiants :\n" + "\n".join([f"\t- {eleve.nom} {eleve.prenom}" for eleve in self.eleves]) + "\n"
+        return f"Projet {self.intitule} :\n - Min : {int(self.nbmin) if not math.isnan(self.nbmin) else 3}\n - Max : {int(self.nbmax) if not math.isnan(self.nbmax) else 7}\n - Team emails de {len(self.eleves)} étudiants :\n" + "\n".join([f"\t- {eleve.nom} {eleve.prenom}" for eleve in self.eleves]) + "\n"
     
     def __str__(self):
         return f"Projet {self.intitule}"
@@ -77,16 +77,16 @@ def verifier_anomalies(resultSolver, projets, eleves):
         df_projet = pd.read_excel("./common/dataProjects.xlsx")
 
         for projet in projets:
-            corresponding_row = df_projet[df_projet["Numéro du projet"] == projet.numero_proj]
+            corresponding_row = df_projet[df_projet["Project number"] == projet.numero_proj]
             somme_etudiants = len(projet.eleves)
 
-            if somme_etudiants < corresponding_row["Minimum d'étudiants"].values[0]:
+            if somme_etudiants < corresponding_row["Minimum students"].values[0]:
                 tmp = AnomaliesProjet()
                 tmp.projet = projet
                 tmp.error = f"{tmp.projet.intitule} n'a pas le minimum requis d'étudiants"
                 all_errors.append(tmp)
 
-            if somme_etudiants > corresponding_row["Maximum d'étudiants"].values[0]:
+            if somme_etudiants > corresponding_row["Maximum students"].values[0]:
                 tmp = AnomaliesProjet()
                 tmp.projet = projet
                 tmp.error = f"{tmp.projet.intitule} contient trop d'étudiants"
@@ -137,31 +137,51 @@ class SolverOutputManagement(CTkFrame):
                 self.eleves = [] # Liste pour stocker les objets de la classe Eleve
                 self.all_errors = [] # Liste pour stocker les objets de la classe Anomalies
 
+                traduction_ = {
+                    'response' : {
+                        'fr' : 'Réponse',
+                        'en' : 'Response',
+                    },
+                    'email' : {
+                        'fr' : 'Adresse de courriel',
+                        'en' : 'Email address',
+                    },
+                    'first_name' : {
+                        'fr' : 'Prénom',
+                        'en' : 'First name',
+                    },
+                    'last_name' : {
+                        'fr' : 'Nom de famille',
+                        'en' : 'Last name',
+                    },
+                }
+                language = "fr" if "Nom de famille" in answerProjects.columns else "en"
+
+                for student in answerProjects.iterrows():
+                    eleve = Eleve()
+                    eleve.nom = student[1][traduction_['last_name'][language]]
+                    eleve.prenom = student[1][traduction_['first_name'][language]]
+                    eleve.mail = student[1][traduction_['email'][language]]
+                    self.eleves.append(eleve)
+
                 # Parcourir toutes les colonnes
                 for colonne in result_solver.columns:
                 # Vérifier si la colonne contient la valeur 1
                     # Créer une instance de la classe Projet
                     projet = Projet()
             
-                    tmp_projet = dataProjects[dataProjects['Numéro du projet'] == int(colonne)+1]
+                    tmp_projet = dataProjects[dataProjects['Project number'] == int(colonne)+1]
 
                     # Affecter le nom de la colonne au champ nom de l'objet Projet
-                    projet.numero_proj = tmp_projet["Numéro du projet"].values[0]
+                    projet.numero_proj = tmp_projet["Project number"].values[0]
 
                     if (result_solver[colonne] == 1).any():
                         # Afficher les titres de ligne avec la valeur 1 dans cette colonne
                         lignes = result_solver[result_solver[colonne] == 1].index
                         
                         for ligne in lignes:
-                            # Créer une instance de la classe Eleve
-                            eleve = Eleve()
-                            # Affecter le titre de la ligne au champ nom de l'objet Eleve
-                            eleve.nom = answerProjects.iloc[ligne, 0]
-                            eleve.prenom = answerProjects.iloc[ligne, 1]
-                            eleve.mail = answerProjects.iloc[ligne, 2]
                             # Ajouter l'objet Eleve à la liste eleves de l'objet Projet
-                            projet.eleves.append(eleve)
-                            self.eleves.append(eleve)
+                            projet.eleves.append(self.eleves[ligne])
                         # Ajouter l'objet Projet à la liste projets
 
                     else:
@@ -173,19 +193,19 @@ class SolverOutputManagement(CTkFrame):
                 # Parcourir les self.projets et compléter les informations
                 for projet in self.projets:
                     # Récupérer les informations du projet correspondant à son nom dans common/dataProjects.xlsx
-                    infos_projet = dataProjects[dataProjects['Numéro du projet'] == projet.numero_proj]
+                    infos_projet = dataProjects[dataProjects['Project number'] == projet.numero_proj]
                     if not infos_projet.empty:
                         infos_projet = infos_projet.iloc[0]
                         # Remplir les attributs de l'objet Projet
-                        projet.intitule = infos_projet['Intitulé']
-                        projet.par = infos_projet['Proposé par']
-                        projet.equipe = infos_projet['Equipe']
-                        projet.tel = infos_projet['Tél']
+                        projet.intitule = infos_projet['Project name']
+                        projet.par = infos_projet['Person in charge']
+                        projet.equipe = infos_projet['Team emails']
+                        projet.tel = infos_projet['Phone number']
                         projet.mail = infos_projet['Mail']
                         projet.description = infos_projet['Description']
-                        projet.nbmin = infos_projet['Minimum d\'étudiants']
-                        projet.nbmax = infos_projet['Maximum d\'étudiants']
-                        projet.entreprise = infos_projet['Entreprise']
+                        projet.nbmin = infos_projet['Minimum students']
+                        projet.nbmax = infos_projet['Maximum students']
+                        projet.entreprise = infos_projet['Company']
                     else:
                         print(f"Aucune information trouvée pour le projet {projet.nom} dans le fichier common/dataProjects.xlsx")
 

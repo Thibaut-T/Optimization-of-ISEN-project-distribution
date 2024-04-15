@@ -1,5 +1,5 @@
 import tkinter.ttk as ttk
-from customtkinter import CTkButton, CTkLabel, CTkFrame, CTkScrollableFrame, HORIZONTAL
+from customtkinter import CTkButton, CTkLabel, CTkFrame, CTkScrollableFrame, HORIZONTAL, VERTICAL
 import pandas as pd
 from projectManagement.actions import modifyProject, createProject, deleteProject, getAllProjects
 
@@ -28,7 +28,7 @@ class ProjectManagement(CTkFrame):
             self.recursive_destroy(child)
 
         try:
-            self.projects = getAllProjects()[['Numéro du projet','Intitulé', 'Proposé par']]
+            self.projects = getAllProjects()[['Project number','Project name', 'Person in charge']]
         except FileNotFoundError:
             self.projects = pd.DataFrame()
         
@@ -59,11 +59,11 @@ class ProjectManagement(CTkFrame):
         sub_frame.grid_columnconfigure(4, weight=1)
         
 
-        project_label_titles = CTkLabel(sub_frame, text='Numéro du projet')
+        project_label_titles = CTkLabel(sub_frame, text='Project number')
         project_label_titles.grid(row = 4, column = 0, padx = 5, pady = 5)
-        project_label_titles_1 = CTkLabel(sub_frame, text='Intitulé')
+        project_label_titles_1 = CTkLabel(sub_frame, text='Project name')
         project_label_titles_1.grid(row = 4, column = 1, padx = 5, pady = 5)
-        project_label_titles_2 = CTkLabel(sub_frame, text='Proposé par')
+        project_label_titles_2 = CTkLabel(sub_frame, text='Person in charge')
         project_label_titles_2.grid(row = 4, column = 2, padx = 5, pady = 5)
         project_label_titles_3 = CTkLabel(sub_frame, text='Action')
         project_label_titles_3.grid(row = 4, column = 3, columnspan = 2, padx = 5, pady = 5)
@@ -72,15 +72,15 @@ class ProjectManagement(CTkFrame):
         separator.grid(column=0, row=5, columnspan=5, sticky='ew')
 
         for i, project in self.projects.iterrows():
-            project_label = CTkLabel(sub_frame, text=project['Numéro du projet'])
+            project_label = CTkLabel(sub_frame, text=project['Project number'])
             project_label.grid(row = 2*i+6, column = 0, padx = 5, pady = 5)
-            project_label_1 = CTkLabel(sub_frame, text=project['Intitulé'])
+            project_label_1 = CTkLabel(sub_frame, text=project['Project name'])
             project_label_1.grid(row = 2*i+6, column = 1, padx = 5, pady = 5)
-            project_label_1 = CTkLabel(sub_frame, text=project['Proposé par'])
+            project_label_1 = CTkLabel(sub_frame, text=project['Person in charge'])
             project_label_1.grid(row = 2*i+6, column = 2, padx = 5, pady = 5)
-            project_label_2 = CTkButton(sub_frame, text="modifier", command=lambda index=project['Numéro du projet']: modifyProject(self.controller, index))
+            project_label_2 = CTkButton(sub_frame, text="modify", command=lambda index=project['Project number']: modifyProject(self.controller, index))
             project_label_2.grid(row = 2*i+6, column = 3, padx = 5, pady = 5)
-            project_label_3 = CTkButton(sub_frame, text="supprimer", command=lambda index=project['Numéro du projet']: deleteProject(self.controller, index))
+            project_label_3 = CTkButton(sub_frame, text="delete", command=lambda index=project['Project number']: deleteProject(self.controller, index))
             project_label_3.grid(row = 2*i+6, column = 4, padx = 5, pady = 5)
             
             separator = CTkFrame(sub_frame, bg_color="grey", height=1)

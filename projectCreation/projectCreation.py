@@ -73,18 +73,18 @@ class ProjectCreation(CTkScrollableFrame):
         if idCurrent != -1:
             try:
                 df = pd.read_excel('common/dataProjects.xlsx')
-                filtered_df = df[df['Numéro du projet'] == idCurrent]
+                filtered_df = df[df['Project number'] == idCurrent]
 
-                id = filtered_df['Numéro du projet'].values[0] if not filtered_df.empty else ""
-                entry2Text = filtered_df['Intitulé'].values[0] if not filtered_df.empty else ""
-                entry3Text = filtered_df['Proposé par'].values[0] if not filtered_df.empty else ""
-                entry4Text = filtered_df['Equipe'].values[0] if not filtered_df.empty else ""
-                entry5Text = filtered_df['Tél'].values[0] if not filtered_df.empty else ""
+                id = filtered_df['Project number'].values[0] if not filtered_df.empty else ""
+                entry2Text = filtered_df['Project name'].values[0] if not filtered_df.empty else ""
+                entry3Text = filtered_df['Person in charge'].values[0] if not filtered_df.empty else ""
+                entry4Text = filtered_df['Team emails'].values[0] if not filtered_df.empty else ""
+                entry5Text = filtered_df['Phone number'].values[0] if not filtered_df.empty else ""
                 entry6Text = filtered_df['Mail'].values[0] if not filtered_df.empty else ""
                 entry7Text = filtered_df['Description'].values[0] if not filtered_df.empty else ""
-                entry8Text = filtered_df['Minimum d\'étudiants'].values[0] if not filtered_df.empty else ""
-                entry9Text = filtered_df['Maximum d\'étudiants'].values[0] if not filtered_df.empty else ""
-                entry10Text = filtered_df['Entreprise'].values[0] if not filtered_df.empty else ""
+                entry8Text = filtered_df['Minimum students'].values[0] if not filtered_df.empty else ""
+                entry9Text = filtered_df['Maximum students'].values[0] if not filtered_df.empty else ""
+                entry10Text = filtered_df['Company'].values[0] if not filtered_df.empty else ""
             except FileNotFoundError:
                 entry2Text = ""
                 entry3Text = ""
@@ -112,24 +112,24 @@ class ProjectCreation(CTkScrollableFrame):
 
         entry1Text = id
         
-        label1 = CTkLabel(self, text="Numéro du projet:")
+        label1 = CTkLabel(self, text="Project number:")
         label1.pack()
         entry1 = CTkLabel(self, text=entry1Text)
         entry1.pack()
-        label2 = CTkLabel(self, text="Intitulé:")
+        label2 = CTkLabel(self, text="Project name:")
         label2.pack()
         entry2 = CTkEntry(self)
         entry2.insert(END, entry2Text)
         entry2.pack()
 
-        label3 = CTkLabel(self, text="Proposé par :")
+        label3 = CTkLabel(self, text="Person in charge:")
         label3.pack()
         entry3 = CTkEntry(self)
         entry3.insert(END, entry3Text)
         entry3.pack()
 
         vcmd_mail2 = (self.register(validate_emails), '%P')
-        label4 = CTkLabel(self, text="Equipe:")
+        label4 = CTkLabel(self, text="Team emails:")
         label4.pack()
         entry4 = CTkEntry(self,validate='key', validatecommand=vcmd_mail2)
         entry4.insert(END, entry4Text)
@@ -139,7 +139,7 @@ class ProjectCreation(CTkScrollableFrame):
 
         vcmd_phone = (self.register(is_phone_number), '%P')
 
-        label5 = CTkLabel(self, text="Tél:")
+        label5 = CTkLabel(self, text="Phone number:")
         label5.pack()
         entry5 = CTkEntry(self, validate='key', validatecommand=vcmd_phone)
         entry5.insert(END, entry5Text)
@@ -166,7 +166,7 @@ class ProjectCreation(CTkScrollableFrame):
         entry9.insert(END, entry9Text)
         entry9.pack()
 
-        label20 = CTkLabel(self, text="Entreprise:")
+        label20 = CTkLabel(self, text="Company:")
         label20.pack()
         entry10 = CTkEntry(self)
         entry10.insert(END, entry10Text)

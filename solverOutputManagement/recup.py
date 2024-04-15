@@ -64,7 +64,7 @@ class Ppasassezeleve(Anomalies):
         df_projet = pd.read_excel(donnees_projet)
 
         for index, row in df_projet.iterrows():
-            intitule_projet = row["Intitulé"]
+            intitule_projet = row["Project name"]
             nb_min_etudiants = row["Minimum d'étudiants"]
             somme_etudiants = donnees_anomalie[intitule_projet].sum()
             
@@ -81,7 +81,7 @@ class Ptropeleve(Anomalies):
         df_projet = pd.read_excel(donnees_projet)
 
         for index, row in df_projet.iterrows():
-            intitule_projet = row["Intitulé"]
+            intitule_projet = row["Project name"]
             nb_max_etudiants = row["Maximum d'étudiants"]
             somme_etudiants = donnees_anomalie[intitule_projet].sum()
             
@@ -184,15 +184,15 @@ class SolverOutputManagement(tk.Frame):
             projet_label = ttk.Label( text=f"Nom du projet : {projet.nom}\n"
                                                         f"Elèves du projet :\n"
                                                         f"Informations du projet :\n"
-                                                        f"Intitulé : {projet.intitule}\n"
-                                                        f"Proposé par : {projet.par}\n"
-                                                        f"Equipe : {projet.equipe}\n"
-                                                        f"Téléphone : {projet.tel}\n"
+                                                        f"Project name : {projet.intitule}\n"
+                                                        f"Person in charge : {projet.par}\n"
+                                                        f"Team emails : {projet.equipe}\n"
+                                                        f"Phone numberéphone : {projet.tel}\n"
                                                         f"Mail : {projet.mail}\n"
                                                         f"Description : {projet.description}\n"
                                                         f"Minimum d'étudiants : {projet.nbmin}\n"
                                                         f"Maximum d'étudiants : {projet.nbmax}\n"
-                                                        f"Entreprise : {projet.entreprise}\n",anchor="e",justify="right")
+                                                        f"Company : {projet.entreprise}\n",anchor="e",justify="right")
             projet_label.pack(padx=10, pady=10, anchor="e")
 
         # Configurer le Canvas pour le défilement

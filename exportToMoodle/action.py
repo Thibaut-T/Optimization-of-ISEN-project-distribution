@@ -63,13 +63,13 @@ def create_xml_file(filename, moodle_folder):
 
         # Loop over df to create a question for each project
         for i in range(len(df)):
-            project_number = df.loc[i, 'Numéro du projet']
+            project_number = df.loc[i, 'Project number']
             file.write(r"""<question type="multichoice">
             <name format="html">
             <text><![CDATA[Projet {:02d}]]></text>
             </name>
             <questiontext format="html">
-            <text><![CDATA[<p>Évaluez le projet """ + str(project_number) + """ : """ + str(df.loc[i, "Intitulé"]) + """ de 1 à 10 (10 = votre projet préféré)<BR/><em>Rate the project """ + str(project_number) + """ : """ + str(df.loc[i, "Intitulé"]) + """ from 1 to 10 (10 = your favorite project)</em></p>]]></text>
+            <text><![CDATA[<p>Évaluez le projet """ + str(project_number) + """ : """ + str(df.loc[i, "Project name"]) + """ de 1 à 10 (10 = votre projet préféré)<BR/><em>Rate the project """ + str(project_number) + """ : """ + str(df.loc[i, "Project name"]) + """ from 1 to 10 (10 = your favorite project)</em></p>]]></text>
             </questiontext>
             <defaultgrade>0</defaultgrade>
             <generalfeedback format="html"><text/></generalfeedback>
@@ -120,7 +120,7 @@ def getAllProjects():
     try:
         df = pd.read_excel('common/dataProjects.xlsx')
     except FileNotFoundError:
-        df = pd.DataFrame(columns=['Numéro du projet', 'Intitulé', 'Proposé par', 'Equipe', 'Tél', 'Mail', 'Description', 'Minimum d\'étudiants', 'Maximum d\'étudiants', 'Entreprise'])
+        df = pd.DataFrame(columns=['Project number', 'Project name', 'Person in charge', 'Team emails', 'Phone number', 'Mail', 'Description', 'Minimum students', 'Maximum students', 'Company'])
         df.to_excel('common/dataProjects.xlsx', index=False)
     return df
     
