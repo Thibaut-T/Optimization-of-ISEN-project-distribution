@@ -111,17 +111,20 @@ def solve(controller):
 
         result_df = pd.DataFrame(result_array)
 
-        print(result_df)
-
-        result_df.to_csv('common/resultSolver.csv', index=False)
+        if(model.status == 1):
+            print("Optimal solution found")
+            result_df.to_csv('common/resultSolver.csv', index=False)
+        else:
+            print("No optimal solution found")
+            return "No optimal solution found"
 
         controller.show_frame("solverProcess")
 
     except Exception as e:
-        return Exception
+        return str(e)
 
 def formated_table(data):
-    print("first data ___________________________________\n", data)
+    
 
     data = pd.DataFrame(data[1:], columns=data[0])
 
@@ -130,7 +133,7 @@ def formated_table(data):
 
     tmp_data = tmp_data.to_numpy()
 
-    print("second data ___________________________________\n", tmp_data)
+    
 
     return tmp_data
 
@@ -242,7 +245,7 @@ def get_data():
         if not data.empty:
             data_array_norm = []
             for index, row in data.iterrows():
-                project_data = [row['Equipe'], row["Minimum d'étudiants"], row["Maximum d'étudiants"]]
+                project_data = [row['Team emails'], row["Minimum d'étudiants"], row["Maximum d'étudiants"]]
 
                 if isinstance(project_data[0], str):
                     project_data[0] = [data for data in project_data[0].split(";")]

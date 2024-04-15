@@ -8,4 +8,4 @@ def reset(controller):
         shutil.rmtree('./common')
         os.mkdir('./common')
         messagebox.showinfo("Information", "Reset successful")
-        controller.show_frame("projectManagment")
+        controller.show_frame("projectManagement")

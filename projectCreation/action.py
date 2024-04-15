@@ -1,4 +1,3 @@
-import tkinter as tk
 from tkinter import END, filedialog
 from fpdf import FPDF
 import pandas as pd
@@ -23,12 +22,12 @@ def generate_pdf_with_values(input_values):
         pdf.add_page()
         pdf.set_font("Arial", size=12)
         
-        # Display Numéro du projet
-        pdf.set_text_color(0, 100, 0)  # Dark green color for Numéro du projet
-        pdf.set_font("Arial", "B", 18)  # Bigger font size for "Numéro du projet"
-        pdf.cell(0, 10, txt=input_set["Numéro du projet"], ln=True, align="C")
+        # Display Project number
+        pdf.set_text_color(0, 100, 0)  # Dark green color for Project number
+        pdf.set_font("Arial", "B", 18)  # Bigger font size for "Project number"
+        pdf.cell(0, 10, txt=input_set["Project number"], ln=True, align="C")
         
-        # Horizontal line after Numéro du projet
+        # Horizontal line after Project number
         pdf.set_fill_color(0, 100, 0)  # Dark green color for lines
         pdf.set_y(pdf.get_y() + 5)  # Adjust spacing
         pdf.cell(0, 2, ln=True, fill=True)
@@ -36,9 +35,9 @@ def generate_pdf_with_values(input_values):
         # Display the remaining inputs in dark blue
         pdf.set_text_color(0, 0, 139)  # Dark blue color for remaining text
         for key, value in input_set.items():
-            if key != "Numéro du projet" and key != "Description":
+            if key != "Project number" and key != "Description":
                 pdf.ln(2)  # Reduce space between inputs
-                if key == ["Minimum d'étudiants","Maximum d'étudiants","Entreprise"]:
+                if key == ["Minimum d'étudiants","Maximum d'étudiants","Company"]:
                     pdf.set_font("Arial", "B", 14)  
                 else:
                     pdf.set_font("Arial", size=12)  # Reset font for other keys
@@ -79,16 +78,16 @@ def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entr
         input10 = "N/A"
 
     input_dict = {
-        "Numéro du projet": input1,
-        "Intitulé": input2,
-        "Proposé par": input3,
-        "Equipe": input4,
-        "Tél": input5,
+        "Project number": input1,
+        "Project name": input2,
+        "Person in charge": input3,
+        "Team emails": input4,
+        "Phone number": input5,
         "Mail": input6,
         "Description": input7,
         "Minimum d'étudiants": input8,
         "Maximum d'étudiants": input9,
-        "Entreprise": input10
+        "Company": input10
     }
 
     try:
@@ -98,7 +97,7 @@ def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entr
 
     # Check if the project already exists in the DataFrame
     
-    row = df[df["Numéro du projet"] == input1]
+    row = df[df["Project number"] == input1]
 
     index = row.index[0]  # Get the index of the project
 
@@ -117,8 +116,8 @@ def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entr
     entry10.delete(0, END)
     entry7.delete("1.0", END)
 
-    # Show the "projectManagment" frame
-    controller.show_frame("projectManagment")
+    # Show the "projectManagement" frame
+    controller.show_frame("projectManagement")
 
 
 
@@ -137,16 +136,16 @@ def add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,en
         input10="N/A"
     
     input_dict = {
-        "Numéro du projet": input1,
-        "Intitulé": input2,
-        "Proposé par": input3,
-        "Equipe": input4,
-        "Tél": input5,
+        "Project number": input1,
+        "Project name": input2,
+        "Person in charge": input3,
+        "Team emails": input4,
+        "Phone number": input5,
         "Mail": input6,
         "Description": input7,
         "Minimum d'étudiants": input8,
         "Maximum d'étudiants": input9,
-        "Entreprise": input10
+        "Company": input10
     }
    
     input_values.append(input_dict)
@@ -172,4 +171,4 @@ def add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,en
     entry10.delete(0, END)
     entry7.delete("1.0", END)
 
-    controller.show_frame("projectManagment")
+    controller.show_frame("projectManagement")

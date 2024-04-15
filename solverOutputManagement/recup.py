@@ -42,7 +42,7 @@ class Epasdeproj(Anomalies):
         for index, row in donnees_anomalie.iterrows():
             if sum(row.iloc[1:]) < 1:
                 self.error = f"{row.iloc[0]} n'est pas affecté à un projet"
-                print(self)
+                
 
 class Etropdeproj(Anomalies):
     def __init__(self):
@@ -53,7 +53,7 @@ class Etropdeproj(Anomalies):
         for index, row in donnees_anomalie.iterrows():
             if sum(row.iloc[1:]) > 1:
                 self.error = f"{row.iloc[0]} est affecté à plusieurs projets"
-                print(self)
+                
 
 class Ppasassezeleve(Anomalies):
     def __init__(self):
@@ -64,13 +64,13 @@ class Ppasassezeleve(Anomalies):
         df_projet = pd.read_excel(donnees_projet)
 
         for index, row in df_projet.iterrows():
-            intitule_projet = row["Intitulé"]
+            intitule_projet = row["Project name"]
             nb_min_etudiants = row["Minimum d'étudiants"]
             somme_etudiants = donnees_anomalie[intitule_projet].sum()
             
             if somme_etudiants < nb_min_etudiants:
                 self.error = f"{intitule_projet} n'a pas le minimum requis d'étudiants"
-                print(self)
+                
 
 class Ptropeleve(Anomalies):
     def __init__(self):
@@ -81,13 +81,13 @@ class Ptropeleve(Anomalies):
         df_projet = pd.read_excel(donnees_projet)
 
         for index, row in df_projet.iterrows():
-            intitule_projet = row["Intitulé"]
+            intitule_projet = row["Project name"]
             nb_max_etudiants = row["Maximum d'étudiants"]
             somme_etudiants = donnees_anomalie[intitule_projet].sum()
             
             if somme_etudiants > nb_max_etudiants:
                 self.error = f"{intitule_projet} contient trop d'étudiants"
-                print(self)
+                
 
 #####################################################################################################
 # Chargement des différents fichier
@@ -129,7 +129,7 @@ ptropeleve_anomalies.verifier_anomalies(donnees_output2, 'output.xlsx')
 # Interface en TKinter
 
 # Création de l'interface utilisateur avec tkinter
-class SolverOutputManagment(tk.Frame):
+class SolverOutputManagement(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent, bg="white")
 
@@ -149,8 +149,8 @@ class SolverOutputManagment(tk.Frame):
         self.show()
     
     def show(self):
-        # label of frame SolverOutputManagment
-        label = ttk.Label(self, text ="SolverOutputManagment")
+        # label of frame SolverOutputManagement
+        label = ttk.Label(self, text ="SolverOutputManagement")
         label.grid(row = 0, column = 0, padx = 10, pady = 10)
 
         # Cadre principal pour contenir les cadres gauche et droit
@@ -184,15 +184,15 @@ class SolverOutputManagment(tk.Frame):
             projet_label = ttk.Label( text=f"Nom du projet : {projet.nom}\n"
                                                         f"Elèves du projet :\n"
                                                         f"Informations du projet :\n"
-                                                        f"Intitulé : {projet.intitule}\n"
-                                                        f"Proposé par : {projet.par}\n"
-                                                        f"Equipe : {projet.equipe}\n"
-                                                        f"Téléphone : {projet.tel}\n"
+                                                        f"Project name : {projet.intitule}\n"
+                                                        f"Person in charge : {projet.par}\n"
+                                                        f"Team emails : {projet.equipe}\n"
+                                                        f"Phone numberéphone : {projet.tel}\n"
                                                         f"Mail : {projet.mail}\n"
                                                         f"Description : {projet.description}\n"
                                                         f"Minimum d'étudiants : {projet.nbmin}\n"
                                                         f"Maximum d'étudiants : {projet.nbmax}\n"
-                                                        f"Entreprise : {projet.entreprise}\n",anchor="e",justify="right")
+                                                        f"Company : {projet.entreprise}\n",anchor="e",justify="right")
             projet_label.pack(padx=10, pady=10, anchor="e")
 
         # Configurer le Canvas pour le défilement
@@ -244,7 +244,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.title("Gestion des projets")
 
-    # Créer une instance de SolverOutputManagment après le traitement des données
+    # Créer une instance de SolverOutputManagement après le traitement des données
     projets = []  # Liste pour stocker les objets de la classe Projet
     
 
@@ -257,7 +257,7 @@ if __name__ == "__main__":
             # Affecter le nom de la colonne au champ nom de l'objet Projet
             projet.nom = colonne
             # Afficher le titre de la colonne
-            print(f"Projet : {colonne}")
+            
             # Afficher les titres de ligne avec la valeur 1 dans cette colonne
             lignes = donnees_test_projet[donnees_test_projet[colonne] == 1].index
             for ligne in lignes:
@@ -269,13 +269,13 @@ if __name__ == "__main__":
                 eleve.nom = titre_ligne
                 # Ajouter l'objet Eleve à la liste eleves de l'objet Projet
                 projet.eleves.append(eleve)
-                print(f" - Elève : {titre_ligne}")
+                
             # Ajouter l'objet Projet à la liste projets
             projets.append(projet)
     
 
     # Utilisation des données pour afficher les informations des projets
-    solver_output = SolverOutputManagment(root, None)
+    solver_output = SolverOutputManagement(root, None)
     solver_output.pack(expand=True, fill="both")
 
     # Lancer la boucle principale de Tkinter

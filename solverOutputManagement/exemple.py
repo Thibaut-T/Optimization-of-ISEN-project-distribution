@@ -24,7 +24,7 @@ class Eleve:
         self.mail = ""
 
 # Créer l'interface utilisateur avec tkinter
-class SolverOutputManagment(tk.Frame):
+class SolverOutputManagement(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent, bg="white")
 
@@ -58,7 +58,7 @@ class SolverOutputManagment(tk.Frame):
                     # Affecter le nom de la colonne au champ nom de l'objet Projet
                     projet.nom = colonne
                     # Afficher le titre de la colonne
-                    print(f"Projet : {colonne}")
+                    
                     # Afficher les titres de ligne avec la valeur 1 dans cette colonne
                     lignes = donnees[donnees[colonne] == 1].index
                     for ligne in lignes:
@@ -70,7 +70,7 @@ class SolverOutputManagment(tk.Frame):
                         eleve.nom = titre_ligne
                         # Ajouter l'objet Eleve à la liste eleves de l'objet Projet
                         projet.eleves.append(eleve)
-                        print(f" - Elève : {titre_ligne}")
+                        
                     # Ajouter l'objet Projet à la liste self.projets
                     self.projets.append(projet)
 
@@ -80,19 +80,19 @@ class SolverOutputManagment(tk.Frame):
             # Parcourir les self.projets et compléter les informations
             for projet in self.projets:
                 # Récupérer les informations du projet correspondant à son nom dans common/dataProjects.xlsx
-                infos_projet = donnees_output[donnees_output['Intitulé'] == int(projet.nom)]
+                infos_projet = donnees_output[donnees_output['Project name'] == int(projet.nom)]
                 if not infos_projet.empty:
                     infos_projet = infos_projet.iloc[0]
                     # Remplir les attributs de l'objet Projet
-                    projet.intitule = infos_projet['Intitulé']
-                    projet.par = infos_projet['Proposé par']
-                    projet.equipe = infos_projet['Equipe']
-                    projet.tel = infos_projet['Tél']
+                    projet.intitule = infos_projet['Project name']
+                    projet.par = infos_projet['Person in charge']
+                    projet.equipe = infos_projet['Team emails']
+                    projet.tel = infos_projet['Phone number']
                     projet.mail = infos_projet['Mail']
                     projet.description = infos_projet['Description']
-                    projet.nbmin = infos_projet['Minimum d\'étudiants']
-                    projet.nbmax = infos_projet['Maximum d\'étudiants']
-                    projet.entreprise = infos_projet['Entreprise']
+                    projet.nbmin = infos_projet['Minimum students']
+                    projet.nbmax = infos_projet['Maximum students']
+                    projet.entreprise = infos_projet['Company']
                 else:
                     print(f"Aucune information trouvée pour le projet {projet.nom} dans le fichier common/dataProjects.xlsx")
         except FileNotFoundError:
@@ -133,15 +133,15 @@ class SolverOutputManagment(tk.Frame):
             projet_label = ttk.Label(scrollable_frame, text=f"Nom du projet : {projet.nom}\n"
                                                         f"Elèves du projet :\n"
                                                         f"Informations du projet :\n"
-                                                        f"Intitulé : {projet.intitule}\n"
-                                                        f"Proposé par : {projet.par}\n"
-                                                        f"Equipe : {projet.equipe}\n"
-                                                        f"Téléphone : {projet.tel}\n"
+                                                        f"Project name : {projet.intitule}\n"
+                                                        f"Person in charge : {projet.par}\n"
+                                                        f"Team emails : {projet.equipe}\n"
+                                                        f"Phone numberéphone : {projet.tel}\n"
                                                         f"Mail : {projet.mail}\n"
                                                         f"Description : {projet.description}\n"
                                                         f"Minimum d'étudiants : {projet.nbmin}\n"
                                                         f"Maximum d'étudiants : {projet.nbmax}\n"
-                                                        f"Entreprise : {projet.entreprise}\n",anchor="e",justify="right")
+                                                        f"Company : {projet.entreprise}\n",anchor="e",justify="right")
             projet_label.pack(padx=10, pady=10, anchor="e")
 
         # Configurer le Canvas pour le défilement

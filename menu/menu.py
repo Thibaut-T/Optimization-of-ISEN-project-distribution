@@ -9,13 +9,22 @@ class Menu(CTkFrame):
         self.controller = controller
 
         self.menu = [
-            "projectManagment",
+            "projectManagement",
             "exportToMoodle",
             "solverInputFile",
             "solverProcess",
-            "solverOutputManagment",
+            "solverOutputManagement",
             "exportStudentDistribution",
         ]
+
+        self.text = {
+            "projectManagement": "Project Management",
+            "exportToMoodle": "Export to Moodle",
+            "solverInputFile": "Solver Input File",
+            "solverProcess": "Solver Process",
+            "solverOutputManagement": "Solver Output Management",
+            "exportStudentDistribution": "Export Student Distribution",
+        }
 
         self.reload()
          
@@ -42,7 +51,7 @@ class Menu(CTkFrame):
         problem = False
 
         for i,frame in enumerate(self.menu):
-            button = CTkButton(top_frame, text=frame, command=lambda frame=frame: self.controller.show_frame(frame))
+            button = CTkButton(top_frame, text=self.text[frame], command=lambda frame=frame: self.controller.show_frame(frame))
             button.grid(row=2 + i, padx=10, pady=10)
 
             if i > 0 and (not self.controller.allFrames[self.controller.allFrames[frame].previous_frame].objective_fulfilled or problem):
