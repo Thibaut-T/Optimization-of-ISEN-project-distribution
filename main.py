@@ -3,10 +3,10 @@ from exportStudentDistribution import exportStudentDistribution
 from exportToMoodle import exportToMoodle
 from menu import menu
 from projectCreation import projectCreation
-from projectManagment import projectManagment
+from projectManagement import projectManagement
 from solverInputFile import solverInputFile
 from solverProcess import solverProcess
-from solverOutputManagment import solverOutputManagment
+from solverOutputManagement import solverOutputManagement
 from topBar import topBar
 import traceback
 import platform
@@ -30,20 +30,20 @@ class MainApp(ctk.CTk):
         elif platform.system() == 'Linux':
             print("Linux")
             self.attributes('-zoomed', True)
-            
+
         ctk.set_default_color_theme("./theme.json")
 
         self.allFrames = {
             "projectCreation": projectCreation.ProjectCreation(self, self),
-            "projectManagment": projectManagment.ProjectManagment(self, self),
+            "projectManagement": projectManagement.ProjectManagement(self, self),
             "exportToMoodle": exportToMoodle.exportToMoodle(self, self),
             "solverInputFile": solverInputFile.SolverInputFile(self, self),
             "solverProcess": solverProcess.SolverProcess(self, self),
-            "solverOutputManagment": solverOutputManagment.SolverOutputManagment(self, self),
+            "solverOutputManagement": solverOutputManagement.SolverOutputManagement(self, self),
             "exportStudentDistribution": exportStudentDistribution.ExportStudentDistribution(self, self),
         }
                 
-        self.mainFrame = self.allFrames["projectManagment"]
+        self.mainFrame = self.allFrames["projectManagement"]
 
         # Create a frame for the top bar
         self.topBarFrame = topBar.TopBar(self, self)

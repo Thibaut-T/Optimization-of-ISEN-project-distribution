@@ -1,9 +1,9 @@
 import tkinter.ttk as ttk
 from customtkinter import CTkButton, CTkLabel, CTkFrame, CTkScrollableFrame, HORIZONTAL
 import pandas as pd
-from projectManagment.actions import modifyProject, createProject, deleteProject, getAllProjects
+from projectManagement.actions import modifyProject, createProject, deleteProject, getAllProjects
 
-class ProjectManagment(CTkFrame):
+class ProjectManagement(CTkFrame):
     def __init__(self, parent, controller): 
         CTkFrame.__init__(self, parent)
 
@@ -37,8 +37,8 @@ class ProjectManagment(CTkFrame):
         self.show()
     
     def show(self):        
-        # label of frame ProjectManagment
-        label = CTkLabel(self, text ="ProjectManagment")
+        # label of frame ProjectManagement
+        label = CTkLabel(self, text ="ProjectManagement")
         label.pack(pady=10,padx=10)
 
         button1 = CTkButton(self, text="create a project", command=lambda: createProject(self.controller))

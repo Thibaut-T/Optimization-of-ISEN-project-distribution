@@ -111,14 +111,17 @@ def solve(controller):
 
         result_df = pd.DataFrame(result_array)
 
-        
-
-        result_df.to_csv('common/resultSolver.csv', index=False)
+        if(model.status == 1):
+            print("Optimal solution found")
+            result_df.to_csv('common/resultSolver.csv', index=False)
+        else:
+            print("No optimal solution found")
+            return "No optimal solution found"
 
         controller.show_frame("solverProcess")
 
     except Exception as e:
-        return Exception
+        return str(e)
 
 def formated_table(data):
     

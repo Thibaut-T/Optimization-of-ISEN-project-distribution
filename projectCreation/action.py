@@ -116,8 +116,8 @@ def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entr
     entry10.delete(0, END)
     entry7.delete("1.0", END)
 
-    # Show the "projectManagment" frame
-    controller.show_frame("projectManagment")
+    # Show the "projectManagement" frame
+    controller.show_frame("projectManagement")
 
 
 
@@ -171,4 +171,4 @@ def add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,en
     entry10.delete(0, END)
     entry7.delete("1.0", END)
 
-    controller.show_frame("projectManagment")
+    controller.show_frame("projectManagement")

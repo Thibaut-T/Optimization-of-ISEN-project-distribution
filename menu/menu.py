@@ -9,11 +9,11 @@ class Menu(CTkFrame):
         self.controller = controller
 
         self.menu = [
-            "projectManagment",
+            "projectManagement",
             "exportToMoodle",
             "solverInputFile",
             "solverProcess",
-            "solverOutputManagment",
+            "solverOutputManagement",
             "exportStudentDistribution",
         ]
 

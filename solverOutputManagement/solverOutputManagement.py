@@ -99,7 +99,7 @@ def solve_function():
     pass
 
 # Création de l'interface utilisateur avec tkinter
-class SolverOutputManagment(CTkFrame):
+class SolverOutputManagement(CTkFrame):
     def __init__(self, parent, controller): 
         CTkFrame.__init__(self, parent)
 

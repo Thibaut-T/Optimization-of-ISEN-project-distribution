@@ -6,7 +6,7 @@ class exportToMoodle(CTkFrame):
     def __init__(self, parent, controller): 
         CTkFrame.__init__(self, parent)
                 
-        self.previous_frame = "projectManagment"
+        self.previous_frame = "projectManagement"
         self.next_frame = "solverInputFile"
         self.objective_fulfilled = True
 

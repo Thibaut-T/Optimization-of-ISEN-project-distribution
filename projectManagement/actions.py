@@ -42,4 +42,4 @@ def deleteProject(controller, i):
 
     projects.to_excel('common/dataProjects.xlsx', index=False)
 
-    controller.show_frame("projectManagment")
+    controller.show_frame("projectManagement")

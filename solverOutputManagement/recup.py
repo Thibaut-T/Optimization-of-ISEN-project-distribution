@@ -129,7 +129,7 @@ ptropeleve_anomalies.verifier_anomalies(donnees_output2, 'output.xlsx')
 # Interface en TKinter
 
 # Création de l'interface utilisateur avec tkinter
-class SolverOutputManagment(tk.Frame):
+class SolverOutputManagement(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent, bg="white")
 
@@ -149,8 +149,8 @@ class SolverOutputManagment(tk.Frame):
         self.show()
     
     def show(self):
-        # label of frame SolverOutputManagment
-        label = ttk.Label(self, text ="SolverOutputManagment")
+        # label of frame SolverOutputManagement
+        label = ttk.Label(self, text ="SolverOutputManagement")
         label.grid(row = 0, column = 0, padx = 10, pady = 10)
 
         # Cadre principal pour contenir les cadres gauche et droit
@@ -244,7 +244,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.title("Gestion des projets")
 
-    # Créer une instance de SolverOutputManagment après le traitement des données
+    # Créer une instance de SolverOutputManagement après le traitement des données
     projets = []  # Liste pour stocker les objets de la classe Projet
     
 
@@ -275,7 +275,7 @@ if __name__ == "__main__":
     
 
     # Utilisation des données pour afficher les informations des projets
-    solver_output = SolverOutputManagment(root, None)
+    solver_output = SolverOutputManagement(root, None)
     solver_output.pack(expand=True, fill="both")
 
     # Lancer la boucle principale de Tkinter

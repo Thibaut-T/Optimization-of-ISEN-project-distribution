@@ -7,7 +7,7 @@ class ProjectCreation(CTkScrollableFrame):
     def __init__(self, parent, controller):
         CTkScrollableFrame.__init__(self, parent)
 
-        self.previous_frame = "projectManagment"
+        self.previous_frame = "projectManagement"
         self.next_frame = ""
         self.objective_fulfilled = True
 
