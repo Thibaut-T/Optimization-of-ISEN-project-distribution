@@ -36,7 +36,7 @@ def create_project_excel(filename, headers, data):
 
 if __name__ == "__main__":
     headers = ["Project number", "Project name", "Person in charge", "Team emails", "Phone number", "Mail", 
-               "Description", "Minimum d'étudiants", "Maximum d'étudiants", "Company"]
+               "Description", "Minimum students", "Maximum students", "Company"]
 
     data = generate_project_data(200)  
     create_project_excel("./common/dataProjects.xlsx", headers, data)
