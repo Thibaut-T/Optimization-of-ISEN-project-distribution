@@ -156,13 +156,13 @@ class ProjectCreation(CTkScrollableFrame):
         vcmd = (self.register(is_number), '%P')
         label8 = CTkLabel(self, text="Minimum:")
         label8.pack()
-        entry8 = CTkEntry(self, validate='key', validatecommand=vcmd)
+        entry8 = CTkEntry(self, validatecommand=vcmd)
         entry8.insert(END, entry8Text)
         entry8.pack()
 
         label9 = CTkLabel(self, text="Maximum:")
         label9.pack()
-        entry9 = CTkEntry(self, validate='key', validatecommand=vcmd)
+        entry9 = CTkEntry(self, validatecommand=vcmd)
         entry9.insert(END, entry9Text)
         entry9.pack()
 
