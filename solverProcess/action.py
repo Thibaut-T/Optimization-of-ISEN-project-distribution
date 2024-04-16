@@ -257,7 +257,7 @@ def get_data():
         if not data.empty:
             data_array_norm = []
             for index, row in data.iterrows():
-                project_data = [row['Team emails'], row["Minimum d'étudiants"], row["Maximum d'étudiants"]]
+                project_data = [row['Team emails'], row["Minimum students"], row["Maximum students"]]
 
                 if isinstance(project_data[0], str):
                     project_data[0] = [data for data in project_data[0].split(";")]
