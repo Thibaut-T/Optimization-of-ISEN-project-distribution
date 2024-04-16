@@ -5,10 +5,9 @@ from fpdf import FPDF
 import pandas as pd
 import re
 import shutil
-import os
+
 
 def generate_pdf2(dataframe, filename):
-   
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
@@ -16,7 +15,6 @@ def generate_pdf2(dataframe, filename):
     pdf.cell(195, 10, txt="Liste d'attribution", ln=True, align="C")
     pdf.ln(10)
 
-    
     for index, row in dataframe.iterrows():
         number = row['number']
         name = row['name']
@@ -24,26 +22,19 @@ def generate_pdf2(dataframe, filename):
         min_student = row['min_student']
         max_student = row['max_student']
         eleves = row['eleves']
+        emails = re.findall(r'<Student>\s*([\w.-]+@[a-zA-Z.-]+\.[a-zA-Z]+)', eleves)
+        eleves_cleaned = '\n'.join(emails)
         
-       
-        eleves_cleaned = re.sub(r'[\[\]\<Student\>]', '', eleves)
-        eleves_cleaned = eleves_cleaned.replace(', ', '\n')  
-        eleves_cleaned = '\n- '.join([extract_name(email) for email in eleves_cleaned.split('\n')]) 
-
-        
-        if eleves_cleaned:
-            eleves_cleaned = '- ' + eleves_cleaned
-
-       
         pdf.set_font("Arial", size=12)
         pdf.cell(0, 10, f'Number: {number} - Name: {name}', ln=True)
         pdf.cell(0, 10, f'Person in charge: {person_in_charge} (Min Students: {min_student}, Max Students: {max_student})', ln=True)
         pdf.cell(0, 10, 'Students', ln=True)
         pdf.set_font("Arial", size=10)
-        pdf.multi_cell(0, 10, f'{eleves_cleaned}')  
+        pdf.multi_cell(0, 10, eleves_cleaned)  
         pdf.ln(10) 
 
     pdf.output(filename)
+
 
 def read_excel_file():
     df = pd.read_excel('common/recap.xlsx')
@@ -51,15 +42,16 @@ def read_excel_file():
 
 
 def extract_name(email):
-    match = re.search(r'([^@]+)@', email)  # Capturer le texte avant le '@'
+    match = re.search(r'([^@]+)@', email) 
     if match:
         name = match.group(1)
-        if '.' in name:
-            name_parts = name.split('.')
-            name = ' '.join(name_parts)
+        print(name)
+        name_parts = re.findall(r'\b\w+\b', name)
+        name = ' '.join(name_parts)
         return name
     else:
-        return email  # Retourner l'adresse e-mail si aucun nom n'est trouvé
+        return email 
+
 
 
 class ExportStudentDistribution(CTkFrame):
@@ -82,10 +74,10 @@ class ExportStudentDistribution(CTkFrame):
         label = CTkLabel(self, text="ExportStudentDistribution")
         label.pack()
     
-        download_pdf_button = CTkButton(self, text="Télécharger le PDF", command=self.download_pdf)
+        download_pdf_button = CTkButton(self, text="Download PDF file", command=self.download_pdf)
         download_pdf_button.pack(pady=20)
         
-        download_excel_button = CTkButton(self, text="Télécharger le fichier Excel", command=self.download_excel)
+        download_excel_button = CTkButton(self, text="Download Excel file", command=self.download_excel)
         download_excel_button.pack()
 
     def download_pdf(self):
