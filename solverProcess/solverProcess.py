@@ -39,5 +39,5 @@ class SolverProcess(CTkFrame):
         button.grid(row = 1, column = 0, padx = 10, pady = 10)
 
         if self.error:
-            error = CTkLabel(centered_frame, text="Error: Failed to solve", fg="red")
+            error = CTkLabel(centered_frame, text=self.error, bg_color="red")
             error.grid(row = 2, column = 0, padx = 10, pady = 10)
