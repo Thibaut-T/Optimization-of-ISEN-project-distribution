@@ -36,6 +36,9 @@ class Student:
         self.last_name = ""
         self.first_name = ""
         self.mail = ""
+        self.first = ""
+        self.second = ""
+        self.third = ""
 
     def __str__(self):
         return f"Student {self.mail}"
@@ -132,6 +135,7 @@ class SolverOutputManagement(CTkFrame):
                 # Chargement des fichiers Excel
                 dataProjects = pd.read_excel('./common/dataProjects.xlsx')
                 answerProjects = pd.read_excel('./common/answerProjects.xlsx')
+                table_normal = pd.read_excel('./common/table_normal.xlsx')
                 result_solver = pd.read_csv('./common/resultSolver.csv')
                 
                 self.projets = [] # Liste pour stocker les objets de la classe Project
@@ -158,12 +162,23 @@ class SolverOutputManagement(CTkFrame):
                 }
                 language = "fr" if "Nom de famille" in answerProjects.columns else "en"
 
-                for student in answerProjects.iterrows():
+                for (index_student, student), (_, choix) in zip(answerProjects.iterrows(), table_normal.iterrows()):
+                # Créer un objet Student
                     eleve = Student()
-                    eleve.last_name = student[1][traduction_['last_name'][language]]
-                    eleve.first_name = student[1][traduction_['first_name'][language]]
-                    eleve.mail = student[1][traduction_['email'][language]]
+                    eleve.last_name = student[traduction_['last_name'][language]]
+                    eleve.first_name = student[traduction_['first_name'][language]]
+                    eleve.mail = student[traduction_['email'][language]]
+
+                    # Attribuer les choix de l'élève depuis la table normale
+                    eleve.first = choix[1]  # Premier choix
+                    eleve.second = choix[2]  # Deuxième choix
+                    eleve.third = choix[3]  # Troisième choix
+
+                    # Ajouter l'élève à la liste des élèves
                     self.eleves.append(eleve)
+                    print(eleve.last_name, eleve.first)
+
+                
 
                 # Parcourir toutes les colonnes
                 for colonne in result_solver.columns:
@@ -233,7 +248,7 @@ class SolverOutputManagement(CTkFrame):
             dataFrameProjets = dataFrameProjets[cols]
 
             dataFrameEleves = pd.DataFrame([vars(s) for s in self.eleves])
-            cols = ['last_name', 'first_name', 'mail']
+            cols = ['last_name', 'first_name', 'mail', 'first', 'second', 'third']
             dataFrameEleves = dataFrameEleves[cols]
             
             dataFrameAnomalies = pd.DataFrame([vars(s) for s in self.all_errors])
