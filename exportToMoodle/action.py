@@ -78,34 +78,34 @@ def create_xml_file(filename, moodle_folder):
             <shuffleanswers>1</shuffleanswers>
             <answernumbering>none</answernumbering>
             <answer fraction="0" format="html">
-            <text><![CDATA[<p>1</p>]]></text>
-            </answer>
-            <answer fraction="0" format="html">
-            <text><![CDATA[<p>2</p>]]></text>
-            </answer>
-            <answer fraction="0" format="html">
-            <text><![CDATA[<p>3</p>]]></text>
-            </answer>
-            <answer fraction="0" format="html">
-            <text><![CDATA[<p>4</p>]]></text>
-            </answer>
-            <answer fraction="0" format="html">
-            <text><![CDATA[<p>5</p>]]></text>
-            </answer>
-            <answer fraction="0" format="html">
-            <text><![CDATA[<p>6</p>]]></text>
-            </answer>
-            <answer fraction="0" format="html">
-            <text><![CDATA[<p>7</p>]]></text>
-            </answer>
-            <answer fraction="0" format="html">
-            <text><![CDATA[<p>8</p>]]></text>
+            <text><![CDATA[<p>10</p>]]></text>
             </answer>
             <answer fraction="0" format="html">
             <text><![CDATA[<p>9</p>]]></text>
             </answer>
             <answer fraction="0" format="html">
-            <text><![CDATA[<p>10</p>]]></text>
+            <text><![CDATA[<p>8</p>]]></text>
+            </answer>
+            <answer fraction="0" format="html">
+            <text><![CDATA[<p>7</p>]]></text>
+            </answer>
+            <answer fraction="0" format="html">
+            <text><![CDATA[<p>6</p>]]></text>
+            </answer>
+            <answer fraction="0" format="html">
+            <text><![CDATA[<p>5</p>]]></text>
+            </answer>
+            <answer fraction="0" format="html">
+            <text><![CDATA[<p>4</p>]]></text>
+            </answer>
+            <answer fraction="0" format="html">
+            <text><![CDATA[<p>3</p>]]></text>
+            </answer>
+            <answer fraction="0" format="html">
+            <text><![CDATA[<p>2</p>]]></text>
+            </answer>
+            <answer fraction="0" format="html">
+            <text><![CDATA[<p>1</p>]]></text>
             </answer>
             </question>
             """.format(project_number, project_number, project_number))
