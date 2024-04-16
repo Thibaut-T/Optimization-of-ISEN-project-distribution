@@ -4,18 +4,18 @@ from numpy import transpose
 from math import isnan
 import random
 import pandas as pd
+import os
 
 
 def solve(controller):
     # get data from the responses or the projects
     students_projects_array_with_mails, students_projects_info_finance_array_with_mails, data_project = get_data()
 
-    students_projects_array_with_mails = formated_table(students_projects_array_with_mails)
-    students_projects_info_finance_array_with_mails = formated_table(students_projects_info_finance_array_with_mails)
-
     students_projects_info_finance_array = pd.DataFrame([row[1:] for row in students_projects_info_finance_array_with_mails]).to_numpy()
     students_projects_array = pd.DataFrame([row[1:] for row in students_projects_array_with_mails]).to_numpy()
 
+    print(students_projects_info_finance_array_with_mails)
+    print(students_projects_array_with_mails)
 
     if not students_projects_array.any():
         print("No data")
@@ -132,16 +132,12 @@ def solve(controller):
             tmp.append(variables_normal[i, j].varValue)
         result_array.append(tmp)
         
-
-    print(result_array)
-
     for i in range(len(students_projects_info_finance_array)):
         tmp = []
         tmp.append(variables_info_finance[i, 0].name)
         for j in range(len(students_projects_info_finance_array[i])):
-            result_array.append(variables_info_finance[i, j].varValue)                
-
-    print(result_array)
+            tmp.append(variables_info_finance[i, j].varValue)
+        result_array.append(tmp)
 
     result_df = pd.DataFrame(result_array)
 
@@ -149,6 +145,12 @@ def solve(controller):
         result_df.to_csv('common/resultSolver.csv', index=False)
     else:
         return "No optimal solution found"
+
+    # delete ./common/recap.xlsx
+    try:
+        os.remove('./common/recap.xlsx')
+    except FileNotFoundError:
+        pass
 
     controller.show_frame("solverProcess")
 
@@ -245,15 +247,15 @@ def get_data():
                     student_data += normalized_grades
 
                     data_array_info_finance.append(student_data)
-                
+
                 else:
                     for i in range(1, num_projects + 1):
-                        grade = 0  
+                        grade = 0
                         grades.append(grade)
 
                     non_zero_grades = [grade for grade in grades if grade != 0]
                     zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
-                    
+
                     # ajouter des notes aléatoires pour les projets non notés
                     while len(non_zero_grades) <= 5:
                         random_index = random.choice(zero_indices)
@@ -266,8 +268,15 @@ def get_data():
 
                     data_array_norm.append(student_data)
 
-            table_normal = data_array_norm
-            table_info_finance = data_array_info_finance
+            table_normal = formated_table(data_array_norm)
+            table_info_finance = formated_table(data_array_info_finance)
+
+            df = pd.DataFrame(table_normal)
+            df.to_excel('./common/table_normal.xlsx', index=False)
+
+            df = pd.DataFrame(table_info_finance)
+            df.to_excel('./common/table_info_finance.xlsx', index=False)
+
     except FileNotFoundError:
         print("No data")
 

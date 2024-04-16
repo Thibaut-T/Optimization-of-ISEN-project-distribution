@@ -12,7 +12,7 @@ class Project:
     def __init__(self):
         self.max_student = ""
         self.min_student = ""
-        self.eleves = []
+        self.students = []
         self.number = ""
         self.name = ""
         self.person_in_charge = ""
@@ -23,7 +23,7 @@ class Project:
         self.company = ""
 
     def representation(self):
-        return f"Project {self.name} :\n - Min : {int(self.min_student) if not math.isnan(self.min_student) else 3}\n - Max : {int(self.max_student) if not math.isnan(self.max_student) else 7}\n - Team emails of the {len(self.eleves)} students :\n" + "\n".join([f"\t- {eleve.last_name} {eleve.first_name}" for eleve in self.eleves]) + "\n"
+        return f"Project {self.name} :\n - Min : {int(self.min_student) if not math.isnan(self.min_student) else 3}\n - Max : {int(self.max_student) if not math.isnan(self.max_student) else 7}\n - Team emails of the {len(self.students)} students :\n" + "\n".join([f"\t- {eleve.last_name} {eleve.first_name}" for eleve in self.students]) + "\n"
     
     def __str__(self):
         return f"Project {self.name}"
@@ -57,11 +57,12 @@ class AnomaliesEleve(Anomalies):
 class AnomaliesProjet(Anomalies):
     def __init__(self):
         super().__init__()
-        self.projet = None    
+        self.project = None    
 
 def verifier_anomalies(resultSolver, projets, eleves):
         all_errors = []
         for index, row in resultSolver.iterrows():
+            #skip the first column
             if sum(row.iloc[1:]) < 1:
                 tmp = AnomaliesEleve()
                 tmp.student = eleves[index]
@@ -78,18 +79,18 @@ def verifier_anomalies(resultSolver, projets, eleves):
 
         for projet in projets:
             corresponding_row = df_projet[df_projet["Project number"] == projet.number]
-            somme_etudiants = len(projet.eleves)
+            somme_etudiants = len(projet.students)
 
             if somme_etudiants < corresponding_row["Minimum students"].values[0]:
                 tmp = AnomaliesProjet()
-                tmp.projet = projet
-                tmp.error = f"{tmp.projet.name} doesn't contain enough students"
+                tmp.project = projet
+                tmp.error = f"{tmp.project.name} doesn't contain enough students"
                 all_errors.append(tmp)
 
             if somme_etudiants > corresponding_row["Maximum students"].values[0]:
                 tmp = AnomaliesProjet()
-                tmp.projet = projet
-                tmp.error = f"{tmp.projet.name} contains too many students"
+                tmp.project = projet
+                tmp.error = f"{tmp.project.name} contains too many students"
                 all_errors.append(tmp)
 
         return all_errors
@@ -170,6 +171,8 @@ class SolverOutputManagement(CTkFrame):
                     if colonne == "0":
                         print("Skipping first column")
                         continue
+                    
+
     
                     # Créer une instance de la classe Project
                     projet = Project()
@@ -182,15 +185,14 @@ class SolverOutputManagement(CTkFrame):
                     if (result_solver[colonne] == 1).any():
                         # Afficher les titres de ligne avec la valeur 1 dans cette colonne
                         lignes = result_solver[result_solver[colonne] == 1].index
-                        
+
                         for ligne in lignes:
                             # Ajouter l'objet Student à la liste eleves de l'objet Project
-                            print(result_solver.iloc[ligne, 0].split("?")[1])
-
                             for eleve in self.eleves:
                                 if eleve.mail == result_solver.iloc[ligne, 0].split("?")[1]:
-                                    projet.eleves.append(eleve)
+                                    projet.students.append(eleve)
                                     break
+                            
                         # Ajouter l'objet Project à la liste projets
 
                     else:
@@ -227,7 +229,7 @@ class SolverOutputManagement(CTkFrame):
             # # Créer un dictionnaire pour stocker les données des projets et des élèves
 
             dataFrameProjets = pd.DataFrame([vars(s) for s in self.projets])
-            cols = ['number', 'name', 'person_in_charge', 'eleves', 'phone_number', 'mail', 'description', 'min_student', 'max_student', 'company']
+            cols = ['number', 'name', 'person_in_charge', 'students', 'phone_number', 'mail', 'description', 'min_student', 'max_student', 'company']
             dataFrameProjets = dataFrameProjets[cols]
 
             dataFrameEleves = pd.DataFrame([vars(s) for s in self.eleves])
@@ -264,7 +266,7 @@ class SolverOutputManagement(CTkFrame):
                 self.projets[i].number = row["number"]
                 self.projets[i].name = row["name"]
                 self.projets[i].person_in_charge = row["person_in_charge"]
-                self.projets[i].eleves = [eleve for eleve in self.eleves if eleve.mail in row["eleves"].replace("[", "").replace("]", "").replace("<Student>","").replace(" ","").split(",")]
+                self.projets[i].students = [eleve for eleve in self.eleves if eleve.mail in row["students"].replace("[", "").replace("]", "").replace("<Student>","").replace(" ","").split(",")]
                 self.projets[i].phone_number = row["phone_number"]
                 self.projets[i].mail = row["mail"]
                 self.projets[i].description = row["description"]
@@ -274,10 +276,16 @@ class SolverOutputManagement(CTkFrame):
 
             for i, row in dataFrameAnomalies.iterrows():
                 self.all_errors[i].error = row["error"]
-                if "eleve" in row:
-                    self.all_errors[i].student = [eleve for eleve in self.eleves if eleve.mail in row["eleve"]][0]
-                if "projet" in row:
-                    self.all_errors[i].projet = [projet for projet in self.projets if projet.name in row["projet"]][0]
+                if "student" in row:
+                    for eleve in self.eleves:
+                        if eleve.mail in str(row["student"]):
+                            self.all_errors[i].eleve = eleve
+                if "project" in row:
+                    for projet in self.projets:
+                        if projet.name in str(row["project"]):
+                            self.all_errors[i].projet = projet
+
+    
         self.show()
 
     def show(self):

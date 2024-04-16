@@ -19,9 +19,9 @@ def generate_random_data(num_rows):
             response = random.randint(0, 10)
             responses.append(f"Question {i}")
             if i == 1:
-                response_text = random.choice(["Non No"]) if random.random() < 0.9 else random.choice(["Oui Yes"])
+                response_text = random.choice(["Non   No"]) if random.random() < 0.9 else random.choice(["Oui   Yes"])
             elif i == 2:
-                response_text = random.choice(["Oui Yes"]) if random.random() < 0.9 else random.choice(["Non No"])
+                response_text = random.choice(["Oui   Yes"]) if random.random() < 0.9 else random.choice(["Non   No"])
             else:
                 response_text = response
             responses.append(response_text)
