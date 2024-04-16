@@ -4,7 +4,8 @@ from tkinter import filedialog
 from fpdf import FPDF
 import pandas as pd
 import re
-
+import shutil
+import os
 
 def generate_pdf2(dataframe, filename):
    
@@ -81,8 +82,11 @@ class ExportStudentDistribution(CTkFrame):
         label = CTkLabel(self, text="ExportStudentDistribution")
         label.pack()
     
-        download_button = CTkButton(self, text="Télécharger le PDF", command=self.download_pdf)
-        download_button.pack()
+        download_pdf_button = CTkButton(self, text="Télécharger le PDF", command=self.download_pdf)
+        download_pdf_button.pack(pady=20)
+        
+        download_excel_button = CTkButton(self, text="Télécharger le fichier Excel", command=self.download_excel)
+        download_excel_button.pack()
 
     def download_pdf(self):
         df = read_excel_file()
@@ -90,4 +94,8 @@ class ExportStudentDistribution(CTkFrame):
             filename = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
             if filename:
                 generate_pdf2(df, filename)
-
+    
+    def download_excel(self):
+        filename = filedialog.asksaveasfilename(defaultextension=".xlsx", filetypes=[("Excel files", "*.xlsx")], initialfile="recap.xlsx")
+        if filename:
+            shutil.copy('common/recap.xlsx', filename)
