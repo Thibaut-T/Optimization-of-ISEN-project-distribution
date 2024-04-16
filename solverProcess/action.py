@@ -10,6 +10,9 @@ def solve(controller):
     # get data from the responses or the projects
     students_projects_array_with_mails, students_projects_info_finance_array_with_mails, data_project = get_data()
 
+    students_projects_array_with_mails = formated_table(students_projects_array_with_mails)
+    students_projects_info_finance_array_with_mails = formated_table(students_projects_info_finance_array_with_mails)
+
     students_projects_info_finance_array = pd.DataFrame([row[1:] for row in students_projects_info_finance_array_with_mails]).to_numpy()
     students_projects_array = pd.DataFrame([row[1:] for row in students_projects_array_with_mails]).to_numpy()
 
@@ -33,106 +36,124 @@ def solve(controller):
 
     ##################################################################
 
-    try:
-        model = LpProblem(name="assign_students_to_projects", sense=LpMaximize)
+    # try:
+    model = LpProblem(name="assign_students_to_projects", sense=LpMaximize)
 
-        # all the variables
-        variables_normal = {(i, j): LpVariable(name=f"s{i+1}p{j+1}N", cat=LpBinary) for i in range(len(students_projects_array)) for j in range(len(students_projects_array[i]))}
-        variables_info_finance = {(i, j): LpVariable(name=f"s{i+1}p{j+1}IF", cat=LpBinary) for i in range(len(students_projects_info_finance_array)) for j in range(len(students_projects_info_finance_array[i]))}
+    # all the variables
+    variables_normal = {(i, j): LpVariable(name=f"s{i+1}p{j+1}N?{students_projects_array_with_mails[i][0]}", cat=LpBinary) for i in range(len(students_projects_array)) for j in range(len(students_projects_array[i]))}
+    variables_info_finance = {(i, j): LpVariable(name=f"s{i+1}p{j+1}IF?{students_projects_info_finance_array_with_mails[i][0]}", cat=LpBinary) for i in range(len(students_projects_info_finance_array)) for j in range(len(students_projects_info_finance_array[i]))}
 
-        binary_variables = {j: LpVariable(name=f"b{j}", cat=LpBinary) for j in range(len(projects_students_array))}
-        
-        # add the objective function
-        tmp = [(variables_normal[i, j],students_projects_array[i][j]) for i in range(len(students_projects_array)) for j in range(len(students_projects_array[i]))]
-        tmp += [(variables_info_finance[i, j],students_projects_info_finance_array[i][j]) for i in range(len(students_projects_info_finance_array)) for j in range(len(students_projects_info_finance_array[i]))]
+    binary_variables = {j: LpVariable(name=f"b{j}", cat=LpBinary) for j in range(len(projects_students_array))}
+    
+    # add the objective function
+    tmp = [(variables_normal[i, j],students_projects_array[i][j]) for i in range(len(students_projects_array)) for j in range(len(students_projects_array[i]))]
+    tmp += [(variables_info_finance[i, j],students_projects_info_finance_array[i][j]) for i in range(len(students_projects_info_finance_array)) for j in range(len(students_projects_info_finance_array[i]))]
 
-        for i in range(number_of_projects):
-            for email in data_project[i][0]:
-                for j in range(len(students_projects_array_with_mails)):
-                    if students_projects_array_with_mails[j][0] == email:
-                        for lp_var in tmp:
-                            if lp_var[0].name == f"s{j+1}p{i+1}N":
-                                tmp[tmp.index(lp_var)] = (lp_var[0], 1)
-                                break
-                        if j not in already_assigned:
-                            already_assigned.append(j)
-                        else:
-                            return f"Error: Student {j}, already assigned to a project"
+    for i in range(number_of_projects):
+        for email in data_project[i][0]:
+            for j in range(len(students_projects_array_with_mails)):
+                if students_projects_array_with_mails[j][0] == email:
+                    for lp_var in tmp:
+                        if lp_var[0].name == f"s{j+1}p{i+1}N":
+                            tmp[tmp.index(lp_var)] = (lp_var[0], 1)
+                            break
+                    if j not in already_assigned:
+                        already_assigned.append(j)
+                    else:
+                        return f"Error: Student {j}, already assigned to a project"
 
-        model += LpAffineExpression(tmp)
+    model += LpAffineExpression(tmp)
 
-        # add the constraints
+    # add the constraints
 
-        # each student can only be assigned to one project
-        for i in range(len(students_projects_array)):
-            model += lpSum(variables_normal[i, j] for j in range(len(students_projects_array[i]))) <= 1
-        
-        # each student in the info finance can only be assigned to one project
-        for i in range(len(students_projects_info_finance_array)):
-            model += lpSum(variables_info_finance[i, j] for j in range(len(students_projects_info_finance_array[i]))) <= 1
+    # each student can only be assigned to one project
+    for i in range(len(students_projects_array)):
+        model += lpSum(variables_normal[i, j] for j in range(len(students_projects_array[i]))) <= 1
+    
+    # each student in the info finance can only be assigned to one project
+    for i in range(len(students_projects_info_finance_array)):
+        model += lpSum(variables_info_finance[i, j] for j in range(len(students_projects_info_finance_array[i]))) <= 1
 
-        # each project must have a maximum number of students
-        for j in range(number_of_projects):
-            tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
+    # each project must have a maximum number of students
+    for j in range(number_of_projects):
+        tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
 
-            if len(projects_students_info_finance_array) > 0:
-                tmp2 = lpSum(variables_info_finance[i, j] for i in range(len(projects_students_info_finance_array[j])))
-            else:
-                tmp2 = 0
-
-            model += tmp1 + tmp2 <= data_project[j][2]
-
-        # each project must have a minimum number of students 1
-        for j in range(number_of_projects):
-            tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
-
-            if len(projects_students_info_finance_array) > 0:
-                tmp2 = lpSum(variables_info_finance[i, j] for i in range(len(projects_students_info_finance_array[j])))
-            else:
-                tmp2 = 0
-
-            model += tmp1 + tmp2 <= bigM * binary_variables[j]
-
-        # each project must have a minimum number of students 2
-        for j in range(number_of_projects):
-            tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
-
-            if len(projects_students_info_finance_array) > 0:
-                tmp2 = lpSum(variables_info_finance[i, j] for i in range(len(projects_students_info_finance_array[j])))
-            else:
-                tmp2 = 0
-
-            model += tmp1 + tmp2 >= data_project[j][1] * binary_variables[j]
-
-        # each project must have a maximum number of students in info finance
         if len(projects_students_info_finance_array) > 0:
-            for j in range(number_of_projects):
-                tmp1 = lpSum(variables_info_finance[i, j] for i in range(len(projects_students_info_finance_array[j])))
-                model += tmp1 <= 2
-
-        # student already assigned to a project
-        for i in range(number_of_projects):
-            for email in data_project[i][0]:
-                for j in range(len(students_projects_array_with_mails)):
-                    if students_projects_array_with_mails[j][0] == email:
-                        model += variables_normal[j, i] == 1
-        
-        model.solve()
-        model.writeLP(lp_file)
-
-        result_array = [[variables_normal[i, j].varValue for j in range(len(students_projects_array[i]))] for i in range(len(students_projects_array))] + [[variables_info_finance[i, j].varValue for j in range(len(students_projects_info_finance_array[i]))] for i in range(len(students_projects_info_finance_array))]
-
-        result_df = pd.DataFrame(result_array)
-
-        if(model.status == 1):
-            result_df.to_csv('common/resultSolver.csv', index=False)
+            tmp2 = lpSum(variables_info_finance[i, j] for i in range(len(projects_students_info_finance_array[j])))
         else:
-            return "No optimal solution found"
+            tmp2 = 0
 
-        controller.show_frame("solverProcess")
+        model += tmp1 + tmp2 <= data_project[j][2]
 
-    except Exception as e:
-        return str(e)
+    # each project must have a minimum number of students 1
+    for j in range(number_of_projects):
+        tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
+
+        if len(projects_students_info_finance_array) > 0:
+            tmp2 = lpSum(variables_info_finance[i, j] for i in range(len(projects_students_info_finance_array[j])))
+        else:
+            tmp2 = 0
+
+        model += tmp1 + tmp2 <= bigM * binary_variables[j]
+
+    # each project must have a minimum number of students 2
+    for j in range(number_of_projects):
+        tmp1 = lpSum(variables_normal[i, j] for i in range(len(projects_students_array[j])))
+
+        if len(projects_students_info_finance_array) > 0:
+            tmp2 = lpSum(variables_info_finance[i, j] for i in range(len(projects_students_info_finance_array[j])))
+        else:
+            tmp2 = 0
+
+        model += tmp1 + tmp2 >= data_project[j][1] * binary_variables[j]
+
+    # each project must have a maximum number of students in info finance
+    if len(projects_students_info_finance_array) > 0:
+        for j in range(number_of_projects):
+            tmp1 = lpSum(variables_info_finance[i, j] for i in range(len(projects_students_info_finance_array[j])))
+            model += tmp1 <= 2
+
+    # student already assigned to a project
+    for i in range(number_of_projects):
+        for email in data_project[i][0]:
+            for j in range(len(students_projects_array_with_mails)):
+                if students_projects_array_with_mails[j][0] == email:
+                    model += variables_normal[j, i] == 1
+    
+    model.solve()
+    model.writeLP(lp_file)
+
+
+    result_array = []
+    for i in range(len(students_projects_array)):
+        tmp = []
+        tmp.append(variables_normal[i, 0].name)
+        for j in range(len(students_projects_array[i])):
+            tmp.append(variables_normal[i, j].varValue)
+        result_array.append(tmp)
+        
+
+    print(result_array)
+
+    for i in range(len(students_projects_info_finance_array)):
+        tmp = []
+        tmp.append(variables_info_finance[i, 0].name)
+        for j in range(len(students_projects_info_finance_array[i])):
+            result_array.append(variables_info_finance[i, j].varValue)                
+
+    print(result_array)
+
+    result_df = pd.DataFrame(result_array)
+
+    if(model.status == 1):
+        result_df.to_csv('common/resultSolver.csv', index=False)
+    else:
+        return "No optimal solution found"
+
+    controller.show_frame("solverProcess")
+
+    # except Exception as e:
+    #     return str(e)
 
 def formated_table(data):
     data = pd.DataFrame(data[1:], columns=data[0])
@@ -202,7 +223,6 @@ def get_data():
 
                     data_array_norm.append(student_data)
 
-
                 elif row[f'{traduction_["response"][language]} 1'] == "Oui   Yes":
                     for i in range(1, num_projects + 1):
                         try:
@@ -246,8 +266,8 @@ def get_data():
 
                     data_array_norm.append(student_data)
 
-            table_normal = formated_table(data_array_norm)
-            table_info_finance = formated_table(data_array_info_finance)
+            table_normal = data_array_norm
+            table_info_finance = data_array_info_finance
     except FileNotFoundError:
         print("No data")
 
@@ -257,7 +277,7 @@ def get_data():
         if not data.empty:
             data_array_norm = []
             for index, row in data.iterrows():
-                project_data = [row['Team emails'], row["Minimum d'étudiants"], row["Maximum d'étudiants"]]
+                project_data = [row['Team emails'], row["Minimum students"], row["Maximum students"]]
 
                 if isinstance(project_data[0], str):
                     project_data[0] = [data for data in project_data[0].split(";")]
@@ -280,9 +300,7 @@ def get_data():
     except FileNotFoundError:
         print("No data")
 
-
     return table_normal, table_info_finance, data_project
-    
 
     #passer avec deux contrainte
     # somme de tous le projet

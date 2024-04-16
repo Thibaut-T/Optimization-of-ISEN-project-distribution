@@ -166,11 +166,15 @@ class SolverOutputManagement(CTkFrame):
 
                 # Parcourir toutes les colonnes
                 for colonne in result_solver.columns:
-                # Vérifier si la colonne contient la valeur 1
+                    # skip the first column
+                    if colonne == "0":
+                        print("Skipping first column")
+                        continue
+    
                     # Créer une instance de la classe Project
                     projet = Project()
             
-                    tmp_projet = dataProjects[dataProjects['Project number'] == int(colonne)+1]
+                    tmp_projet = dataProjects[dataProjects['Project number'] == int(colonne)]
 
                     # Affecter le last_name de la colonne au champ last_name de l'objet Project
                     projet.number = tmp_projet["Project number"].values[0]
@@ -181,7 +185,12 @@ class SolverOutputManagement(CTkFrame):
                         
                         for ligne in lignes:
                             # Ajouter l'objet Student à la liste eleves de l'objet Project
-                            projet.eleves.append(self.eleves[ligne])
+                            print(result_solver.iloc[ligne, 0].split("?")[1])
+
+                            for eleve in self.eleves:
+                                if eleve.mail == result_solver.iloc[ligne, 0].split("?")[1]:
+                                    projet.eleves.append(eleve)
+                                    break
                         # Ajouter l'objet Project à la liste projets
 
                     else:
