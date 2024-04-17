@@ -11,6 +11,10 @@ def solve(controller):
     # get data from the responses or the projects
     students_projects_array_with_mails, students_projects_info_finance_array_with_mails, students_projects_only_one_semester_array_with_mails, data_project = get_data()
 
+    print(students_projects_array_with_mails)
+    print(students_projects_info_finance_array_with_mails)
+    print(students_projects_only_one_semester_array_with_mails)
+
     students_projects_info_finance_array = pd.DataFrame([row[1:] for row in students_projects_info_finance_array_with_mails]).to_numpy()
     students_projects_array = pd.DataFrame([row[1:] for row in students_projects_array_with_mails]).to_numpy()
     students_projects_only_one_semester_array = pd.DataFrame([row[1:] for row in students_projects_only_one_semester_array_with_mails]).to_numpy()
@@ -179,7 +183,7 @@ def solve(controller):
             for j in range(len(students_projects_only_one_semester_array_with_mails)):
                 if students_projects_only_one_semester_array_with_mails[j][0] == email:
                     model += variables_only_one_semester[j, i] == 1
-    
+
     model.solve()
     model.writeLP(lp_file)
 
@@ -268,96 +272,47 @@ def get_data():
             
             for index, row in data.iterrows():
                 student_data = [f"{row[traduction_['email'][language]]}"]
+                type_student = ""
                 grades = []
 
-                # vérifier si la personne est en informatique et finance
                 if row[f'{traduction_["response"][language]} 1'] == "Oui   Yes":
-                    for i in range(1, num_projects + 1):
-                        try:
-                            grade = int(row[f'{traduction_["response"][language]} {i+1}'])
-                        except ValueError:
-                            grade = 0  
-                        grades.append(grade)
-
-                    non_zero_grades = [grade for grade in grades if grade != 0]
-                    zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
-
-                    # ajouter des notes aléatoires pour les projets non notés
-                    while len(non_zero_grades) <= 5:
-                        random_index = random.choice(zero_indices)
-                        grades[random_index] = 5
-                        non_zero_grades.append(5)
-
-                    # normaliser les notes
-                    normalized_grades = [int((grade / max(non_zero_grades))*5) if grade != 0 else 0 for grade in grades]
-                    student_data += normalized_grades
-
-                    data_array_info_finance.append(student_data)
-
-                elif row[f'{traduction_["response"][language]} 2'] == "Non   No":
-                    for i in range(1, num_projects + 1):
-                        try:
-                            grade = int(row[f'{traduction_["response"][language]} {i+1}'])
-                        except ValueError:
-                            grade = 0  
-                        grades.append(grade)
-
-                    non_zero_grades = [grade for grade in grades if grade != 0]
-                    zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
-
-                    # ajouter des notes aléatoires pour les projets non notés
-                    while len(non_zero_grades) <= 5:
-                        random_index = random.choice(zero_indices)
-                        grades[random_index] = 5
-                        non_zero_grades.append(5)
-
-                    # normaliser les notes
-                    normalized_grades = [int((grade / max(non_zero_grades))*5) if grade != 0 else 0 for grade in grades]
-                    student_data += normalized_grades
-
-                    data_array_only_one_semester.append(student_data)
-
-                elif row[f'{traduction_["response"][language]} 1'] == "Non   No" and row[f'{traduction_["response"][language]} 2'] == "Oui   Yes":
-                    for i in range(1, num_projects + 1):
-                        try:
-                            grade = int(row[f'{traduction_["response"][language]} {i+1}'])
-                        except ValueError:
-                            grade = 0  
-                        grades.append(grade)
-
-                    non_zero_grades = [grade for grade in grades if grade != 0]
-                    zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
-
-                    # ajouter des notes aléatoires pour les projets non notés
-                    while len(non_zero_grades) <= 5:
-                        random_index = random.choice(zero_indices)
-                        grades[random_index] = 5
-                        non_zero_grades.append(5)
-
-                    # normaliser les notes
-                    normalized_grades = [int((grade / max(non_zero_grades))*5) if grade != 0 else 0 for grade in grades]
-                    student_data += normalized_grades
-
-                    data_array_norm.append(student_data)
-
+                    type_student += "info finance"
+                if row[f'{traduction_["response"][language]} 2'] == "Non   No":
+                    type_student += "only one semester"
+                elif row[f'{traduction_["response"][language]} 2'] == "Oui   Yes" and row[f'{traduction_["response"][language]} 1'] == "Non   No":
+                    type_student += "normal"
                 else:
-                    for i in range(1, num_projects + 1):
-                        grade = 0
-                        grades.append(grade)
+                    type_student += "normal"
 
-                    non_zero_grades = [grade for grade in grades if grade != 0]
-                    zero_indices = [i for i, grade in enumerate(grades) if grade == 0]
+                for i in range(1, num_projects + 1):
+                    value = row[f'{traduction_["response"][language]} {i+2}']
+                    if not isinstance(value, (int, float)):
+                        value = 0                        
+                    grades.append(value)
 
-                    # ajouter des notes aléatoires pour les projets non notés
-                    while len(non_zero_grades) <= 5:
-                        random_index = random.choice(zero_indices)
-                        grades[random_index] = 5
-                        non_zero_grades.append(5)
+                min_number_of_grades = 5 if len(grades) > 5 else len(grades)
 
-                    # normaliser les notes
-                    normalized_grades = [int((grade / max(non_zero_grades))*5) if grade != 0 else 0 for grade in grades]
-                    student_data += normalized_grades
+                number_of_non_zero_grades = 0
+                for grade in grades:
+                    if grade > 0:
+                        number_of_non_zero_grades += 1
 
+                while number_of_non_zero_grades < min_number_of_grades:
+                    indice = random.randint(0, len(grades) - 1)
+                    if grades[indice] == 0:
+                        grades[indice] = int(max(grades) / 2) if sum(grades) > 0 else 1
+                        number_of_non_zero_grades += 1
+
+                #normalize the grades
+                grades = [int((grade/max(grades))*10) for grade in grades]
+
+                student_data += grades
+
+                if type_student == "info finance":
+                    data_array_info_finance.append(student_data)
+                elif type_student == "only one semester":
+                    data_array_only_one_semester.append(student_data)
+                elif type_student == "normal":
                     data_array_norm.append(student_data)
 
             table_normal = formated_table(data_array_norm)
