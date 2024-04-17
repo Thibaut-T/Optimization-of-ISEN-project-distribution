@@ -21,7 +21,7 @@ def generate_pdf2(dataframe, filename):
         person_in_charge = row['person_in_charge']
         min_student = row['min_student']
         max_student = row['max_student']
-        eleves = row['eleves']
+        eleves = row['students']
         emails = re.findall(r'<Student>\s*([\w.-]+@[a-zA-Z.-]+\.[a-zA-Z]+)', eleves)
         eleves_cleaned = '\n'.join(emails)
         
