@@ -143,9 +143,13 @@ def verifier_anomalies(resultSolver, projets, eleves):
 
         return all_errors
 
-
-def solve_function():
-    pass
+def reset_all(self):
+    if os.path.exists("./common/recap.xlsx"):
+            os.remove("./common/recap.xlsx")
+            print("Fichier recap.xlsx supprimé avec succès.")
+    else:
+        print("Le fichier recap.xlsx n'existe pas.")
+         # Bouton Reset All
 
 # Création de l'interface utilisateur avec tkinter
 class SolverOutputManagement(CTkFrame):
@@ -369,6 +373,9 @@ class SolverOutputManagement(CTkFrame):
         # Cadre droit avec un poids de 1
         right_frame = CTkScrollableFrame(centered_frame)
         right_frame.grid(row=0, column=1, padx=5, sticky="nsew")
+
+        reset_button = CTkButton(left_frame, text="Reset All", command=reset_all(self))
+        reset_button.pack(padx=10, pady=10, side="top")
         
         # Ajouter les informations des self.projets dans le conteneur scrollable_frame
         for projet in self.projets:
