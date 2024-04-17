@@ -28,6 +28,25 @@ class Project:
     def __str__(self):
         return f"Project {self.name}"
     
+    
+    def delete(self, reload):
+        print(f"Deleting project {self.name}")
+
+        dataFrameProjets = pd.read_excel("./common/recap.xlsx", sheet_name="Project")
+        dataFrameEleves = pd.read_excel("./common/recap.xlsx", sheet_name="Students")
+        dataFrameAnomalies = pd.read_excel("./common/recap.xlsx", sheet_name="Anomalies")
+
+        dataFrameProjets = dataFrameProjets[dataFrameProjets["name"] != self.name]
+        dataFrameAnomalies = dataFrameAnomalies[dataFrameAnomalies["project"] != self.__str__()]
+
+        with pd.ExcelWriter("./common/recap.xlsx") as writer:
+            dataFrameProjets.to_excel(writer, sheet_name="Project", index=False)
+            dataFrameEleves.to_excel(writer, sheet_name="Students", index=False)
+            dataFrameAnomalies.to_excel(writer, sheet_name="Anomalies", index=False)
+            
+        reload()
+
+    
     def __repr__(self):
         return f"<Project> {self.name}"
 
@@ -48,16 +67,45 @@ class Anomalies:
         self.error = ""
     def __str__(self):
         return f"Warning : {self.error}"
+    def show_label(self, frame):
+        error_label = CTkLabel(frame, text=self.error, anchor="w", justify="left", fg_color="red")
+        error_label.grid(row=0, column=0, padx=5, pady=(10, 2), sticky="w")
+
+    def show_button(self, frame):
+        pass
+
+    def button_action(self):
+        pass
 
 class AnomaliesEleve(Anomalies):
     def __init__(self):
         super().__init__()
         self.student = None
 
+    def show_button(self, frame):
+        pass
+
+    def button_action(self):
+        print(f"Action pour l'élève {self.student.last_name} {self.student.first_name}")
+
 class AnomaliesProjet(Anomalies):
     def __init__(self):
         super().__init__()
-        self.project = None    
+        self.project = None
+
+    def show_button(self, frame, reload):
+        print(self.error)
+        if "enough" in self.error:
+            solve_button = CTkButton(frame, text="Delete project", command=lambda: self.project.delete(reload))
+            solve_button.grid(row=1, column=0, padx=5, pady=(2, 10), sticky="w")
+
+            solve_button.update_idletasks()
+            button_width = solve_button.winfo_reqwidth()
+            button_height = solve_button.winfo_reqheight()
+            solve_button.configure(width=button_width, height=button_height)    
+
+    def button_action(self):
+        print(f"Action pour le projet {self.project.name}")
 
 def verifier_anomalies(resultSolver, projets, eleves):
         all_errors = []
@@ -121,6 +169,10 @@ class SolverOutputManagement(CTkFrame):
         for item in children:
             item.pack_forget()
             item.grid_forget()
+
+        self.projets = []
+        self.eleves = []
+        self.all_errors = []
 
         if not os.path.exists("./common/recap.xlsx"):
             print("Fichier de récapitulatif non trouvé, chargement des données...")
@@ -255,7 +307,7 @@ class SolverOutputManagement(CTkFrame):
 
             self.projets = [Project() for i in range(len(dataFrameProjets))]
             self.eleves = [Student() for i in range(len(dataFrameEleves))]
-            self.all_errors = [Anomalies() for i in range(len(dataFrameAnomalies))]
+            self.all_errors = []
 
             for i, row in dataFrameEleves.iterrows():
                 self.eleves[i].last_name = row["last_name"]
@@ -274,16 +326,26 @@ class SolverOutputManagement(CTkFrame):
                 self.projets[i].max_student = row["max_student"]
                 self.projets[i].company = row["company"]
 
+
+
             for i, row in dataFrameAnomalies.iterrows():
-                self.all_errors[i].error = row["error"]
+                print(i)
+                print(row)
+                print(self.all_errors)
                 if "student" in row:
-                    for eleve in self.eleves:
-                        if eleve.mail in str(row["student"]):
-                            self.all_errors[i].eleve = eleve
+                    print("student")
+                    self.all_errors.append(AnomaliesEleve())
+                    for student in self.eleves:
+                        if student.mail in str(row["student"]):
+                            self.all_errors[i].student = student
+                            self.all_errors[i].error = row["error"]
                 if "project" in row:
-                    for projet in self.projets:
-                        if projet.name in str(row["project"]):
-                            self.all_errors[i].projet = projet
+                    print("project")
+                    self.all_errors.append(AnomaliesProjet())
+                    for project in self.projets:
+                        if project.name in str(row["project"]):
+                            self.all_errors[i].project = project
+                            self.all_errors[i].error = row["error"]
 
     
         self.show()
@@ -320,15 +382,5 @@ class SolverOutputManagement(CTkFrame):
             card = CTkFrame(left_frame, fg_color="red")
             card.pack(padx=5, pady=5, fill="x")
 
-            error_label = CTkLabel(card, text=error, anchor="w", justify="left", fg_color="red")
-            error_label.grid(row=0, column=0, padx=5, pady=(10, 2), sticky="w")
-
-            solve_button = CTkButton(card, text="Solve", command=lambda: solve_function())
-            solve_button.grid(row=1, column=0, padx=5, pady=(2, 10), sticky="w")
-
-            solve_button.update_idletasks()
-            button_width = solve_button.winfo_reqwidth()
-            button_height = solve_button.winfo_reqheight()
-            solve_button.configure(width=button_width, height=button_height)
-
-# all_errors = la fonction 
+            error.show_label(card)
+            error.show_button(card, self.reload)
