@@ -85,8 +85,8 @@ def modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7, entry8, entr
         "Phone number": input5,
         "Mail": input6,
         "Description": input7,
-        "Minimum d'étudiants": input8,
-        "Maximum d'étudiants": input9,
+        "Minimum students": input8,
+        "Maximum students": input9,
         "Company": input10
     }
 
