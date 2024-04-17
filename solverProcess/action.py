@@ -276,13 +276,13 @@ def get_data():
                 grades = []
 
                 if row[f'{traduction_["response"][language]} 1'] == "Oui   Yes":
-                    type_student += "info finance"
-                if row[f'{traduction_["response"][language]} 2'] == "Non   No":
-                    type_student += "only one semester"
-                elif row[f'{traduction_["response"][language]} 2'] == "Oui   Yes" and row[f'{traduction_["response"][language]} 1'] == "Non   No":
-                    type_student += "normal"
+                    type_student = "info finance"
+                elif row[f'{traduction_["response"][language]} 2'] == "Non   No":
+                    type_student = "only one semester"
+                elif row[f'{traduction_["response"][language]} 2'] == "Oui   Yes" and row[f'{traduction_["response"][language]} 1'] == "Oui   Yes": 
+                    type_student = "normal"
                 else:
-                    type_student += "normal"
+                    type_student = "normal"
 
                 for i in range(1, num_projects + 1):
                     value = row[f'{traduction_["response"][language]} {i+2}']
@@ -290,18 +290,24 @@ def get_data():
                         value = 0                        
                     grades.append(value)
 
-                min_number_of_grades = 5 if len(grades) > 5 else len(grades)
+                number_of_grades = 5 if len(grades) > 5 else len(grades)
 
                 number_of_non_zero_grades = 0
                 for grade in grades:
                     if grade > 0:
                         number_of_non_zero_grades += 1
 
-                while number_of_non_zero_grades < min_number_of_grades:
+                while number_of_non_zero_grades < number_of_grades:
                     indice = random.randint(0, len(grades) - 1)
                     if grades[indice] == 0:
                         grades[indice] = int(max(grades) / 2) if sum(grades) > 0 else 1
                         number_of_non_zero_grades += 1
+
+                while number_of_non_zero_grades > number_of_grades:
+                    #get smallest grade
+                    indice = grades.index(min([grade for grade in grades if grade > 0]))
+                    grades[indice] = 0
+                    number_of_non_zero_grades -= 1
 
                 #normalize the grades
                 grades = [int((grade/max(grades))*10) for grade in grades]
