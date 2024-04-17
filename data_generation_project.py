@@ -38,5 +38,5 @@ if __name__ == "__main__":
     headers = ["Project number", "Project name", "Person in charge", "Team emails", "Phone number", "Mail", 
                "Description", "Minimum students", "Maximum students", "Company"]
 
-    data = generate_project_data(200)  
+    data = generate_project_data(60)  
     create_project_excel("./common/dataProjects.xlsx", headers, data)

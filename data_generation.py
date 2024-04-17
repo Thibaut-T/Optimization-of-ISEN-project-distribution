@@ -15,7 +15,7 @@ def generate_random_data(num_rows):
         time_taken = "-"   
         grade = "-"      
         responses = []
-        for i in range(1, 18):
+        for i in range(1, 63):
             response = random.randint(0, 10)
             responses.append(f"Question {i}")
             if i == 1:
@@ -44,7 +44,7 @@ def create_excel_file(filename, headers, data):
 
 if __name__ == "__main__":
     headers = ["Last name", "First name", "Email address", "State", "Started on", "Completed", 
-               "Time taken", "Grade/10.00"] + sum([[f"Question {i}", f"Response {i}"] for i in range(1, 203)], [])
+               "Time taken", "Grade/10.00"] + sum([[f"Question {i}", f"Response {i}"] for i in range(1, 63)], [])
 
-    data = generate_random_data(1000)  
+    data = generate_random_data(200)  
     create_excel_file("./common/answerProjects.xlsx", headers, data)

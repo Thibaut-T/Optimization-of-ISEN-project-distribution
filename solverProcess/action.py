@@ -184,6 +184,22 @@ def solve(controller):
                 if students_projects_only_one_semester_array_with_mails[j][0] == email:
                     model += variables_only_one_semester[j, i] == 1
 
+    # disable variables of marks equal to 0
+    for i in range(len(students_projects_array)):
+        for j in range(len(students_projects_array[i])):
+            if students_projects_array[i][j] == 0:
+                model += variables_normal[i, j] == 0
+
+    for i in range(len(students_projects_info_finance_array)):
+        for j in range(len(students_projects_info_finance_array[i])):
+            if students_projects_info_finance_array[i][j] == 0:
+                model += variables_info_finance[i, j] == 0
+
+    for i in range(len(students_projects_only_one_semester_array)):
+        for j in range(len(students_projects_only_one_semester_array[i])):
+            if students_projects_only_one_semester_array[i][j] == 0:
+                model += variables_only_one_semester[i, j] == 0
+
     model.solve()
     model.writeLP(lp_file)
 
@@ -309,8 +325,12 @@ def get_data():
                     grades[indice] = 0
                     number_of_non_zero_grades -= 1
 
+                print(grades)
+
                 #normalize the grades
                 grades = [int((grade/max(grades))*10) for grade in grades]
+
+                print(grades)
 
                 student_data += grades
 
