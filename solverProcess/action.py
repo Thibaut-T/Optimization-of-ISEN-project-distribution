@@ -286,7 +286,7 @@ def get_data():
 
                 for i in range(1, num_projects + 1):
                     value = row[f'{traduction_["response"][language]} {i+2}']
-                    if not isinstance(value, (int, float)):
+                    if not isinstance(value, (int, float)) or isnan(value):
                         value = 0                        
                     grades.append(value)
 
