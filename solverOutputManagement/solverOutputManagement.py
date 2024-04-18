@@ -305,12 +305,14 @@ class SolverOutputManagement(CTkFrame):
 
                             # get the 5 highest marks and there indexes
                             highest_marks = sorted(range(len(all_marks)), key=lambda i: all_marks[i])[-5:]
+                            #reverse the list to get the highest mark first
+                            highest_marks = highest_marks[::-1]
                             
-                            student.first_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]}
-                            student.second_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]}
-                            student.third_project = {"project_number" : highest_marks[2]+1, "mark" : all_marks[highest_marks[2]]}
-                            student.fourth_project = {"project_number" : highest_marks[1]+1, "mark" : all_marks[highest_marks[1]]}
-                            student.fifth_project = {"project_number" : highest_marks[0]+1, "mark" : all_marks[highest_marks[0]]}
+                            student.first_project = {"project_number" : highest_marks[0]+1, "mark" : all_marks[highest_marks[0]]}
+                            student.second_project = {"project_number" : highest_marks[1]+1, "mark" : all_marks[highest_marks[1]]} if len(highest_marks) > 1 else None
+                            student.third_project = {"project_number" : highest_marks[2]+1, "mark" : all_marks[highest_marks[2]]} if len(highest_marks) > 2 else None
+                            student.fourth_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]} if len(highest_marks) > 3 else None
+                            student.fifth_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]} if len(highest_marks) > 4 else None
 
                             student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
 
@@ -323,12 +325,14 @@ class SolverOutputManagement(CTkFrame):
 
                             # get the 5 highest marks and there indexes
                             highest_marks = sorted(range(len(all_marks)), key=lambda i: all_marks[i])[-5:]
+                            #reverse the list to get the highest mark first
+                            highest_marks = highest_marks[::-1]
                             
-                            student.first_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]}
-                            student.second_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]}
-                            student.third_project = {"project_number" : highest_marks[2]+1, "mark" : all_marks[highest_marks[2]]}
-                            student.fourth_project = {"project_number" : highest_marks[1]+1, "mark" : all_marks[highest_marks[1]]}
-                            student.fifth_project = {"project_number" : highest_marks[0]+1, "mark" : all_marks[highest_marks[0]]}
+                            student.first_project = {"project_number" : highest_marks[0]+1, "mark" : all_marks[highest_marks[0]]}
+                            student.second_project = {"project_number" : highest_marks[1]+1, "mark" : all_marks[highest_marks[1]]} if len(highest_marks) > 1 else None
+                            student.third_project = {"project_number" : highest_marks[2]+1, "mark" : all_marks[highest_marks[2]]} if len(highest_marks) > 2 else None
+                            student.fourth_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]} if len(highest_marks) > 3 else None
+                            student.fifth_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]} if len(highest_marks) > 4 else None
 
                             student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
 
@@ -341,12 +345,14 @@ class SolverOutputManagement(CTkFrame):
 
                             # get the 5 highest marks and there indexes
                             highest_marks = sorted(range(len(all_marks)), key=lambda i: all_marks[i])[-5:]
+                            #reverse the list to get the highest mark first
+                            highest_marks = highest_marks[::-1]
                             
-                            student.first_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]}
-                            student.second_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]}
-                            student.third_project = {"project_number" : highest_marks[2]+1, "mark" : all_marks[highest_marks[2]]}
-                            student.fourth_project = {"project_number" : highest_marks[1]+1, "mark" : all_marks[highest_marks[1]]}
-                            student.fifth_project = {"project_number" : highest_marks[0]+1, "mark" : all_marks[highest_marks[0]]}
+                            student.first_project = {"project_number" : highest_marks[0]+1, "mark" : all_marks[highest_marks[0]]}
+                            student.second_project = {"project_number" : highest_marks[1]+1, "mark" : all_marks[highest_marks[1]]} if len(highest_marks) > 1 else None
+                            student.third_project = {"project_number" : highest_marks[2]+1, "mark" : all_marks[highest_marks[2]]} if len(highest_marks) > 2 else None
+                            student.fourth_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]} if len(highest_marks) > 3 else None
+                            student.fifth_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]} if len(highest_marks) > 4 else None
 
                             student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
 

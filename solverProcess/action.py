@@ -345,6 +345,12 @@ def get_data():
             table_info_finance = formated_table(data_array_info_finance)
             table_only_one_semester = formated_table(data_array_only_one_semester)
 
+            try:
+                os.remove('./common/table_normal.xlsx')
+                os.remove('./common/table_info_finance.xlsx')
+                os.remove('./common/table_only_one_semester.xlsx')
+            except FileNotFoundError:
+                pass
             df = pd.DataFrame(table_normal)
             df.to_excel('./common/table_normal.xlsx', index=False)
 
