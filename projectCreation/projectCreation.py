@@ -38,14 +38,14 @@ class ProjectCreation(CTkScrollableFrame):
             email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
             emails = value.split(";")
             valid = all(re.match(email_regex, email) is not None for email in emails)
-            label6.configure(fg_color="red" if not valid else "gray10")
+            label6.configure(fg_color="red" if not valid else ("gray95", "gray10"))
             return True
         
         def validate_emails(value):     # For the equipe field
             email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
             emails = value.split(";")
             valid = all(re.match(email_regex, email.strip()) is not None for email in emails)
-            label4.configure(fg_color="red" if not valid else "gray10")
+            label4.configure(fg_color="red" if not valid else ("gray95", "gray10"))
             return True
 
         def is_phone_number(value):
