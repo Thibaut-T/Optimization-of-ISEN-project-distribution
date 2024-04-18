@@ -2,3 +2,7 @@
 __pycache__/
 
 common/*
+*.spec
+*.pyc
+build/*
+dist/*

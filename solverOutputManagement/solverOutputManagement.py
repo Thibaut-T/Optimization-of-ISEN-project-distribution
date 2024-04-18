@@ -56,6 +56,13 @@ class Student:
         self.first_name = ""
         self.mail = ""
 
+        self.assigned_project = None
+        self.first_project = None
+        self.second_project = None
+        self.third_project = None
+        self.fourth_project = None
+        self.fifth_project = None
+
     def __str__(self):
         return f"Student {self.mail}"
     
@@ -139,6 +146,13 @@ def verifier_anomalies(resultSolver, projets, eleves):
                 tmp = AnomaliesProjet()
                 tmp.project = projet
                 tmp.error = f"{tmp.project.name} contains too many students"
+                all_errors.append(tmp)
+
+        for eleve in eleves:
+            if eleve.assigned_project["mark"] < 4:
+                tmp = AnomaliesEleve()
+                tmp.student = eleve
+                tmp.error = f"{tmp.student.last_name} {tmp.student.first_name} is assigned to a project with a mark lower than 4"
                 all_errors.append(tmp)
 
         return all_errors
@@ -249,6 +263,7 @@ class SolverOutputManagement(CTkFrame):
                             for eleve in self.eleves:
                                 if eleve.mail == result_solver.iloc[ligne, 0].split("?")[1]:
                                     projet.students.append(eleve)
+                                    eleve.assigned_project = {"project_number" : projet.number, "mark" : None}
                                     break
                             
                         # Ajouter l'objet Project à la liste projets
@@ -278,6 +293,65 @@ class SolverOutputManagement(CTkFrame):
                     else:
                         print(f"Aucune information trouvée pour le projet {projet.name} dans le fichier common/dataProjects.xlsx")
 
+                dataNormal = pd.read_excel('./common/table_normal.xlsx')
+                dataInfoFinance = pd.read_excel('./common/table_info_finance.xlsx')
+                dataOnlyOneSemester = pd.read_excel('./common/table_only_one_semester.xlsx')
+
+                #skip the row
+                for row in dataNormal.iterrows():
+                    for student in self.eleves:
+                        if row[1][0] == student.mail:
+                            all_marks = list(row[1][1:])
+
+                            # get the 5 highest marks and there indexes
+                            highest_marks = sorted(range(len(all_marks)), key=lambda i: all_marks[i])[-5:]
+                            
+                            student.first_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]}
+                            student.second_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]}
+                            student.third_project = {"project_number" : highest_marks[2]+1, "mark" : all_marks[highest_marks[2]]}
+                            student.fourth_project = {"project_number" : highest_marks[1]+1, "mark" : all_marks[highest_marks[1]]}
+                            student.fifth_project = {"project_number" : highest_marks[0]+1, "mark" : all_marks[highest_marks[0]]}
+
+                            student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
+
+                            continue
+                
+                for row in dataInfoFinance.iterrows():
+                    for student in self.eleves:
+                        if row[1][0] == student.mail:
+                            all_marks = list(row[1][1:])
+
+                            # get the 5 highest marks and there indexes
+                            highest_marks = sorted(range(len(all_marks)), key=lambda i: all_marks[i])[-5:]
+                            
+                            student.first_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]}
+                            student.second_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]}
+                            student.third_project = {"project_number" : highest_marks[2]+1, "mark" : all_marks[highest_marks[2]]}
+                            student.fourth_project = {"project_number" : highest_marks[1]+1, "mark" : all_marks[highest_marks[1]]}
+                            student.fifth_project = {"project_number" : highest_marks[0]+1, "mark" : all_marks[highest_marks[0]]}
+
+                            student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
+
+                            continue
+
+                for row in dataOnlyOneSemester.iterrows():
+                    for student in self.eleves:
+                        if row[1][0] == student.mail:
+                            all_marks = list(row[1][1:])
+
+                            # get the 5 highest marks and there indexes
+                            highest_marks = sorted(range(len(all_marks)), key=lambda i: all_marks[i])[-5:]
+                            
+                            student.first_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]}
+                            student.second_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]}
+                            student.third_project = {"project_number" : highest_marks[2]+1, "mark" : all_marks[highest_marks[2]]}
+                            student.fourth_project = {"project_number" : highest_marks[1]+1, "mark" : all_marks[highest_marks[1]]}
+                            student.fifth_project = {"project_number" : highest_marks[0]+1, "mark" : all_marks[highest_marks[0]]}
+
+                            student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
+
+                            continue
+
                 # Vérifier les anomalies
                 self.all_errors = verifier_anomalies(result_solver, self.projets, self.eleves)
 
@@ -291,7 +365,7 @@ class SolverOutputManagement(CTkFrame):
             dataFrameProjets = dataFrameProjets[cols]
 
             dataFrameEleves = pd.DataFrame([vars(s) for s in self.eleves])
-            cols = ['last_name', 'first_name', 'mail']
+            cols = ['last_name', 'first_name', 'mail', 'assigned_project','first_project', 'second_project', 'third_project', 'fourth_project', 'fifth_project']
             dataFrameEleves = dataFrameEleves[cols]
             
             dataFrameAnomalies = pd.DataFrame([vars(s) for s in self.all_errors])
@@ -319,6 +393,14 @@ class SolverOutputManagement(CTkFrame):
                 self.eleves[i].last_name = row["last_name"]
                 self.eleves[i].first_name = row["first_name"]
                 self.eleves[i].mail = row["mail"]
+
+                self.eleves[i].first_project = row["first_project"]
+                self.eleves[i].second_project = row["second_project"]
+                self.eleves[i].third_project = row["third_project"]
+                self.eleves[i].fourth_project = row["fourth_project"]
+                self.eleves[i].fifth_project = row["fifth_project"]
+
+                self.eleves[i].assigned_project = row["assigned_project"]
 
             for i, row in dataFrameProjets.iterrows():
                 self.projets[i].number = row["number"]
