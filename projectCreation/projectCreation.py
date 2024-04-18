@@ -73,7 +73,7 @@ class ProjectCreation(CTkScrollableFrame):
 
         if idCurrent != -1:
             try:
-                df = pd.read_excel('common/dataProjects.xlsx')
+                df = pd.read_excel('common/dataProjects.xlsx', dtype={'Phone number': str})
                 filtered_df = df[df['Project number'] == idCurrent]
 
                 id = filtered_df['Project number'].values[0] if not filtered_df.empty else ""

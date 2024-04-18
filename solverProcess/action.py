@@ -11,10 +11,6 @@ def solve(controller):
     # get data from the responses or the projects
     students_projects_array_with_mails, students_projects_info_finance_array_with_mails, students_projects_only_one_semester_array_with_mails, data_project = get_data()
 
-    print(students_projects_array_with_mails)
-    print(students_projects_info_finance_array_with_mails)
-    print(students_projects_only_one_semester_array_with_mails)
-
     students_projects_info_finance_array = pd.DataFrame([row[1:] for row in students_projects_info_finance_array_with_mails]).to_numpy()
     students_projects_array = pd.DataFrame([row[1:] for row in students_projects_array_with_mails]).to_numpy()
     students_projects_only_one_semester_array = pd.DataFrame([row[1:] for row in students_projects_only_one_semester_array_with_mails]).to_numpy()

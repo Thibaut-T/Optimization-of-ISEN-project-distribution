@@ -121,7 +121,7 @@ def getAllProjects():
     if not os.path.exists(directory):
         os.makedirs(directory)
     try:
-        df = pd.read_excel('common/dataProjects.xlsx')
+        df = pd.read_excel('common/dataProjects.xlsx', dtype={'Phone number': str})
     except FileNotFoundError:
         df = pd.DataFrame(columns=['Project number', 'Project name', 'Person in charge', 'Team emails', 'Phone number', 'Mail', 'Description', 'Minimum students', 'Maximum students', 'Company'])
         df.to_excel('common/dataProjects.xlsx', index=False)

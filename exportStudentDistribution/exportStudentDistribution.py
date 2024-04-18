@@ -45,7 +45,6 @@ def extract_name(email):
     match = re.search(r'([^@]+)@', email) 
     if match:
         name = match.group(1)
-        print(name)
         name_parts = re.findall(r'\b\w+\b', name)
         name = ' '.join(name_parts)
         return name

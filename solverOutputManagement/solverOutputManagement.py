@@ -101,7 +101,6 @@ class AnomaliesProjet(Anomalies):
         self.project = None
 
     def show_button(self, frame, reload):
-        print(self.error)
         if "enough" in self.error:
             solve_button = CTkButton(frame, text="Delete project", command=lambda: self.project.delete(reload))
             solve_button.grid(row=1, column=0, padx=5, pady=(2, 10), sticky="w")
@@ -242,7 +241,6 @@ class SolverOutputManagement(CTkFrame):
                 for colonne in result_solver.columns:
                     # skip the first column
                     if colonne == "0":
-                        print("Skipping first column")
                         continue
                     
 
