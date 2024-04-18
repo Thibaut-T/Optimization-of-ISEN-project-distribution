@@ -1,13 +1,16 @@
-import pandas as pd
-from tkinter import filedialog
 import os
 import subprocess
+import platform
 
 def help():
-    pdf_file_path = "help.pdf"
+    pdf_file_path = "Help.pdf"
 
-    # Vérifie si le fichier PDF existe
-    os.path.exists(pdf_file_path)
-        # Ouvre le fichier PDF avec le programme associé
-    os.startfile(pdf_file_path)
+    if not os.path.exists(pdf_file_path):
+        return
     
+    if platform.system() == 'Windows':
+        os.startfile(pdf_file_path)
+    elif platform.system() == 'Darwin':  # MacOS vraiment pas sûr
+        subprocess.call(('open', pdf_file_path))
+    elif platform.system() == 'Linux':
+        subprocess.call(('xdg-open', pdf_file_path))
