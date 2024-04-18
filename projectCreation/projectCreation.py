@@ -1,4 +1,5 @@
 import tkinter as tk
+import tkinter.messagebox as messagebox
 from customtkinter import CTkButton, CTkLabel, CTkEntry, CTkScrollableFrame, END
 import pandas as pd
 from projectCreation.action import add_line, modify_line
@@ -29,34 +30,34 @@ class ProjectCreation(CTkScrollableFrame):
         self.show()
     
     def show(self):
-        input_values = []
         # label of frame ProjectCreation
         label = CTkLabel(self, text = "Project Creation")
         label.pack()
-
-        def is_number(value):
-            try:
-                float(value)
-                return True
-            except ValueError:
-                return False
 
         def validate_email(value):
             email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
             emails = value.split(";")
             valid = all(re.match(email_regex, email) is not None for email in emails)
-            label6.configure({"foreground": "red" if not valid else "black"})
+            label6.configure(fg_color="red" if not valid else "gray10")
             return True
         
         def validate_emails(value):     # For the equipe field
             email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
             emails = value.split(";")
             valid = all(re.match(email_regex, email.strip()) is not None for email in emails)
-            label4.configure({"foreground": "red" if not valid else "black"})
+            label4.configure(fg_color="red" if not valid else "gray10")
             return True
 
         def is_phone_number(value):
             return all(char.isdigit() or char == "+" for char in value)
+        
+        def validate_min_max(entry8, entry9):
+            min_value = float(entry8.get())
+            max_value = float(entry9.get())
+            if min_value > max_value:
+                messagebox.showerror("Error", "Minimum value cannot be greater than maximum value")
+                return False
+            return True
         
         idCurrent = -1
         try:
@@ -152,17 +153,16 @@ class ProjectCreation(CTkScrollableFrame):
         entry6 = CTkEntry(self, validate='key', validatecommand=vcmd_mail)
         entry6.insert(END, entry6Text)
         entry6.pack()
-
-        vcmd = (self.register(is_number), '%P')
+        
         label8 = CTkLabel(self, text="Minimum:")
         label8.pack()
-        entry8 = CTkEntry(self, validatecommand=vcmd)
+        entry8 = CTkEntry(self)
         entry8.insert(END, entry8Text)
         entry8.pack()
 
         label9 = CTkLabel(self, text="Maximum:")
         label9.pack()
-        entry9 = CTkEntry(self, validatecommand=vcmd)
+        entry9 = CTkEntry(self)
         entry9.insert(END, entry9Text)
         entry9.pack()
 
@@ -177,10 +177,10 @@ class ProjectCreation(CTkScrollableFrame):
         entry7 = tk.Text(self, height=5)
         entry7.insert(END, entry7Text)
         entry7.pack()
-        
+
         if idCurrent == -1:
-            generate_button = CTkButton(self,text="Add Project", command=lambda id = id: add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10, self.controller))
+            generate_button = CTkButton(self,text="Add Project", command=lambda id = id: validate_min_max(entry8, entry9) and add_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10, self.controller))
             generate_button.pack()
         else:
-            modify_button = CTkButton(self, text="Modify Project", command=lambda id = id: modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10, self.controller))
+            modify_button = CTkButton(self, text="Modify Project", command=lambda id = id: validate_min_max(entry8, entry9) and modify_line(id, entry2, entry3, entry4, entry5, entry6, entry7,entry8,entry9,entry10, self.controller))
             modify_button.pack()
