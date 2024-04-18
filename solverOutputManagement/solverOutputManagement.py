@@ -78,7 +78,7 @@ class Anomalies:
         error_label = CTkLabel(frame, text=self.error, anchor="w", justify="left", fg_color="red")
         error_label.grid(row=0, column=0, padx=5, pady=(10, 2), sticky="w")
 
-    def show_button(self, frame):
+    def show_button(self, frame, reload):
         pass
 
     def button_action(self):
@@ -89,7 +89,7 @@ class AnomaliesEleve(Anomalies):
         super().__init__()
         self.student = None
 
-    def show_button(self, frame):
+    def show_button(self, frame, reload):
         pass
 
     def button_action(self):
@@ -149,11 +149,12 @@ def verifier_anomalies(resultSolver, projets, eleves):
                 all_errors.append(tmp)
 
         for eleve in eleves:
-            if eleve.assigned_project["mark"] < 4:
-                tmp = AnomaliesEleve()
-                tmp.student = eleve
-                tmp.error = f"{tmp.student.last_name} {tmp.student.first_name} is assigned to a project with a mark lower than 4"
-                all_errors.append(tmp)
+            if eleve.assigned_project is not None:
+                if eleve.assigned_project["mark"] < 4:
+                    tmp = AnomaliesEleve()
+                    tmp.student = eleve
+                    tmp.error = f"{tmp.student.last_name} {tmp.student.first_name} is assigned to a project with a mark lower than 4"
+                    all_errors.append(tmp)
 
         return all_errors
 
@@ -266,6 +267,7 @@ class SolverOutputManagement(CTkFrame):
                                     eleve.assigned_project = {"project_number" : projet.number, "mark" : None}
                                     break
                             
+                            
                         # Ajouter l'objet Project à la liste projets
 
                     else:
@@ -314,7 +316,8 @@ class SolverOutputManagement(CTkFrame):
                             student.fourth_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]} if len(highest_marks) > 3 else None
                             student.fifth_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]} if len(highest_marks) > 4 else None
 
-                            student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
+                            if student.assigned_project is not None:
+                                student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
 
                             continue
                 
@@ -334,7 +337,8 @@ class SolverOutputManagement(CTkFrame):
                             student.fourth_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]} if len(highest_marks) > 3 else None
                             student.fifth_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]} if len(highest_marks) > 4 else None
 
-                            student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
+                            if student.assigned_project is not None:
+                                student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
 
                             continue
 
@@ -354,7 +358,8 @@ class SolverOutputManagement(CTkFrame):
                             student.fourth_project = {"project_number" : highest_marks[3]+1, "mark" : all_marks[highest_marks[3]]} if len(highest_marks) > 3 else None
                             student.fifth_project = {"project_number" : highest_marks[4]+1, "mark" : all_marks[highest_marks[4]]} if len(highest_marks) > 4 else None
 
-                            student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
+                            if student.assigned_project is not None:
+                                student.assigned_project["mark"] = all_marks[student.assigned_project["project_number"]-1]
 
                             continue
 
