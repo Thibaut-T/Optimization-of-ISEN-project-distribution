@@ -172,6 +172,8 @@ class SolverOutputManagement(CTkFrame):
         self.eleves = []
         self.all_errors = []
 
+        self.error=""
+
         self.reload()
 
     def reset_all(self):
@@ -390,59 +392,58 @@ class SolverOutputManagement(CTkFrame):
         else:
             print("Fichier de récapitulatif trouvé, chargement des données...")
 
-            dataFrameProjets = pd.read_excel("./common/recap.xlsx", sheet_name="Project")
-            dataFrameEleves = pd.read_excel("./common/recap.xlsx", sheet_name="Students")
-            dataFrameAnomalies = pd.read_excel("./common/recap.xlsx", sheet_name="Anomalies")
+            try:
+                dataFrameProjets = pd.read_excel("./common/recap.xlsx", sheet_name="Project")
+                dataFrameEleves = pd.read_excel("./common/recap.xlsx", sheet_name="Students")
+                dataFrameAnomalies = pd.read_excel("./common/recap.xlsx", sheet_name="Anomalies")
 
-            self.projets = [Project() for i in range(len(dataFrameProjets))]
-            self.eleves = [Student() for i in range(len(dataFrameEleves))]
-            self.all_errors = []
+                self.projets = [Project() for i in range(len(dataFrameProjets))]
+                self.eleves = [Student() for i in range(len(dataFrameEleves))]
+                self.all_errors = []
 
-            for i, row in dataFrameEleves.iterrows():
-                self.eleves[i].last_name = row["last_name"]
-                self.eleves[i].first_name = row["first_name"]
-                self.eleves[i].mail = row["mail"]
+                for i, row in dataFrameEleves.iterrows():
+                    self.eleves[i].last_name = row["last_name"]
+                    self.eleves[i].first_name = row["first_name"]
+                    self.eleves[i].mail = row["mail"]
 
-                self.eleves[i].first_project = row["first_project"]
-                self.eleves[i].second_project = row["second_project"]
-                self.eleves[i].third_project = row["third_project"]
-                self.eleves[i].fourth_project = row["fourth_project"]
-                self.eleves[i].fifth_project = row["fifth_project"]
+                    self.eleves[i].first_project = row["first_project"]
+                    self.eleves[i].second_project = row["second_project"]
+                    self.eleves[i].third_project = row["third_project"]
+                    self.eleves[i].fourth_project = row["fourth_project"]
+                    self.eleves[i].fifth_project = row["fifth_project"]
 
-                self.eleves[i].assigned_project = row["assigned_project"]
+                    self.eleves[i].assigned_project = row["assigned_project"]
 
-            for i, row in dataFrameProjets.iterrows():
-                self.projets[i].number = row["number"]
-                self.projets[i].name = row["name"]
-                self.projets[i].person_in_charge = row["person_in_charge"]
-                self.projets[i].students = [eleve for eleve in self.eleves if eleve.mail in row["students"].replace("[", "").replace("]", "").replace("<Student>","").replace(" ","").split(",")]
-                self.projets[i].phone_number = row["phone_number"]
-                self.projets[i].mail = row["mail"]
-                self.projets[i].description = row["description"]
-                self.projets[i].min_student = row["min_student"]
-                self.projets[i].max_student = row["max_student"]
-                self.projets[i].company = row["company"]
+                for i, row in dataFrameProjets.iterrows():
+                    self.projets[i].number = row["number"]
+                    self.projets[i].name = row["name"]
+                    self.projets[i].person_in_charge = row["person_in_charge"]
+                    self.projets[i].students = [eleve for eleve in self.eleves if eleve.mail in row["students"].replace("[", "").replace("]", "").replace("<Student>","").replace(" ","").split(",")]
+                    self.projets[i].phone_number = row["phone_number"]
+                    self.projets[i].mail = row["mail"]
+                    self.projets[i].description = row["description"]
+                    self.projets[i].min_student = row["min_student"]
+                    self.projets[i].max_student = row["max_student"]
+                    self.projets[i].company = row["company"]
 
 
 
-            for i, row in dataFrameAnomalies.iterrows():
-                print(i)
-                print(row)
-                print(self.all_errors)
-                if "student" in row:
-                    print("student")
-                    self.all_errors.append(AnomaliesEleve())
-                    for student in self.eleves:
-                        if student.mail in str(row["student"]):
-                            self.all_errors[i].student = student
-                            self.all_errors[i].error = row["error"]
-                if "project" in row:
-                    print("project")
-                    self.all_errors.append(AnomaliesProjet())
-                    for project in self.projets:
-                        if project.name in str(row["project"]):
-                            self.all_errors[i].project = project
-                            self.all_errors[i].error = row["error"]
+                for i, row in dataFrameAnomalies.iterrows():
+                    if "student" in row:
+                        self.all_errors.append(AnomaliesEleve())
+                        for student in self.eleves:
+                            if student.mail in str(row["student"]):
+                                self.all_errors[i].student = student
+                                self.all_errors[i].error = row["error"]
+                    if "project" in row:
+                        self.all_errors.append(AnomaliesProjet())
+                        for project in self.projets:
+                            if project.name in str(row["project"]):
+                                self.all_errors[i].project = project
+                                self.all_errors[i].error = row["error"]
+            except:
+                print("Fichier modifié, données non chargables")
+                self.error = "File modified, data not loadable. You can generate the recap file again by clicking on the 'Reset All' button."
 
     
         self.show()
@@ -469,18 +470,23 @@ class SolverOutputManagement(CTkFrame):
 
         reset_button = CTkButton(left_frame, text="Reset All", command = lambda: self.reset_all())
         reset_button.pack(padx=10, pady=10, side="top")
-        
-        # Ajouter les informations des self.projets dans le conteneur scrollable_frame
-        for projet in self.projets:
-            card = CTkFrame(right_frame)
-            card.pack(padx=5, pady=5, fill="x")
 
-            projet_label = CTkLabel(card, text=projet.representation() ,justify="left")
-            projet_label.pack(padx=10, pady=10, anchor="w")
+        if self.error != "":
+            error_label = CTkLabel(left_frame, text=self.error, bg_color="red")
+            error_label.pack(padx=10, pady=10, side="top")
 
-        for error in self.all_errors:
-            card = CTkFrame(left_frame, fg_color="red")
-            card.pack(padx=5, pady=5, fill="x")
+        else:
+            # Ajouter les informations des self.projets dans le conteneur scrollable_frame
+            for projet in self.projets:
+                card = CTkFrame(right_frame)
+                card.pack(padx=5, pady=5, fill="x")
 
-            error.show_label(card)
-            error.show_button(card, self.reload)
+                projet_label = CTkLabel(card, text=projet.representation() ,justify="left")
+                projet_label.pack(padx=10, pady=10, anchor="w")
+
+            for error in self.all_errors:
+                card = CTkFrame(left_frame, fg_color="red")
+                card.pack(padx=5, pady=5, fill="x")
+
+                error.show_label(card)
+                error.show_button(card, self.reload)

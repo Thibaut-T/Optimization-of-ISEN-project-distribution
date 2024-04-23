@@ -321,12 +321,8 @@ def get_data():
                     grades[indice] = 0
                     number_of_non_zero_grades -= 1
 
-                print(grades)
-
                 #normalize the grades
                 grades = [int((grade/max(grades))*10) for grade in grades]
-
-                print(grades)
 
                 student_data += grades
 
